@@ -1,0 +1,10 @@
+.navigationList {
+    display: flex;
+    gap: var(--size-600);
+    text-transform: uppercase;
+
+    font-weight: 700;
+}
+.navigationList a {
+    position: relative;
+}
