@@ -267,13 +267,23 @@ a {
 
 
 /* Navigation */
-nav a.active::before {
+nav a::before {
     content: '';
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: -6px;
+    bottom: -5px;
     height: 3px;
+    width: 0;
+    transition: .2s ease-in-out;
+}
+
+nav a.active::before {
     width: 54px;
     background-color: var(--color-secondary);
 }
+
+nav a:hover::before {
+    width: 54px;
+    background-color: var(--color-secondary);
+} 
