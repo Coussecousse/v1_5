@@ -4,7 +4,7 @@ import Navigation from '../Navigation/Navigation';
 
 export default function Header() {
     return (
-        <header className={styles.header}>
+        <header className={styles.header} style={{border: 'solid'}}>
             <a href="" className={styles.title}>
                 RoadtripClub
             </a>
