@@ -1,33 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import styles from './Navigation.module.css';
 import { NavLink } from "react-router-dom";
-import HamburgerButton from "./HamburgerButton/HamburgerButton";
 
-export default function Navigation() {
+export default function Navigation({hamburgerState}) {
 
-    const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
-
-    const hamburgerClickHandler = () => {
-        setIsHamburgerOpen(!isHamburgerOpen);
-    }
+    const [timer, setTimer] = useState(null);
 
     useEffect(() => {
-        if (isHamburgerOpen) {
-            document.getElementById('hamburger').classList.add(styles.open);
+        const navigation = document.querySelector(`.${styles.navigationContainer}`);
+        const links = document.querySelectorAll(`.nav__link`);
+
+        if (hamburgerState) {
+            navigation.classList.add(styles.open);
+
+            setTimeout(() => {
+                links.forEach((element) => {
+                    element.classList.add(styles.active);
+                })
+            }, 200);
         } else {
-            document.getElementById('hamburger').classList.remove(styles.open);
+            navigation.classList.remove(styles.open);
+
+            links.forEach((element) => {
+                element.classList.remove(styles.active);
+            })
         }
-    }, [isHamburgerOpen])
+
+    }, [hamburgerState])
+
     return (
         <>
-            <HamburgerButton hamburgerClickHandler={hamburgerClickHandler} styles={styles} />
             <nav className={styles.navigationContainer}>
                 <ul className={styles.navigationList}>
-                    <li><NavLink to="/">Accueil</NavLink></li>
-                    <li><NavLink to="/destinations">Destinations</NavLink></li>
-                    <li><NavLink to="/community">Communauté</NavLink></li>
-                    <li><NavLink to="/sign-up">Inscription</NavLink></li>
-                    <li><NavLink to="/sign-in">Connexion</NavLink></li>
+                    <li className={`${styles.fromLeft} nav__link`}><NavLink to="/">Accueil</NavLink></li>
+                    <li className={`${styles.fromRight} nav__link`}><NavLink to="/destinations">Destinations</NavLink></li>
+                    <li className={`${styles.fromLeft} nav__link`}><NavLink to="/community">Communauté</NavLink></li>
+                    <li className={`${styles.fromRight} nav__link`}><NavLink to="/sign-up">Inscription</NavLink></li>
+                    <li className={`${styles.fromLeft} nav__link`}><NavLink to="/sign-in">Connexion</NavLink></li>
                 </ul>
             </nav>
         </>

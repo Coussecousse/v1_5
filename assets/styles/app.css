@@ -235,6 +235,8 @@
 }
 
 body {
+    background: #000;
+    min-height: 120vh;
     font-family: var(--ff-primary);
     font-size: var(--fs-400);
     color: var(--color-900);
