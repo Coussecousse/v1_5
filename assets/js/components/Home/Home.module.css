@@ -1,3 +1,47 @@
-.test {
-    background-color: red;
+.main {
+    min-height: 100vh;
+}
+.backgroundImage {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    position: absolute;
+    
+    background: url('/assets/images/Home/main-page.jpg') no-repeat center center / cover;
+    -webkit-filter: brightness(0.8);
+    -moz-filter: brightness(0.8);
+    -o-filter: brightness(0.8);
+    -ms-filter: brightness(0.8);
+    filter: brightness(0.8);
+}
+.content {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.title {
+    font-size: var(--fs-900);
+    text-align: center;
+    font-family: var(--ff-primary);
+    font-weight: 900;
+    color: var(--color-500);
+}
+.andTitle {
+    font-weight: 400;
+}
+
+.secondTitle {
+    font-style: italic;
+    font-weight: 500;
+}
+
+.scroll {
+    position: absolute;
+    bottom: 0;
+    text-transform: uppercase;
 }

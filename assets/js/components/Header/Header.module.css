@@ -5,6 +5,7 @@
   width: 100vw;
   background-color: var(--color-500);
   position: fixed;
+  z-index: 999;
 }
 
 .navigationContainer {
