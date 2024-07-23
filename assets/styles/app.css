@@ -223,6 +223,11 @@
     --fs-500 : 1.25rem;
     --fs-600 : 1.5rem;
 
+    --clamp-500: clamp(.875rem, 1.25vw, 1.25rem);
+    --clamp-600: clamp(1rem, 2vw, 1.5rem);
+    --clamp-700: clamp(1.5rem, 1.75vw, 1.75rem);  
+    --clamp-800: clamp(1.75rem, 2vw, 2rem);
+
     --size-500 : 1rem;
     --size-600 : 1.5rem;
     --size-700 : 2rem;

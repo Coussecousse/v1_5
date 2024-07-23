@@ -48,3 +48,29 @@
 .fromRight.active {
   transform: translateX(0);
 }
+
+/* Media Queries */
+@media screen and (min-width: 768px) {
+  .navigationContainer {
+    position: static;
+    transform: translateY(0);
+    font-size: var(--clamp-500);
+  }
+
+  .navigationList {
+    flex-direction: row;
+    gap: var(--size-500);
+    padding: 0;
+    width: auto;
+  }
+
+  .fromLeft, .fromRight {
+    transform: translateX(0);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .navigationList {
+    gap: var(--size-600);
+  }
+}
