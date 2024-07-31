@@ -1,5 +1,6 @@
 .main {
     min-height: 100vh;
+    overflow-y: hidden;
 }
 .backgroundImage {
     width: 100%;
@@ -43,12 +44,41 @@
 
 .scroll {
     position: absolute;
-    bottom: 0;
+    bottom: calc(-200px/3);
     text-transform: uppercase;
+    font-family: var(--ff-secondary);
+    color: var(--color-500);
+    height: 200px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.compass {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/assets/images/Home/compass.svg') no-repeat center center / contain;
+    animation: rotate 35s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @media screen and (min-width: 768px) {
     .title {
         font-size: var(--fs-900);
+    }
+    .scroll {
+        bottom: calc((-var(--size-compass) / 3));
+        height: var(--size-compass);
+        width: var(--size-compass);
     }
 }

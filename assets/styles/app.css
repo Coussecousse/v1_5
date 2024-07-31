@@ -236,6 +236,7 @@
     --size-700 : 2rem;
 
     --size-hamburger: clamp(2.375rem, 1.8393rem + 2.6786vw, 3.125rem);
+    --size-compass: clamp(12.5rem, 7.2826rem + 10.8696vw, 16.25rem);
 }
 
 *, *::before, *::after {
