@@ -57,7 +57,11 @@ Encore
     })
 
     // .enableSassLoader() //enable SCSS file
-    .configureCssLoader(options => { options.modules = true }) 
+    .configureCssLoader(options => { 
+        options.modules = {
+            // Custom class naming pattern
+            localIdentName: '[name]__[local]___[hash:base64:5]', 
+        } }) 
     .enablePostCssLoader()
     .enableReactPreset()
 
