@@ -12,7 +12,7 @@
   width: 100%;
   height: 100%;
   z-index: 999;
-  padding: 0 var(--size-700);
+  padding: 0 var(--size-500);
   background-color: var(--color-500);
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@
 }
 
 .title {
-  font-size: var(--fs-600);
+  font-size: var(--clamp-600);
 
   font-weight: 900;
   text-transform: uppercase;
@@ -29,7 +29,7 @@
 /* Hambuger */
 .hamburgerContainer {
   height: 100%;
-  width: 50px;
+  width: var(--size-hamburger);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,12 +84,12 @@
 
 .hamburger span:nth-child(3),
 .hamburger span:nth-child(4) {
-  top: 15px;
+  top: 14px;
 }
 
 .hamburger span:nth-child(5),
 .hamburger span:nth-child(6) {
-  top: 30px;
+  top: 28px;
 }
 
 .hamburger.open span:nth-child(1),
@@ -193,7 +193,7 @@
     padding: 0 var(--size-700);
   }
   .title {
-    font-size: var(--clamp-600);
+    font-size: var(--clamp-650);
   }
   .navigationContainer {
     width: fit-content;
