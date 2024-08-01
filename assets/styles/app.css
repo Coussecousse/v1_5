@@ -232,6 +232,7 @@
     /* Reorganize */
     --clamp-500: clamp(0.875rem, 0.5272rem + 0.7246vw, 1.125rem);
     --clamp-550: clamp(1rem, .875rem + .4vi, 1.125rem);
+    --clamp-560: clamp(1.125rem, 1.045rem + .4vi, 1.375rem);
     --clamp-600: clamp(1.25rem, 1.0714rem + 0.8929vw, 1.5rem);
     --clamp-650: clamp(1.375rem, 1.2011rem + 0.3623vw, 1.5rem);
     --clamp-700: clamp(1.5rem, 1.75vw, 1.75rem);  
@@ -243,6 +244,7 @@
     --size-600 : 1.5rem;
     --size-700 : 2rem;
 
+    --section-p-xs : 1.5rem 1rem;
     --section-p-xl : 3.625rem 5rem;
 
     --size-hamburger: clamp(2.375rem, 1.8393rem + 2.6786vw, 3.125rem);
@@ -292,7 +294,7 @@ a {
 
 .typical-section {
     width: 100%;
-    padding: var(--section-p-xl);
+    padding: var(--section-p-xs);
 }
 
 /* Navigation */
@@ -328,6 +330,7 @@ nav a:hover::before {
     /* TODO */
     /* box-shadow: ; */
     font-weight: 700;
+    cursor: pointer;
 }
 
 /* Inputs */
@@ -361,4 +364,11 @@ nav a:hover::before {
 }
 .link:hover::after {
     width: 100%;
+}
+
+/* Media Screen */
+@media screen and (min-width: 768px) {
+    .typical-section {
+        padding: var(--section-p-xl);
+    }
 }
