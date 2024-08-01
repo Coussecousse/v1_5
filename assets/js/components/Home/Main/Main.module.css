@@ -1,0 +1,84 @@
+.section {
+    min-height: 100vh;
+    overflow-y: hidden;
+}
+.backgroundImage {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    position: absolute;
+    
+    background: url('/assets/images/Home/main-page.jpg') no-repeat center center / cover;
+    -webkit-filter: brightness(0.8);
+    -moz-filter: brightness(0.8);
+    -o-filter: brightness(0.8);
+    -ms-filter: brightness(0.8);
+    filter: brightness(0.8);
+}
+.content {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    padding: 0 1rem ;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.title {
+    font-size: var(--fs-700);
+    text-align: center;
+    font-family: var(--ff-primary);
+    font-weight: 900;
+    color: var(--color-500);
+}
+.andTitle {
+    font-weight: 400;
+}
+
+.secondTitle {
+    font-style: italic;
+    font-weight: 500;
+}
+
+.scroll {
+    position: absolute;
+    bottom: calc(-200px/3);
+    text-transform: uppercase;
+    font-family: var(--ff-secondary);
+    color: var(--color-500);
+    height: 200px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.compass {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/assets/images/Home/compass.svg') no-repeat center center / contain;
+    animation: rotate 35s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .title {
+        font-size: var(--fs-900);
+    }
+    .scroll {
+        bottom: calc((-var(--size-compass) / 3));
+        height: var(--size-compass);
+        width: var(--size-compass);
+    }
+}

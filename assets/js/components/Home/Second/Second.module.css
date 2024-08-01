@@ -1,0 +1,55 @@
+.section {
+    position: relative;
+    flex-direction: row;
+    background-color: var(--color-primary);
+    height: 640px;
+}
+
+/* Text */
+.textContainer {
+    position: relative;
+    height: 100%;
+    width: 50%;
+}
+
+/* SVG */
+.svg {
+    background: url('/assets/images/Home/second.svg') no-repeat center center / contain;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: fit-content;
+    width: 50%;
+}
+
+/* Title */
+.title {
+    color: var(--color-500);
+    font-size: var(--fs-700);
+}
+
+/* Surprise link */
+.surprise {
+    position: absolute;
+    bottom: 0;
+    font-size: var(--clamp-650);
+    color: var(--color-500);
+}
+.surprise::after {
+    background-color: var(--color-500);
+}
+
+/* Form */
+.form {
+    font-family: var(--ff-secondary);
+    font-size: var(--clamp-550);
+}
+
+.form > button {
+    display: block;
+    margin-top: var(--size-700);
+}
+.form > input {
+    width: 100%;
+    margin-top: 4rem;
+}
