@@ -1,0 +1,15 @@
+.section {
+    background-color: var(--color-500);
+    text-align: center;
+}
+
+.title {
+    color: var(--color-primary);
+    font-size: var(--fs-700);
+}
+.texte {
+    font-family: var(--ff-secondary);
+    color: var(--color-800);
+    font-size: var(--clamp-550);
+    letter-spacing: 2%;
+}

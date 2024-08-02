@@ -36,6 +36,8 @@
     bottom: 0;
     font-size: var(--clamp-560);
     color: var(--color-500);
+    /* TODO underline to change */
+    /* text-decoration: underline; */
 }
 .surprise::after {
     background-color: var(--color-500);

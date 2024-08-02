@@ -2,17 +2,15 @@ import React, {Component} from 'react';
 import styles from './Home.module.css';
 import Main from './Main/Main';
 import Second from './Second/Second';
+import Third from './Third/Third';
     
-class Home extends Component {
-    
-    render() {
-        return (
+export default function Home() {
+    return (
         <>
             <Main />
             <Second />
+            <Third />
         </>
-        )
-    }
+    )
 }
     
-export default Home;
