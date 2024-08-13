@@ -8,8 +8,8 @@ export default function Third() {
         <section className={`typical-section ${styles.section}`}>
             <h2 className={styles.title}>Découvre les roadtrippeurs</h2>
             <p className={styles.texte}>Une communauté qui a le sens du partage</p>
-            { carouselData.map((data, id) => {
-                return <CarouselContainerTypeOne data={data} key={id} />
+            { carouselData.map((data, index) => {
+                return <CarouselContainerTypeOne data={data} key={index} />
             })}
         </section>
     )

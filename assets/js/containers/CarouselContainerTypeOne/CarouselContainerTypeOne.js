@@ -4,11 +4,13 @@ import Carousel from "./Carousel/Carousel";
 
 
 export default function CarouselContainerTypeOne({data}) {
-    console.log(data);
+    console.log(data.position);
+    const position = !data.position ? styles.carouselRight : styles.carouselLeft;
+
     return (
-        <div>
-            <h3>{data.title}</h3>
-            <Carousel data={data} />
+        <div className={`${position} ${styles.carouselContainer}`}>
+            <h3 className={styles.title}>{data.title}</h3>
+            <Carousel data={data} styles={styles}/>
         </div>
     )
 }

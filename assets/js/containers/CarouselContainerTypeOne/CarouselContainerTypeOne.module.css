@@ -1,0 +1,19 @@
+.carousel {
+    margin-top: 3.875rem;
+    display: flex;
+}
+.carousel > * {
+    flex: 1;
+}
+.carousel .title {
+    font-size: var(--fs-600);
+    font-weight: 500;
+    align-self: flex-end;
+    margin-bottom: 1rem;
+}
+.carouselRight {
+    
+}
+.carouselLeft  {
+    
+}
