@@ -10,6 +10,6 @@
 .texte {
     font-family: var(--ff-secondary);
     color: var(--color-800);
-    font-size: var(--clamp-550);
+    font-size: var(--fs-450);
     letter-spacing: 2%;
 }

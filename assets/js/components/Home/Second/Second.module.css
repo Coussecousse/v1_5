@@ -46,7 +46,7 @@
 /* Form */
 .form {
     font-family: var(--ff-secondary);
-    font-size: var(--clamp-550);
+    font-size: var(--fs-450);
 }
 
 .form > button {
