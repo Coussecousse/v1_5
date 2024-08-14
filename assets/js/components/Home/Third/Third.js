@@ -4,6 +4,7 @@ import CarouselContainerTypeOne from "../../../containers/CarouselContainerTypeO
 import { carouselData } from "../../../config/HomeCarousel";
 
 export default function Third() {
+    
     return (
         <section className={`typical-section ${styles.section}`}>
             <h2 className={styles.title}>Découvre les roadtrippeurs</h2>

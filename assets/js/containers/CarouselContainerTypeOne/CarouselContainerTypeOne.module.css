@@ -1,19 +1,118 @@
-.carousel {
+.carouselContainer {
     margin-top: 3.875rem;
     display: flex;
 }
-.carousel > * {
-    flex: 1;
-}
-.carousel .title {
+.carouselContainer .title {
     font-size: var(--fs-600);
     font-weight: 500;
     align-self: flex-end;
     margin-bottom: 1rem;
+    width: 40%;
 }
-.carouselRight {
-    
+.right .title {
+    order: 1;
 }
-.carouselLeft  {
-    
+.right .carousel {
+    order: 2;
+}
+.left .title {
+    order: 2;
+}
+.left .carousel {
+    order: 1;
+}
+.left .picsContainer {
+    flex-direction: row-reverse;
+}
+.right .picTitle {
+    right: 1rem;
+}
+.left .picTitle {
+    left: 1rem;
+}
+.buttonsContainer.right {
+    left: 100%;
+    transform: translateX(-100%);
+}
+.buttonsContainer.left .buttons {
+    position: relative;
+    left: 100%;
+    transform: translateX(-100%);
+    flex-direction: row-reverse;
+}
+
+.carousel {
+    width: 60%;
+    overflow-x: hidden;
+}
+.picContainer {
+    position: relative;
+    height: 500px;
+    width: 400px;
+}
+.pic {
+    filter: brightness(0.8);
+    object-fit: cover;
+    object-position: center;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+.picTitle {
+    color: var(--color-500);
+    font-weight: 700;
+    font-size: var(--fs-500);
+    position: absolute;
+    bottom: .5rem;
+}
+
+.picsContainer {
+    display: flex;
+    gap: 4.5rem;
+    width: fit-content;
+    transition: .2s ease-in-out;
+}
+
+.buttonsContainer {
+    position: relative;
+    margin-top: 3rem;
+    width: 60%;
+}
+.buttons {
+    gap: var(--size-500);
+    width: 400px;
+    display: flex;
+    justify-content: center;
+}
+.buttons .button {
+    position: relative;
+    border: transparent;
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--color-800);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .2s;
+}
+.buttons .button:hover, 
+.buttons button.active {
+    background-color: var(--color-primary);
+}
+
+.buttons .button::before {
+    content: url('/assets/images/Home/carousel/flag.svg');
+    position: absolute;
+    opacity: 0;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-11%) scale(0);
+    transition: .2s;
+    transform-origin: bottom left;
+}
+.buttons .button.active::before, 
+.buttons .button:hover::before {
+    transform: translateX(-11%) scale(1);
+    opacity: 1;
+    width: 1.75rem;
+    height: 1.75rem;
 }

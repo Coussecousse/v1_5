@@ -223,8 +223,8 @@
     --ff-secondary: 'Helvetica Now Text', sans-serif;
 
     --fs-400 : 1rem;
-    --fs-500 : 1.25rem;
-    --fs-600 : clamp(1.5rem, 1.34rem + 0.8vi, 2rem);;
+    --fs-500 : clamp(1.25rem, 1.09rem + 0.8vi, 1.75rem);
+    --fs-600 : clamp(1.5rem, 1.34rem + 0.8vi, 2rem);
     --fs-700 : clamp(1.75rem, 1.2143rem + 2.6786vw, 2.5rem);
     --fs-900 : 3.125rem;
 
