@@ -13,13 +13,18 @@ export default function Carousel({data, styles, activePic, handleClickPic}) {
         newActivePic.classList.add(styles.active);
 
         const container = document.querySelector(`.${styles.picsContainer}[data-type="${data.type}"]`);
-        // console.log(container);
         if (container.dataset.type === 'country') {
-            container.style.transform = `translateX(calc((-400px * ${activePic}) + (-4.5rem * ${activePic}))`;
+            if (window.innerWidth >= 768) {
+                container.style.transform = `translateX(calc(-${activePic} * (var(--image-size) + 4.5rem)))`;
+            } else {
+                container.style.transform = `translateX(calc(50% - (${activePic} * (var(--image-size) + 4.5rem) + var(--image-size) / 2)))`;
+            }
         } else {
-            console.log('coucou');
-            console.log(container);
-            container.style.transform = `translateX(calc((-100% + 400px * (${activePic} + 1)) + (4.5rem * (${activePic} + 1) + 4.5rem / 2 + 1.3rem)`;
+            if (window.innerWidth >= 768) {
+                container.style.transform = `translateX(calc(-100% + (${activePic} + 1) * var(--image-size) + (${activePic} + 2) * 4.5rem))`;
+            } else {
+                container.style.transform = `translateX(calc(-50% + (${activePic} * (var(--image-size) + 4.5rem) + var(--image-size) / 2)))`;
+            }
         }
     }, [activePic]);
 

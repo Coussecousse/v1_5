@@ -251,6 +251,8 @@
     --size-compass: clamp(12.5rem, 7.2826rem + 10.8696vw, 16.25rem);
 
     --radius-500 : 15px;
+
+    --image-size : clamp(15.625rem, 12.625rem + 15vi, 25rem);
 }
 
 *, *::before, *::after {

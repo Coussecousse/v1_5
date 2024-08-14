@@ -1,25 +1,15 @@
 .carouselContainer {
     margin-top: 3.875rem;
     display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 .carouselContainer .title {
     font-size: var(--fs-600);
     font-weight: 500;
     align-self: flex-end;
     margin-bottom: 1rem;
-    width: 40%;
-}
-.right .title {
-    order: 1;
-}
-.right .carousel {
-    order: 2;
-}
-.left .title {
-    order: 2;
-}
-.left .carousel {
-    order: 1;
+    width: 100%;
 }
 .left .picsContainer {
     flex-direction: row-reverse;
@@ -30,25 +20,21 @@
 .left .picTitle {
     left: 1rem;
 }
-.buttonsContainer.right {
-    left: 100%;
-    transform: translateX(-100%);
-}
+
 .buttonsContainer.left .buttons {
-    position: relative;
-    left: 100%;
-    transform: translateX(-100%);
     flex-direction: row-reverse;
 }
 
 .carousel {
-    width: 60%;
+    width: 100%;
     overflow-x: hidden;
+    display: flex;
+    justify-content: center;
 }
 .picContainer {
     position: relative;
     height: 500px;
-    width: 400px;
+    width: var(--image-size);
 }
 .pic {
     filter: brightness(0.8);
@@ -76,13 +62,16 @@
 .buttonsContainer {
     position: relative;
     margin-top: 3rem;
-    width: 60%;
+    width: 100%;
 }
 .buttons {
     gap: var(--size-500);
-    width: 400px;
+    width: var(--image-size);
     display: flex;
     justify-content: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 .buttons .button {
     position: relative;
@@ -115,4 +104,45 @@
     opacity: 1;
     width: 1.75rem;
     height: 1.75rem;
+}
+
+@media screen and (min-width: 768px) {
+    .carouselContainer {
+        flex-direction: row;
+    }
+    .left .title {
+        order: 2;
+    }
+    .left .carousel {
+        order: 1;
+    }
+    .right .picsContainer {
+        flex-direction: row;
+    } 
+
+    .carouselContainer .title {
+        width: 40%;
+    }
+    .buttonsContainer.right {
+        left: 100%;
+        transform: translateX(-100%);
+    }
+    .buttonsContainer.left .buttons {
+        position: relative;
+        left: 100%;
+        transform: translateX(-100%);
+    }
+    .carousel {
+        width: 60%;
+        position: static;
+        display: block;
+    }
+
+    .buttonsContainer {
+        width: 60%;
+    }
+    .buttons {
+        position: static;
+        transform: none;
+    }
 }

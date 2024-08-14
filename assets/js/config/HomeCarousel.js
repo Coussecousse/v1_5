@@ -29,8 +29,8 @@ export const carouselData = [
             },
             {
                 src : england,
-                alt : "Suisse",
-                title : "Suisse"
+                alt : "England",
+                title : "Angleterre"
             },
             {
                 src : germany,
