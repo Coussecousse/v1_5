@@ -298,7 +298,10 @@ a {
     text-decoration: none;
     color: inherit;
 }
-
+.first-section {
+    padding-top: 4.375rem;
+    min-height: calc(100vh - 4.375rem);
+}
 .typical-section {
     width: 100%;
     padding: var(--section-p-xs);

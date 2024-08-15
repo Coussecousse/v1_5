@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Navigation.module.css';
 import { NavLink } from "react-router-dom";
+import paths from '../../config/paths';
 
 export default function Navigation({hamburgerState}) {
 
@@ -32,8 +33,8 @@ export default function Navigation({hamburgerState}) {
         <>
             <nav className={styles.navigationContainer}>
                 <ul className={styles.navigationList}>
-                    <li className={`${styles.fromLeft} nav__link`}><NavLink to="/">Accueil</NavLink></li>
-                    <li className={`${styles.fromRight} nav__link`}><NavLink to="/destinations">Destinations</NavLink></li>
+                    <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.HOME}>Accueil</NavLink></li>
+                    <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.DESTINATIONS}>Destinations</NavLink></li>
                     <li className={`${styles.fromLeft} nav__link`}><NavLink to="/community">Communauté</NavLink></li>
                     <li className={`${styles.fromRight} nav__link`}><NavLink to="/sign-up">Inscription</NavLink></li>
                     <li className={`${styles.fromLeft} nav__link`}><NavLink to="/sign-in">Connexion</NavLink></li>
