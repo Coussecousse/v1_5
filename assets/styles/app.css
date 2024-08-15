@@ -282,6 +282,10 @@ input, button, textarea, select {
     font: inherit;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: .08rem;
+}
+
 p, h1, h2, h3, h4, h5, h6 {
     overflow-wrap: break-word;
 }
@@ -330,10 +334,10 @@ nav a:hover::before {
     border-radius: var(--radius-500);
     border-color: transparent;
     height: fit-content;
-    /* TODO */
-    /* box-shadow: ; */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     font-weight: 700;
     cursor: pointer;
+    letter-spacing: .08rem;
 }
 
 /* Inputs */
