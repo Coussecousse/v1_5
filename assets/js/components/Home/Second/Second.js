@@ -13,7 +13,7 @@ export default function Second() {
                     <input className="input" placeholder="Autriche..."></input>
                     <button type="submit" className="button">Rechercher</button>
                 </form>
-                <Link to="" className={`${styles.surprise} link`}>Laisse toi surprendre</Link>
+                <Link to="" className={`${styles.surprise} link`}>Laisse toi surprendre...<div className={styles.icon}></div></Link>
             </div>
             <img src={svg} className={styles.svg}></img>
         </section>

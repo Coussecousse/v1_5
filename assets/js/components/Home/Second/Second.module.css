@@ -36,8 +36,7 @@
     bottom: 0;
     font-size: var(--clamp-560);
     color: var(--color-500);
-    /* TODO underline to change */
-    /* text-decoration: underline; */
+    display: flex;
 }
 .surprise::after {
     background-color: var(--color-500);
@@ -56,6 +55,19 @@
 .form > input {
     width: 100%;
     margin-top: 4rem;
+}
+
+/* Arrow Icon */
+.icon {
+    background: url('/assets/images/icon/right-arrow.svg');
+    background-size: contain;
+    height: 1.25rem;
+    width: 1.25rem;
+    margin: 5px 0 0 4px;
+    transition: .2s ease-in;
+}
+.surprise:hover > div {
+    margin: 5px 0 0 10px;
 }
 
 @media screen and (min-width: 768px) {
