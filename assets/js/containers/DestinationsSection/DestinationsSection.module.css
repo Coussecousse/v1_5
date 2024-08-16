@@ -1,7 +1,12 @@
 .section {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
+    transition: all 0.2s;
+    opacity: 0;
+}
+.section.active {
+    opacity: 1;
 }
 .textContainer {
     width: 50%;
