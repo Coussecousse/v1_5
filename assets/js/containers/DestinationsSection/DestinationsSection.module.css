@@ -4,12 +4,15 @@
     align-items: center;
     transition: all 0.2s;
     opacity: 0;
+    flex-direction: column;
+    padding-top: 1.25rem;
 }
 .section.active {
     opacity: 1;
 }
 .textContainer {
-    width: 50%;
+    width: 100%;
+    order: 2;
 }
 .title {
     margin-bottom: 2.875rem;
@@ -22,8 +25,8 @@
 }
 .imgContainer {
     position: relative;
-    width: 50%;
-    height: 544px;
+    width: 100%;
+    height: clamp(15.625rem, 9.745rem + 29.4vi, 34rem);
 }
 .img {
     width: 100%;
@@ -36,11 +39,26 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    height: 57px;
-    width: 57px;
+    height: clamp(2.5rem, 2.16rem + 1.7vi, 3.563rem);
+    width: clamp(2.5rem, 2.16rem + 1.7vi, 3.563rem);
     transform: translate(-50%, -50%);
     background-image: url('/assets/images/Destinations/point.svg');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+}
+
+@media screen and (min-width: 768px) {
+    .section {
+        flex-direction: row;
+    }
+    .textContainer {
+        width: 50%;
+        order: 1;
+    }
+    .imgContainer {
+        width: 50%;
+        order: 2;
+    }
+    
 }

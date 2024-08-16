@@ -22,6 +22,7 @@
     height: 100%;
     width: 250px;
     z-index: -999;
+    display: none;
 }
 
 .textContainer {
@@ -36,4 +37,10 @@
 }
 .titlesCountry li {
     cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+    .strip {
+        display: block;
+    }
 }
