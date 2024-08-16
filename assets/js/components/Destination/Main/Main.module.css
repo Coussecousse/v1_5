@@ -1,9 +1,16 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .background {
     position: absolute;
     background: url('/assets/images/Destinations/main.jpg') no-repeat center center / cover;
     filter: brightness(.5);
     width: 100%;
     height: 100%;
+    z-index: -999;
 } 
 .strip {
     background-color: var(--color-primary);
@@ -12,4 +19,19 @@
     top: 0;
     height: 100%;
     width: 250px;
+    z-index: -999;
+}
+
+.textContainer {
+    color: var(--color-500);
+    max-width: 900px;
+}
+.titlesCountry {
+    display: flex;
+    gap: 1.375rem;
+    font-weight: 700;
+    font-size: var(--fs-500);
+}
+.titlesCountry li {
+    cursor: pointer;
 }

@@ -5,7 +5,7 @@
 
 .title {
     color: var(--color-primary);
-    font-size: var(--fs-700);
+    font-size: var(--fs-800);
 }
 .texte {
     font-family: var(--ff-secondary);

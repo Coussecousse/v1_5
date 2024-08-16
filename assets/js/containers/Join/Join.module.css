@@ -6,7 +6,7 @@
     background-color: var(--color-primary);
 }
 .title {
-    font-size: var(--fs-700);
+    font-size: var(--fs-800);
     text-align: center;
     color: var(--color-500);
 }
