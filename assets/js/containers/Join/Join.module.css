@@ -1,0 +1,19 @@
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--color-primary);
+}
+.title {
+    font-size: var(--fs-800);
+    text-align: center;
+    color: var(--color-500);
+}
+
+.button {
+    margin-top: 2rem;
+    width: fit-content;
+    font-family: var(--ff-secondary);
+    font-size: var(--fs-450);
+}

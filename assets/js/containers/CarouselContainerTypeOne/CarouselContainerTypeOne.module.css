@@ -1,0 +1,148 @@
+.carouselContainer {
+    margin-top: 3.875rem;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+.carouselContainer .title {
+    font-size: var(--fs-700);
+    font-weight: 500;
+    align-self: flex-end;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+.left .picsContainer {
+    flex-direction: row-reverse;
+}
+.right .picTitle {
+    right: 1rem;
+}
+.left .picTitle {
+    left: 1rem;
+}
+
+.buttonsContainer.left .buttons {
+    flex-direction: row-reverse;
+}
+
+.carousel {
+    width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+}
+.picContainer {
+    position: relative;
+    height: 500px;
+    width: var(--image-size);
+}
+.pic {
+    filter: brightness(0.8);
+    object-fit: cover;
+    object-position: center;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+.picTitle {
+    color: var(--color-500);
+    font-weight: 700;
+    font-size: var(--fs-600);
+    position: absolute;
+    bottom: .5rem;
+}
+
+.picsContainer {
+    display: flex;
+    gap: 4.5rem;
+    width: fit-content;
+    transition: .2s ease-in-out;
+}
+
+.buttonsContainer {
+    position: relative;
+    margin-top: 3rem;
+    width: 100%;
+}
+.buttons {
+    gap: var(--size-500);
+    width: var(--image-size);
+    display: flex;
+    justify-content: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.buttons .button {
+    position: relative;
+    border: transparent;
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--color-800);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .2s;
+}
+.buttons .button:hover, 
+.buttons button.active {
+    background-color: var(--color-primary);
+}
+
+.buttons .button::before {
+    content: url('/assets/images/Home/carousel/flag.svg');
+    position: absolute;
+    opacity: 0;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-11%) scale(0);
+    transition: .2s;
+    transform-origin: bottom left;
+}
+.buttons .button.active::before, 
+.buttons .button:hover::before {
+    transform: translateX(-11%) scale(1);
+    opacity: 1;
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+@media screen and (min-width: 768px) {
+    .carouselContainer {
+        flex-direction: row;
+    }
+    .left .title {
+        order: 2;
+    }
+    .left .carousel {
+        order: 1;
+    }
+    .right .picsContainer {
+        flex-direction: row;
+    } 
+
+    .carouselContainer .title {
+        width: 40%;
+    }
+    .buttonsContainer.right {
+        left: 100%;
+        transform: translateX(-100%);
+    }
+    .buttonsContainer.left .buttons {
+        position: relative;
+        left: 100%;
+        transform: translateX(-100%);
+    }
+    .carousel {
+        width: 60%;
+        position: static;
+        display: block;
+    }
+
+    .buttonsContainer {
+        width: 60%;
+    }
+    .buttons {
+        position: static;
+        transform: none;
+    }
+}

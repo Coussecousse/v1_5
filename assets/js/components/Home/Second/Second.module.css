@@ -1,0 +1,84 @@
+.section {
+    position: relative;
+    flex-direction: row;
+    background-color: var(--color-primary);
+    height: 340px;
+}
+
+/* Text */
+.textContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* SVG */
+.svg {
+    background: url('/assets/images/Home/second.svg') no-repeat center center / contain;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    /* max-width: 160px; */
+    height: clamp(10rem, 5.526rem + 22.371vi, 16.25rem);
+    width: 50%;
+}
+
+/* Title */
+.title {
+    color: var(--color-500);
+    font-size: var(--fs-800);
+}
+
+/* Surprise link */
+.surprise {
+    position: absolute;
+    bottom: 0;
+    font-size: var(--clamp-560);
+    color: var(--color-500);
+    display: flex;
+}
+.surprise::after {
+    background-color: var(--color-500);
+}
+
+/* Form */
+.form {
+    font-family: var(--ff-secondary);
+    font-size: var(--fs-450);
+}
+
+.form > button {
+    display: block;
+    margin-top: var(--size-700);
+}
+.form > input {
+    width: 100%;
+    margin-top: 4rem;
+}
+
+/* Arrow Icon */
+.icon {
+    background: url('/assets/images/icon/right-arrow.svg');
+    background-size: contain;
+    height: 1.25rem;
+    width: 1.25rem;
+    margin: 5px 0 0 4px;
+    transition: .2s ease-in;
+}
+.surprise:hover > div {
+    margin: 5px 0 0 10px;
+}
+
+@media screen and (min-width: 768px) {
+    .textContainer {
+        width: 50%;
+    }
+    .section {
+        height: clamp(30.625rem, 17.582rem + 27.174vi, 40rem);
+    }
+    .svg {
+        height: fit-content;
+        max-height: 38rem;
+    }
+}
