@@ -1,6 +1,7 @@
 const paths = {
     HOME : '/',
-    DESTINATIONS : '/destinations'
+    DESTINATIONS : '/destinations',
+    COMMUNITY : '/community',
 }
 
 export default paths;

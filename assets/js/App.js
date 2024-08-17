@@ -7,6 +7,7 @@ import Layout from './hoc/Layout/Layout'
 import Home from './components/Home/Home';
 import paths from './config/paths';
 import Destinations from './components/Destination/Destinations';
+import Community from './components/Community/Community';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -18,6 +19,7 @@ root.render(
             <Routes>
               <Route path={paths.HOME} element={<Home></Home>}></Route>
               <Route path={paths.DESTINATIONS} element={<Destinations></Destinations>}></Route>
+              <Route path={paths.COMMUNITY} element={<Community></Community>}></Route>
             </Routes>
           </Layout>
         </div>
