@@ -301,7 +301,7 @@ a {
 }
 .first-section {
     padding-top: 4.375rem;
-    min-height: calc(100vh - 4.375rem);
+    min-height: 100vh;
 }
 .typical-section {
     width: 100%;
