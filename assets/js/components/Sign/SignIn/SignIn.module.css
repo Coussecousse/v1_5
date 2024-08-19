@@ -1,0 +1,19 @@
+.img {
+    margin-top: 2rem;
+    order: 2;
+    max-width: 500px;
+}
+.textContainer {
+    order: 1;
+}
+
+@media screen and (min-width: 895px) {
+    .img {
+        order : 1;
+        margin: 0;
+        max-width: none;
+    }
+    .textContainer {
+        order : 2;
+    }
+}
