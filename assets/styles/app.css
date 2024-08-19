@@ -216,8 +216,9 @@
     --color-600: #EFEEB4;
     --color-500: #fff;
 
-    --color-900-tr: rgba(0, 0, 0, 50%);
     --color-500-tr: rgba(255, 255, 255, 80%);
+    --color-800-tr: rgba(0, 0, 0, 50%);
+    --color-900-tr: rgba(0, 0, 0, 50%);
 
     --ff-primary: 'Wulkan Display', sans-serif;
     --ff-secondary: 'Helvetica Now Text', sans-serif;
@@ -350,21 +351,81 @@ nav a:hover::before,
     cursor: pointer;
     letter-spacing: .08rem;
 }
-
+.form-button {
+    border: var(--color-primary) 1px solid;
+    color: var(--color-800);
+    background-color: var(--color-500);
+    padding: .5rem 1.5rem;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--fs-500);
+    border-radius: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+    transition: all .2s;
+}
+.form-button:hover {
+    border-bottom: var(--color-primary) 4px solid;
+    border-right:  var(--color-primary) 4px solid;
+    margin: 0 -3px -3px 0;
+}
 /* Inputs */
 .input {
     border-radius: var(--radius-500);
     padding: var(--size-300) var(--size-500);
     border-color: transparent;
     background-color: var(--color-500-tr);
-    /* TODO */
-    /* box-shadow: */
 }
 .input::placeholder {
     color: var(--color-900-tr);
 }
 .input:focus-visible {
     border-color: var(--color-secondary);
+}
+
+.input2_elementsContainer {
+    border: var(--color-primary) 1px solid;
+    border-radius: 15px;
+    position: relative;
+}
+.input2_elementsContainer > label {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    transform: translateY(-50%);
+    font-size: var(--fs-500);
+    font-weight: 600;
+    background-color: var(--color-500);
+    padding: 0 0.5rem;
+}
+
+.input2_container {
+    z-index: 10;
+    position: relative;
+    height: 2rem;
+    margin: .8rem 2rem 0 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.input2_container input {
+    font-family: var(--ff-secondary);
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    flex: 1;
+}
+
+.input2_container input::placeholder {
+    color: var(--color-800-tr);
+    font-family: var(--ff-secondary);
+}
+
+.input2_containeer input:focus {
+    outline: none;
 }
 
 /* Links */

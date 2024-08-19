@@ -1,0 +1,67 @@
+.section {
+    background-color: var(--color-500);
+}
+.container {
+    padding: 2.5rem 2.5rem 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1132px;
+    margin: 0 auto;
+}
+
+.img {
+    object-fit: cover;
+    min-height: 300px;
+    width: 100%;
+    overflow: visible;
+}
+.textContainer {
+    width: 90%;
+    color: var(--color-800);
+    display: grid;
+    max-width: 400px;
+    /* min-width: 360px; */
+}
+.title {
+    font-size: var(--fs-800);
+    font-weight: 900;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+/* Differents icons */ 
+.span {
+    height: 100%;
+    width: 1rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; 
+}
+.spanEmail {
+    background-image: url('/assets/images/icon/email.svg');
+}
+.spanUser {
+    background-image: url('/assets/images/icon/user.svg');
+}
+.spanPassword {
+    background-image: url('/assets/images/icon/lock.svg');
+}   
+
+@media screen and (min-width: 728px) {
+    .container {
+        flex-direction: row;
+        padding: 2.5rem 2.5rem 0 2.5rem;
+    }
+    .img {
+        width: 50%;
+        min-height: calc(100vh - 70px - 2.5rem);
+    }
+    .textContainer {
+        width: 50%;
+    }
+    .title {
+        text-align: left;
+    }
+}

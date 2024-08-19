@@ -36,8 +36,8 @@ export default function Navigation({hamburgerState}) {
                     <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.HOME}>Accueil</NavLink></li>
                     <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.DESTINATIONS}>Destinations</NavLink></li>
                     <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.COMMUNITY}>Communauté</NavLink></li>
-                    <li className={`${styles.fromRight} nav__link`}><NavLink to="/sign-up">Inscription</NavLink></li>
-                    <li className={`${styles.fromLeft} nav__link`}><NavLink to="/sign-in">Connexion</NavLink></li>
+                    <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.SIGNUP}>Inscription</NavLink></li>
+                    <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.SIGNIN}>Connexion</NavLink></li>
                 </ul>
             </nav>
         </>
