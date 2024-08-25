@@ -14,12 +14,14 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    padding-bottom: 1.5rem;
 }
 .img {
     object-fit: cover;
     min-height: 300px;
     width: 100%;
     overflow: visible;
+    align-self: flex-end;
 }
 .textContainer {
     width: 90%;
@@ -67,5 +69,8 @@
     }
     .title {
         text-align: left;
+    }
+    .form {
+        padding-bottom: 3.625rem;
     }
 }

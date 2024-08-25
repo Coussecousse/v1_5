@@ -258,6 +258,14 @@
     --image-size : clamp(15.625rem, 12.625rem + 15vi, 25rem);
 }
 
+/* html, body, main, #root, section, .App {
+    min-height: 100% !important;
+    height: 100%;
+} */
+html {
+    min-height: 100vh;
+}
+
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -265,8 +273,8 @@
 }
 
 body {
-    background: #000;
-    min-height: 120vh;
+    height: 100%;
+    background-color: var(--color-500);
     font-family: var(--ff-primary);
     font-size: var(--fs-400);
     color: var(--color-900);
@@ -426,6 +434,27 @@ nav a:hover::before,
 
 .input2_containeer input:focus {
     outline: none;
+}
+
+.input2_requiredSpan {
+    color: var(--color-primary);
+}
+
+.input2_required, .input2_info {
+    display: block;
+    color: var(--color-primary);
+    font-style: italic;
+    font-weight: 800;
+    line-height: 1rem;
+}
+
+.input2_info {
+    padding: 0 .5rem;
+}
+
+.input2_required {
+    position: absolute;
+    bottom: 0;
 }
 
 /* Links */
