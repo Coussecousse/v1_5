@@ -17,14 +17,14 @@ export default function SignIn() {
                                 <label htmlFor="email">Email</label>
                                 <div className={`input2_container`}>
                                     <span className={`${signStyles.spanEmail} ${signStyles.span}`}></span>
-                                    <input type="email" name="email" id="email" placeholder="Entrez votre email" required></input>
+                                    <input type="email" name="email" id="email" placeholder="Entrez votre email" required autoComplete="email"></input>
                                 </div>
                             </div>
                             <div className={`input2_elementsContainer`}>
                                 <label htmlFor="password">Mot de passe</label>
                                 <div className={`input2_container`}>
                                     <span className={`${signStyles.spanPassword} ${signStyles.span}`}></span>
-                                    <input type="password" name="password" id="password" placeholder="Entrez votre mot de passe" required></input>
+                                    <input type="password" name="password" id="password" placeholder="Entrez votre mot de passe" required autoComplete="password"></input>
                                 </div>
                             </div>
                             <input className="form-button" type="submit" value="Se connecter" />

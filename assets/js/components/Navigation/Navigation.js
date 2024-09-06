@@ -5,7 +5,7 @@ import paths from '../../config/paths';
 
 export default function Navigation({hamburgerState}) {
 
-    const [timer, setTimer] = useState(null);
+    // const [timer, setTimer] = useState(null);
 
     useEffect(() => {
         const navigation = document.querySelector(`.${styles.navigationContainer}`);

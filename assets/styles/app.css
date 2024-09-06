@@ -452,9 +452,8 @@ nav a:hover::before,
     padding: 0 .5rem;
 }
 
-.input2_required {
-    position: absolute;
-    bottom: 0;
+.input2_checkbox {
+    margin-right: .5rem;
 }
 
 /* Links */
