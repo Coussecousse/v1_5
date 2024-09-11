@@ -74,7 +74,7 @@ class SignUpController extends AbstractController
     }
 
 
-    #[Route('api/verify-email', name: 'app_verify_email')]
+    #[Route('api/verify-email', name: 'app_api_verify_email', methods: ['GET'])]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): JsonResponse {
         $id = $request->get('id');
         $user = $userRepository->find($id);

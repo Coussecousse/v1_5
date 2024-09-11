@@ -1,0 +1,5 @@
+verify_email:
+  path: /verify-email
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  permanent: true
+  keepQueryParams: true

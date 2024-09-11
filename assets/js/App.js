@@ -10,6 +10,7 @@ import Destinations from './components/Destination/Destinations';
 import Community from './components/Community/Community';
 import SignUp from './components/Sign/SignUp/SignUp';
 import SignIn from './components/Sign/SignIn/SignIn';
+import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -24,6 +25,7 @@ root.render(
               <Route path={paths.COMMUNITY} element={<Community></Community>}></Route>
               <Route path={paths.SIGNUP} element={<SignUp></SignUp>}></Route>
               <Route path={paths.SIGNIN} element={<SignIn></SignIn>}></Route>
+              <Route path={paths.VERIFY_EMAIL} element={<VerifyEmail></VerifyEmail>}></Route>
             </Routes>
           </Layout>
         </div>

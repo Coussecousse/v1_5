@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
@@ -44,7 +43,16 @@ class EmailVerifier
      */
     public function handleEmailConfirmation(Request $request, User $user): void
     {
-        $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), $user->getEmail());
+        $newPath = str_replace('/api', '', $request->getPathInfo());
+
+        // Reconstruct the full URL using the request's scheme and host
+        $newUri = $request->getSchemeAndHttpHost() . $newPath;
+
+        if ($request->getQueryString()) {
+            $newUri .= '?' . $request->getQueryString();
+        }
+
+        $this->verifyEmailHelper->validateEmailConfirmation($newUri, (string) $user->getId(), $user->getEmail());
 
         $user->setVerified(true);
 
