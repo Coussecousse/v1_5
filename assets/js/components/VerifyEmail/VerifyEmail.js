@@ -20,7 +20,6 @@ export default function VerifyEmail() {
                 setErrorMessage(errorMessage);
             });
     }, []);
-    
 
     return (
         <Info message={newsStatus ? 'Votre email a été vérifié avec succès !' : errorMessage} goodOrBad={newsStatus} />
