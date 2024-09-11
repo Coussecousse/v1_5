@@ -1,5 +1,6 @@
 .section {
   display: flex;
+  flex-direction: column;
 }
 
 .wait {
@@ -64,6 +65,62 @@
 .waitText  {
     font-family: var(--ff-secondary);
     font-weight: 600;
-    font-size: var(--fs-500);
+    font-size: var(--fs-450);
     color: var(--color-800);
+    text-align: center;
+}
+
+.textMessage {
+    font-size: var(--fs-500);
+    width: 100%;
+    color: var(--color-800);
+    text-align: center;
+    padding: 1rem;
+}
+
+.textMessage h1 {
+    display: inline;
+}
+
+.img {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.img img {
+    flex: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    top: 4px;
+    margin-right: .5rem;
+    position: relative;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.goodIcon {
+    background-image: url(/assets/images/icon/check.svg);
+}
+
+.badIcon {
+    background-image: url(/assets/images/icon/cross.svg);
+}
+
+
+
+@media screen and (min-width: 768px) {
+  .textMessage {
+    padding: 2rem 5rem;
+  }
 }

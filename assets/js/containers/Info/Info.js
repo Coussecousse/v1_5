@@ -19,16 +19,22 @@ export default function Info({ message, goodOrBad }) {
                 {wait ? 
                 <>
                 <div className={styles.wait}>
-                    <span class={styles.loader}></span>
-                    <span class={styles.waitText}>Chargement...</span>
+                    <span className={styles.loader}></span>
+                    <span className={styles.waitText}>Chargement...</span>
                 </div>
                 </> 
                 :
                     <>
-                        <div>
-                            <h1>{message}</h1>
+                        <div className={styles.textMessage}>
+                            <div>{goodOrBad ? 
+                                <span className={`${styles.goodIcon} ${styles.icon}`}></span>
+                                :
+                                <span className={`${styles.badIcon} ${styles.icon}`}></span>
+                                }
+                                <h1>{message}</h1>
+                            </div>
                         </div>
-                        <div>
+                        <div className={styles.img}>
                             {goodOrBad ? 
                             <img src={yes}></img> :
                             <img src={bad}></img>}
