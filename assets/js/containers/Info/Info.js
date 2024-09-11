@@ -19,7 +19,7 @@ export default function Info({ message, goodOrBad }) {
                 {wait ? 
                 <>
                 <div className={styles.wait}>
-                    <span className={styles.loader}></span>
+                    <span className={`${styles.loader} loader`}></span>
                     <span className={styles.waitText}>Chargement...</span>
                 </div>
                 </> 

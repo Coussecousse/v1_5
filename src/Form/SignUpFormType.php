@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SignUpFormType extends AbstractType
@@ -42,6 +43,10 @@ class SignUpFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un mot de passe']),
                     new Length(['min' => 8, 'max' => 32, 'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères.']),
+                    new Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                        'message' => 'Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre.',
+                    ])
                 ],
             ])
             ->add('confirmPassword', PasswordType::class, [
