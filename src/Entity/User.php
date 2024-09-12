@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?Token $token = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -173,6 +176,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getToken(): ?Token
+    {
+        return $this->token;
+    }
+
+    public function setToken(Token $token): static
+    {
+        // set the owning side of the relation if necessary
+        if ($token->getUser() !== $this) {
+            $token->setUser($this);
+        }
+
+        $this->token = $token;
 
         return $this;
     }

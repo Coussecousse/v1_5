@@ -91,7 +91,7 @@ class SignUpController extends AbstractController
         return new JsonResponse(['message' => 'Email verified successfully!'], Response::HTTP_OK);
     }
 
-    #[Route('/api/csrf-token', name: 'api_csrf_token', methods: ['GET'])]
+    #[Route('/api/sign-up/csrf-token', name: 'api_csrf_token_sign_up', methods: ['GET'])]
     public function getCsrfToken(CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
     {
         $csrfToken = $csrfTokenManager->getToken('sign_up_form')->getValue();

@@ -15,7 +15,6 @@ export default function CarouselContainerTypeOne({data}) {
         }
 
         const newActiveButton = document.querySelector(`.${styles.button}[data-button="${activePic}"][data-type="${data.type}"]`);
-        console.log(newActiveButton)
         newActiveButton.classList.add(styles.active);
     }, [activePic]);
 

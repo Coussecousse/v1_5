@@ -1,11 +1,13 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
 
-export default function Layout({children}) {
+export default function Layout({ children, isAuthenticated }) {
     return (
         <>
-            <Header />
-            <main>{children}</main>
+            <Header isAuthenticated={isAuthenticated} />
+            <main>
+                {children}
+            </main>
         </>
-    )
+    );
 }

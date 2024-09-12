@@ -9,7 +9,7 @@ export default function SignUp() {
     const [csrfToken, setCsrfToken] = useState('');
 
     useEffect(() => {
-        axios.get('/api/csrf-token')
+        axios.get('/api/sign-up/csrf-token')
             .then(response => {
                 setCsrfToken(response.data.csrfToken);
             })
@@ -30,7 +30,7 @@ export default function SignUp() {
         axios.post('api/sign-up', formData)
             .then(response => {
                 flashRef.current.innerHTML = `<div class="flash flash-success">Un email de vérification vous a été envoyé.</div>`;
-                setErrors({}); // Clear errors on successful response
+                setErrors({}); 
             })
             .catch(error => {
                 flashRef.current.innerHTML = `<div class="flash flash-error">Une erreur est survenue.</div>`;
