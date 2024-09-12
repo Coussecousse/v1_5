@@ -1,8 +1,14 @@
-.loading {
+.loaderContainer {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loader {
     width: 80px;
     height: 80px;
 }
-.loading::after {
+.loader::after {
     width: 40px;
     height: 40px;
 }

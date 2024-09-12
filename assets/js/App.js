@@ -12,7 +12,6 @@ import SignUp from './components/Sign/SignUp/SignUp';
 import SignIn from './components/Sign/SignIn/SignIn';
 import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 import Profile from './components/Profile/Profile';
-
 import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -37,7 +36,7 @@ function App() {
   // ProtectedRoute Component for route guarding
   const ProtectedRoute = ({ children }) => {
     if (loading) {
-      return <span className={`loading ${styles.loading}`}></span>; 
+      return <div className={styles.loaderContainer}><span className={`loader ${styles.loader}`}></span></div>; // Or use a spinner component
     }
 
     if (!isAuthenticated) {
@@ -50,29 +49,33 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Layout isAuthenticated={isAuthenticated}>
-          <Routes>
-            <Route path={paths.HOME} element={<Home />} />
-            <Route path={paths.DESTINATIONS} element={<Destinations />} />
-            <Route path={paths.COMMUNITY} element={<Community />} />
-            <Route path={paths.SIGNUP} element={<SignUp />} />
-            <Route path={paths.SIGNIN} element={<SignIn setIsAuthenticated={setIsAuthenticated}/>} />
-            <Route path={paths.VERIFY_EMAIL} element={<VerifyEmail />} />
+        {loading ? (
+          <div className={styles.loaderContainer}><span className={`loader ${styles.loader}`}></span></div>
+        ) : (
+          <Layout isAuthenticated={isAuthenticated}>
+            <Routes>
+              <Route path={paths.HOME} element={<Home />} />
+              <Route path={paths.DESTINATIONS} element={<Destinations />} />
+              <Route path={paths.COMMUNITY} element={<Community />} />
+              <Route path={paths.SIGNUP} element={<SignUp />} />
+              <Route path={paths.SIGNIN} element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+              <Route path={paths.VERIFY_EMAIL} element={<VerifyEmail />} />
 
-            {/* Protected route for authenticated users */}
-            <Route
-              path={paths.PROFILE}
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
+              {/* Protected route for authenticated users */}
+              <Route
+                path={paths.PROFILE}
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Redirect unknown routes to Home */}
-            <Route path="*" element={<Navigate to={paths.HOME} />} />
-          </Routes>
-        </Layout>
+              {/* Redirect unknown routes to Home */}
+              <Route path="*" element={<Navigate to={paths.HOME} />} />
+            </Routes>
+          </Layout>
+        )}
       </div>
     </BrowserRouter>
   );

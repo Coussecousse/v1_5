@@ -29,7 +29,7 @@ export default function SignIn({ setIsAuthenticated }) {
 
         const form = e.target;
         const formData = new FormData(form);
-        flashRef.current.innerHTML = `<span class="${signStyles.loader} loader"></span>`;
+        flashRef.current.innerHTML = `<span clasNames="${signStyles.loader} loader"></span>`;
 
         // Post the form data to the sign-in API
         axios.post('/api/sign-in', formData)
