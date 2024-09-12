@@ -50,7 +50,10 @@ function App() {
     <BrowserRouter>
       <div className="App">
         {loading ? (
-          <div className={styles.loaderContainer}><span className={`loader ${styles.loader}`}></span></div>
+          <div className={`${styles.loaderContainer} loader-container`}>
+            <span className={`loader ${styles.loader}`}></span>
+            <span className="loader-text">On arrive !</span>
+          </div>
         ) : (
           <Layout isAuthenticated={isAuthenticated}>
             <Routes>

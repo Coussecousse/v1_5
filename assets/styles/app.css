@@ -466,12 +466,10 @@ nav a:hover::before,
 }
 
 /* FLASH */
-.formFlash {
+.flash {
     margin-bottom: 1.5rem;
     text-align: center;
     color: var(--color-500);
-}
-.flash {
     padding: .5rem 1rem;
     border-radius: var(--radius-500);
 }
@@ -507,6 +505,21 @@ nav a:hover::before,
     border-radius: 50%;
     animation: rotationBack 1s linear infinite;
     transform-origin: center center;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loader-text  {
+    font-family: var(--ff-secondary);
+    font-weight: 600;
+    font-size: var(--fs-450);
+    color: var(--color-800);
+    text-align: center;
 }
 
 @keyframes rotation {
