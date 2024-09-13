@@ -10,7 +10,7 @@
     max-width: 1132px;
     margin: 0 auto;
 }
-.form{
+.form {
     display: flex;
     flex-direction: column;
     gap: 2rem;

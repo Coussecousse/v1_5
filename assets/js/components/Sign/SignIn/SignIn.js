@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import signStyles from '../Sign.module.css';
 import styles from './SignIn.module.css';
 import img from '../../../../images/SignIn/main.svg';
@@ -77,40 +77,46 @@ export default function SignIn({ setIsAuthenticated }) {
                                 <span className="loader-text">Chargement...</span>
                             </div>
                         ) : (
+                            <>
                             <form className={signStyles.form} onSubmit={handleSubmit}>
                                 <div className={`input2_elementsContainer`}>
                                     <label htmlFor="email">Email<span className={`input2_requiredSpan`}>*</span></label>
-                                    <div className={`input2_container`}>
-                                        <span className={`${signStyles.spanEmail} ${signStyles.span}`}></span>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            id="email"
-                                            placeholder="Entrez votre email"
-                                            required
-                                            autoComplete="email"
-                                            className={errors.email ? `inputError` : ''}
-                                        />
+                                    <div>
+                                        <div className={`input2_container`}>
+                                            <span className={`${signStyles.spanEmail} ${signStyles.span}`}></span>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                id="email"
+                                                placeholder="Entrez votre email"
+                                                required
+                                                autoComplete="email"
+                                                className={errors.email ? `inputError` : ''}
+                                            />
+                                        </div>
                                     </div>
                                     {errors.email && <small className={`smallFormError`}>{errors.email}</small>}
-                                </div>
-                                <div className={`input2_elementsContainer`}>
-                                    <label htmlFor="password">Mot de passe<span className={`input2_requiredSpan`}>*</span></label>
-                                    <div className={`input2_container`}>
-                                        <span className={`${signStyles.spanPassword} ${signStyles.span}`}></span>
-                                        <input
-                                            type="password"
-                                            name="password"
-                                            id="password"
-                                            placeholder="Entrez votre mot de passe"
-                                            required
-                                            autoComplete="password"
-                                            className={errors.password ? `inputError` : ''}
-                                        />
                                     </div>
+                                <div>
+                                    <div className={`input2_elementsContainer`}>
+                                        <label htmlFor="password">Mot de passe<span className={`input2_requiredSpan`}>*</span></label>
+                                        <div className={`input2_container`}>
+                                            <span className={`${signStyles.spanPassword} ${signStyles.span}`}></span>
+                                            <input
+                                                type="password"
+                                                name="password"
+                                                id="password"
+                                                placeholder="Entrez votre mot de passe"
+                                                required
+                                                autoComplete="password"
+                                                className={errors.password ? `inputError` : ''}
+                                            />
+                                        </div>
+                                    </div>
+                                    <Link to={paths.RESET_PASSWORD} className={`${signStyles.link} link`}>Mot de passe oublié ?</Link>
                                     {errors.password && <small className={`smallFormError`}>{errors.password}</small>}
                                 </div>
-                                <div>
+                                <div className="checkbox2Container">
                                     <input className={`input2_checkbox`} type="checkbox" name="remember_me" id="remember_me" />
                                     <label htmlFor="remember_me">Me garder connecté</label>
                                     {errors.agreeTerms && <small className={`smallFormError`}>{errors.agreeTerms}</small>}
@@ -119,6 +125,7 @@ export default function SignIn({ setIsAuthenticated }) {
                                 <small className={`input2_required`}>* Requis</small>
                                 <input className="form-button" type="submit" value="Se connecter" />
                             </form>
+                            </>
                         )}
                     </div>
                 </div>

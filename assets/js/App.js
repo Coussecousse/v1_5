@@ -12,6 +12,8 @@ import SignUp from './components/Sign/SignUp/SignUp';
 import SignIn from './components/Sign/SignIn/SignIn';
 import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 import Profile from './components/Profile/Profile';
+import EmailForm from './components/ResetPassword/ResetPasswordForm/EmailForm/EmailForm';
+import ResetForm from './components/ResetPassword/ResetPasswordForm/ResetForm/ResetForm'; 
 import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -63,6 +65,8 @@ function App() {
               <Route path={paths.SIGNUP} element={<SignUp />} />
               <Route path={paths.SIGNIN} element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
               <Route path={paths.VERIFY_EMAIL} element={<VerifyEmail />} />
+              <Route path={paths.RESET_PASSWORD} element={<EmailForm />} />
+              <Route path={paths.RESET_PASSWORD_RESET} element={<ResetForm />} />
 
               {/* Protected route for authenticated users */}
               <Route

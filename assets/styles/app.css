@@ -457,6 +457,10 @@ nav a:hover::before,
 .input2_checkbox {
     margin-right: .5rem;
 }
+.checkbox2Container label {
+    font-weight: 600;
+    color: var(--color-800);
+}
 
 .inputError {
     border-color: var(--color-red);
@@ -541,9 +545,11 @@ nav a:hover::before,
 
 /* Links */
 .link {
+    display: inline-block;
     height: fit-content;
     overflow-y: visible;
     overflow-x: clip;
+    position: relative;
 }
 .link::after {
     content: '';    
