@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Token;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -23,8 +24,7 @@ class AuthController extends AbstractController
         // Get the token from the cookie
         $token = $request->cookies->get('auth_token');
         if ($token) {
-            $user = $this->getUser();
-            $userToken = $user->getToken();
+            $userToken = $em->getRepository(className: Token::class)->findOneBy(['token' => $token]);
             if ($userToken) {
                 if ($userToken->getExpiresAt() < new \DateTime()) {
                     $em->remove($userToken);
@@ -33,11 +33,14 @@ class AuthController extends AbstractController
                     return new JsonResponse(['isAuthenticated' => false], 200);
                 }
 
-                if ($userToken->getToken() !== $token) {
-                    return new JsonResponse(['isAuthenticated' => false], 200);
-                }
+                $user = $userToken->getUser();
+                $security->login($user);
+
+                return new JsonResponse(['isAuthenticated' => true], 200);
+                
+            } else {
+                return new JsonResponse(['isAuthenticated' => false], 200);
             }
-            return new JsonResponse(['isAuthenticated' => true], 200);
         }
     
         return new JsonResponse(['isAuthenticated' => false], 200);
