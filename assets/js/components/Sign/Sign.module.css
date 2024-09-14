@@ -30,12 +30,6 @@
     max-width: 400px;
     /* min-width: 360px; */
 }
-.title {
-    font-size: var(--fs-800);
-    font-weight: 900;
-    margin-bottom: 4rem;
-    text-align: center;
-}
 
 /* Differents icons */ 
 .span {

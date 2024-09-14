@@ -56,7 +56,7 @@ export default function ResetForm() {
             <section className={`first-section ${styles.section}`}>
                 <ResetPasswordImage />
                 <div className={`${styles.formContainer}`}>
-                    <h1 className={formStyles.title}>Réinitialiser son mot de passe</h1>
+                    <h1 className={`${formStyles.title} typical-title`}>Réinitialiser son mot de passe</h1>
 
                     {flashMessage && (
                         <div className={`flash flash-${flashMessage.type}`}>

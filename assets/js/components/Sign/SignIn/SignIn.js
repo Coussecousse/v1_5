@@ -62,7 +62,7 @@ export default function SignIn({ setIsAuthenticated }) {
                 <div className={signStyles.container}>
                     <img src={img} className={`${signStyles.img} ${styles.img}`} alt="Sign in" />
                     <div className={`${signStyles.textContainer} ${styles.textContainer}`}>
-                        <h1 className={signStyles.title}>Bon retour !</h1>
+                        <h1 className={`${signStyles.title} typical-title`}>Bon retour !</h1>
 
                         {/* Display the flash message */}
                         {flashMessage && (

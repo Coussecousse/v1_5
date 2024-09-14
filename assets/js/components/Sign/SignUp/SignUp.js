@@ -52,7 +52,7 @@ export default function SignUp() {
             <section className={`first-section ${signStyles.section}`}>
                 <div className={signStyles.container}>
                     <div className={signStyles.textContainer}>
-                        <h1 className={signStyles.title}>Rejoins nous !</h1>
+                        <h1 className={`${signStyles.title} typical-title`}>Rejoins nous !</h1>
                         
                         {flashMessage && (
                             <div className={`flash flash-${flashMessage.type}`}>
