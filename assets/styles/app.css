@@ -208,12 +208,14 @@
 
 :root {
     --color-primary: #758C57;
+    --color-primary-light: #89a269;
     --color-secondary: #DAD873;
 
     --color-900: #000;
     --color-800: #454D66;
     --color-700: #309975;
     --color-600: #EFEEB4;
+    --color-450: #E5E5E5;
     --color-500: #fff;
 
     --color-red: #d62828;
@@ -225,8 +227,8 @@
     --ff-primary: 'Wulkan Display', sans-serif;
     --ff-secondary: 'Helvetica Now Text', sans-serif;
 
+    --fs-300 : clamp(0.875rem, 0.835rem + 0.2vi, 1rem);
     --fs-400 : 1rem;
-
     --fs-450 : clamp(1rem, 0.96rem + 0.2vi, 1.125rem);
     --fs-500 : clamp(1.125rem, 1.085rem + 0.2vi, 1.25rem);
     --fs-600 : clamp(1.25rem, 1.09rem + 0.8vi, 1.75rem);
@@ -260,10 +262,6 @@
     --image-size : clamp(15.625rem, 12.625rem + 15vi, 25rem);
 }
 
-/* html, body, main, #root, section, .App {
-    min-height: 100% !important;
-    height: 100%;
-} */
 html {
     min-height: 100vh;
 }
@@ -319,6 +317,14 @@ a {
     padding: var(--section-p-xs);
 }
 
+/* Title */
+.typical-title {
+    font-size: var(--fs-800);
+    font-weight: 900;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
 /* Navigation */
 nav a, 
 .yellow-link {
@@ -348,6 +354,11 @@ nav a:hover::before,
     background-color: var(--color-secondary);
 } 
 
+/* Profile link active */
+.profileLink.active {
+    background-color: var(--color-primary-light);
+}
+
 /* Buttons */
 .button {
     background-color: var(--color-secondary);
@@ -360,6 +371,10 @@ nav a:hover::before,
     font-weight: 700;
     cursor: pointer;
     letter-spacing: .08rem;
+}
+.small-button {
+    padding: var(--size-300) var(--size-400);
+    text-wrap: nowrap;
 }
 .form-button {
     border: var(--color-primary) 1px solid;

@@ -1,0 +1,104 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+    background-color: var(--color-primary);
+    color: var(--color-500);
+}
+
+.title {
+    margin-top: 1rem;
+}
+
+.profilePick {
+    width: 125px;
+    height: 125px;
+    align-self: center;
+    border-radius: 100%;
+    background-color: lightgray;
+    margin-bottom: 2rem;
+}
+
+.container {
+    flex: 1;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.informationsContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: 0 1.5rem;
+}
+
+.informationsContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    left: -1rem;
+    background-color: var(--color-500);
+}
+
+.spanDiviser {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 0 auto;
+    background-color: var(--color-500);
+}
+
+.textContainer span,
+.passwordTextContainer span {
+    font-weight: 700;
+}
+
+.textContainer, 
+.passwordTextContainer {
+    display: flex;
+    gap: 1rem;
+    text-wrap: nowrap;
+}
+
+.passwordTextContainer {
+    flex-direction: column;
+    gap: 0 !important;
+    margin-bottom: 1rem;
+}
+
+.passwordLink {
+    font-size: .875rem;
+    width: fit-content;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.icon {
+    display: inline-block;
+    background-image: url('/assets/images/icon/right-arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 12px;
+    width: 12px;
+    margin-right: .5rem;
+    position: relative;
+    top: 2px;
+} 
+
+.button {
+    margin-top: 2rem;
+    background-color: var(--color-500);
+    color: var(--color-primary);
+    font-weight: 700;
+}
+.button:hover {
+    background-color: var(--color-450);
+}

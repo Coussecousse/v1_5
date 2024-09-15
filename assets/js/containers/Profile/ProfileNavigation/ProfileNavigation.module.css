@@ -1,0 +1,19 @@
+.navigation {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+.navigation > li {
+    width: 100%;
+}
+
+.navigation a {
+    display: block;
+    padding: .5rem .5rem;
+    width: 100%;
+    transition: .2s;
+}
+
+.navigation a:hover {
+    background-color: var(--color-primary-light);
+}
