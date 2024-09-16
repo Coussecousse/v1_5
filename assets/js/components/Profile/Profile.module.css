@@ -16,7 +16,9 @@
     height: 125px;
     align-self: center;
     border-radius: 100%;
-    background-color: lightgray;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     margin-bottom: 2rem;
 }
 
@@ -101,4 +103,21 @@
 }
 .button:hover {
     background-color: var(--color-450);
+}
+
+/* Loader */
+.loaderContainer {
+    min-height: 400px;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border-color: var(--color-500) !important;
+}
+
+.loader::after {
+    width: 24px;
+    height: 24px;
+    border-color: var(--color-500) !important;
 }
