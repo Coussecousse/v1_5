@@ -9,7 +9,7 @@
 
 .navigation a {
     display: block;
-    padding: .5rem .5rem;
+    padding: .5rem 1rem;
     width: 100%;
     transition: .2s;
 }

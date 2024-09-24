@@ -15,6 +15,7 @@ import Profile from './components/Profile/Profile';
 import EmailForm from './components/ResetPassword/ResetPasswordForm/EmailForm/EmailForm';
 import ResetForm from './components/ResetPassword/ResetPasswordForm/ResetForm/ResetForm'; 
 import axios from 'axios';
+import ChangeInformations from './components/Profile/ChangeInformations/ChangeInformations';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -40,7 +41,7 @@ function App() {
     if (loading) {
       return <div className={styles.loaderContainer}><span className={`loader ${styles.loader}`}></span></div>; // Or use a spinner component
     }
-
+    
     if (!isAuthenticated) {
       return <Navigate to={paths.SIGNIN} />;
     }
@@ -74,6 +75,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={paths.PROFILE_CHANGE_INFORMATIONS}
+                element={
+                  <ProtectedRoute>
+                    <ChangeInformations />
                   </ProtectedRoute>
                 }
               />

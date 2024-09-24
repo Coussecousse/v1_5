@@ -81,6 +81,9 @@
     text-decoration: underline;
     text-underline-offset: 2px;
 }
+.passwordLink:hover > .icon {
+    transform: translateX(2px);
+}
 
 .icon {
     display: inline-block;
@@ -93,6 +96,7 @@
     margin-right: .5rem;
     position: relative;
     top: 2px;
+    transition: .2s;
 } 
 
 .button {
@@ -120,4 +124,22 @@
     width: 24px;
     height: 24px;
     border-color: var(--color-500) !important;
+}
+
+.loaderText {
+    color: var(--color-500) !important;
+}
+
+/* Errors */
+.flash {
+    background-color: var(--form-color-error-green) !important;
+}
+
+.error, .flash {
+    color: var(--color-500) !important;
+}
+
+.error {
+    font-weight: 400;
+    letter-spacing: 1px;
 }

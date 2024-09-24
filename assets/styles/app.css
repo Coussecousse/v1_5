@@ -219,6 +219,7 @@
     --color-500: #fff;
 
     --color-red: #d62828;
+    --form-color-error-green:  #4e5d3a;
 
     --color-500-tr: rgba(255, 255, 255, 80%);
     --color-800-tr: rgba(0, 0, 0, 50%);
@@ -373,8 +374,14 @@ nav a:hover::before,
     letter-spacing: .08rem;
 }
 .small-button {
-    padding: var(--size-300) var(--size-400);
+    cursor: pointer;
+    padding: .5rem 1rem;
     text-wrap: nowrap;
+    border: none;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .form-button {
     border: var(--color-primary) 1px solid;
@@ -411,7 +418,7 @@ nav a:hover::before,
 }
 
 .input2_elementsContainer {
-    border: var(--color-primary) 1px solid;
+    border: 1px solid;
     border-radius: 15px;
     position: relative;
 }
@@ -422,7 +429,6 @@ nav a:hover::before,
     transform: translateY(-50%);
     font-size: var(--fs-500);
     font-weight: 600;
-    background-color: var(--color-500);
     padding: 0 0.5rem;
 }
 

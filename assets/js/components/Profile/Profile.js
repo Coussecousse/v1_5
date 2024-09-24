@@ -18,7 +18,7 @@ export default function Profile() {
                 setUser(response.data.user);
                 const userPic = response.data.user.profile_pic;
                 if (userPic) {
-                    setUserPic(userPic);
+                    setUserPic(`/uploads/profile_pics/${userPic}`);
                 } else {
                     setUserPic(neutralPic);
                 }
@@ -38,7 +38,7 @@ export default function Profile() {
                 {loading ? (                            
                     <div className={`${styles.loaderContainer} loader-container`}>
                         <span className={`loader ${styles.loader}`}></span>
-                        <span className="loader-text">Chargement...</span>
+                        <span className={`loader-text ${styles.loaderText}`}>Chargement...</span>
                     </div>)
                 : (
                     <div className={`${styles.informationsContainer}`}>
