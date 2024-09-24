@@ -2,7 +2,6 @@ import React,{ useState, useEffect } from 'react';
 import styles from '../../ResetPassword.module.css';
 import formStyles from '../../../../containers/Form/Form.module.css';
 import ResetPasswordImage from '../../ResetPasswordImage/ResetPasswordImage';
-import Footer from '../../../../containers/Footer/Footer';
 import axios from "axios";
 import InputsPasswords from '../../../../containers/Form/InputsPasswords/InputsPasswords';
 
@@ -78,7 +77,6 @@ export default function ResetForm() {
                     )}
                 </div>
             </section>
-            <Footer />
         </>
     )
 }

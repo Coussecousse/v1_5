@@ -30,18 +30,18 @@ export default function Navigation({ hamburgerState, isAuthenticated }) {
     return (
         <nav className={styles.navigationContainer}>
             <ul className={styles.navigationList}>
-                <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.HOME}>Accueil</NavLink></li>
-                <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.DESTINATIONS}>Destinations</NavLink></li>
-                <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.COMMUNITY}>Communauté</NavLink></li>
-                {isAuthenticated ? (
+                {!isAuthenticated ? (
                     <>
-                        <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.PROFILE}>Profil</NavLink></li>
-                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.LOGOUT}>Déconnexion</NavLink></li>
+                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.HOME}>Accueil</NavLink></li>
+                        <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.DESTINATIONS}>Destinations</NavLink></li>
+                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.COMMUNITY}>Communauté</NavLink></li>
+                        <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.SIGNUP}>Inscription</NavLink></li>
+                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.SIGNIN}>Connexion</NavLink></li>
                     </>
                 ) : (
                     <>
-                        <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.SIGNUP}>Inscription</NavLink></li>
-                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.SIGNIN}>Connexion</NavLink></li>
+                        <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.PROFILE}>Profil</NavLink></li>
+                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.LOGOUT}>Déconnexion</NavLink></li>
                     </>
                 )}
             </ul>

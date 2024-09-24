@@ -4,7 +4,6 @@ import signStyles from '../Sign.module.css';
 import formStyles from '../../../containers/Form/Form.module.css';
 import styles from './SignIn.module.css';
 import img from '../../../../images/SignIn/main.svg';
-import Footer from "../../../containers/Footer/Footer";
 import paths from "../../../config/paths";
 import axios from 'axios';
 
@@ -130,7 +129,6 @@ export default function SignIn({ setIsAuthenticated }) {
                     </div>
                 </div>
             </section>
-            <Footer />
         </>
     );
 }

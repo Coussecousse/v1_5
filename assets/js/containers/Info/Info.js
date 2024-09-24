@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styles from './Info.module.css';
 import yes from '../../../images/Info/yes.svg';
 import bad from '../../../images/Info/bad.svg';
-import Footer from '../Footer/Footer';
 
 export default function Info({ message, goodOrBad }) {
 
@@ -42,7 +41,6 @@ export default function Info({ message, goodOrBad }) {
                     </>
                 }
             </section>
-            <Footer />
         </>
     )
 }

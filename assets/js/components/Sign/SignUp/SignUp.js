@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import signStyles from '../Sign.module.css';
 import formStyles from '../../../containers/Form/Form.module.css';
 import img from '../../../../images/SignUp/main.svg';
-import Footer from '../../../containers/Footer/Footer';
 import axios from "axios";
 import InputsPasswords from "../../../containers/Form/InputsPasswords/InputsPasswords";
 
@@ -117,7 +116,6 @@ export default function SignUp() {
                     <img src={img} className={formStyles.img} alt="Sign up" />
                 </div>
             </section>
-            <Footer />
         </>
     );
 }

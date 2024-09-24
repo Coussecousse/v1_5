@@ -3,7 +3,6 @@ import styles from '../../ResetPassword.module.css';
 import formStyles from '../../../../containers/Form/Form.module.css'
 import signStyles from '../../../Sign/Sign.module.css';
 import ResetPasswordImage from '../../ResetPasswordImage/ResetPasswordImage';
-import Footer from '../../../../containers/Footer/Footer';
 import axios from "axios";
 
 export default function EmailForm({ isAuthenticated }) {
@@ -109,7 +108,6 @@ export default function EmailForm({ isAuthenticated }) {
                     )}
                 </div>
             </section>
-            <Footer />
         </>
 
 
