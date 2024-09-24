@@ -28,7 +28,6 @@
     color: var(--color-800);
     display: grid;
     max-width: 400px;
-    /* min-width: 360px; */
 }
 .title {
     font-size: var(--fs-800);

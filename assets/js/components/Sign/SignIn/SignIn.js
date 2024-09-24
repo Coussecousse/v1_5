@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import signStyles from '../Sign.module.css';
+import signStyles from '../Sign.module.css'; 
+import formStyles from '../../../containers/Form/Form.module.css';
 import styles from './SignIn.module.css';
 import img from '../../../../images/SignIn/main.svg';
 import Footer from "../../../containers/Footer/Footer";
@@ -32,8 +33,8 @@ export default function SignIn({ setIsAuthenticated }) {
 
         const form = e.target;
         const formData = new FormData(form);
-        setLoading(true); // Start loader during submission
-        setFlashMessage(null); // Clear any previous flash messages
+        setLoading(true); 
+        setFlashMessage(null); 
 
         // Post the form data to the sign-in API
         axios.post('/api/sign-in', formData)
@@ -41,28 +42,27 @@ export default function SignIn({ setIsAuthenticated }) {
                 setFlashMessage({ type: 'success', message: 'Connexion réussie !' });
                 setErrors({});
                 
-                // Update authentication state and navigate to profile after successful login
                 setIsAuthenticated(true);
                 setTimeout(() => {
                     navigate(paths.PROFILE);
                 }, 250);
             })
             .catch(error => {
-                setFlashMessage({ type: 'error', message: 'Erreur lors de la connexion.' });
+                setFlashMessage({ type: 'error', message: 'Identifiants incorrects.' });
                 setErrors(error.response.data.errors || {});
             })
             .finally(() => {
-                setLoading(false); // Stop loader after the request finishes
+                setLoading(false); 
             });
     }
 
     return (
         <>
-            <section className={`first-section ${signStyles.section}`}>
-                <div className={signStyles.container}>
-                    <img src={img} className={`${signStyles.img} ${styles.img}`} alt="Sign in" />
-                    <div className={`${signStyles.textContainer} ${styles.textContainer}`}>
-                        <h1 className={`${signStyles.title} typical-title`}>Bon retour !</h1>
+            <section className={`first-section ${formStyles.section}`}>
+                <div className={formStyles.container}>
+                    <img src={img} className={`${formStyles.img} ${styles.img}`} alt="Sign in" />
+                    <div className={`${formStyles.textContainer} ${styles.textContainer}`}>
+                        <h1 className={`${formStyles.title} typical-title`}>Bon retour !</h1>
 
                         {/* Display the flash message */}
                         {flashMessage && (
@@ -72,18 +72,18 @@ export default function SignIn({ setIsAuthenticated }) {
                         )}
 
                         {loading ? (
-                            <div className={`${signStyles.loaderContainer} loader-container`}>
-                                <span className={`loader ${signStyles.loader}`}></span>
+                            <div className={`${formStyles.loaderContainer} loader-container`}>
+                                <span className={`loader ${formStyles.loader}`}></span>
                                 <span className="loader-text">Chargement...</span>
                             </div>
                         ) : (
                             <>
-                            <form className={signStyles.form} onSubmit={handleSubmit}>
-                                <div className={`input2_elementsContainer`}>
+                            <form className={formStyles.form} onSubmit={handleSubmit}>
+                                <div className={`input2_elementsContainer ${signStyles.input}`}>
                                     <label htmlFor="email">Email<span className={`input2_requiredSpan`}>*</span></label>
                                     <div>
                                         <div className={`input2_container`}>
-                                            <span className={`${signStyles.spanEmail} ${signStyles.span}`}></span>
+                                            <span className={`${formStyles.spanEmail} ${formStyles.span}`}></span>
                                             <input
                                                 type="email"
                                                 name="email"
@@ -98,10 +98,10 @@ export default function SignIn({ setIsAuthenticated }) {
                                     {errors.email && <small className={`smallFormError`}>{errors.email}</small>}
                                     </div>
                                 <div>
-                                    <div className={`input2_elementsContainer`}>
+                                    <div className={`input2_elementsContainer ${signStyles.input}`}>
                                         <label htmlFor="password">Mot de passe<span className={`input2_requiredSpan`}>*</span></label>
                                         <div className={`input2_container`}>
-                                            <span className={`${signStyles.spanPassword} ${signStyles.span}`}></span>
+                                            <span className={`${formStyles.spanPassword} ${formStyles.span}`}></span>
                                             <input
                                                 type="password"
                                                 name="password"
@@ -113,7 +113,7 @@ export default function SignIn({ setIsAuthenticated }) {
                                             />
                                         </div>
                                     </div>
-                                    <Link to={paths.RESET_PASSWORD} className={`${signStyles.link} link`}>Mot de passe oublié ?</Link>
+                                    <Link to={paths.RESET_PASSWORD} className={`${formStyles.link} link`}>Mot de passe oublié ?</Link>
                                     {errors.password && <small className={`smallFormError`}>{errors.password}</small>}
                                 </div>
                                 <div className="checkbox2Container">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import signStyles from '../Sign.module.css';
+import formStyles from '../../../containers/Form/Form.module.css';
 import img from '../../../../images/SignUp/main.svg';
 import Footer from '../../../containers/Footer/Footer';
 import axios from "axios";
@@ -8,19 +9,18 @@ import InputsPasswords from "../../../containers/Form/InputsPasswords/InputsPass
 export default function SignUp() {
     const [errors, setErrors] = useState({});
     const [csrfToken, setCsrfToken] = useState('');
-    const [loading, setLoading] = useState(true); // State to handle the loading status
-    const [flashMessage, setFlashMessage] = useState(null); // State to handle flash messages
-
-    // Fetch CSRF token when component mounts
+    const [loading, setLoading] = useState(true); 
+    const [flashMessage, setFlashMessage] = useState(null); 
+    
     useEffect(() => {
         axios.get('/api/sign-up/csrf-token')
             .then(response => {
                 setCsrfToken(response.data.csrfToken);
-                setLoading(false); // Stop the loader when the CSRF token is received
+                setLoading(false); 
             })
             .catch(error => {
                 console.error('Error fetching CSRF token:', error);
-                setLoading(false); // Stop the loader in case of an error
+                setLoading(false);
             });
     }, []);
 
@@ -29,10 +29,10 @@ export default function SignUp() {
 
         const form = e.target;
         const formData = new FormData(form);
-        setLoading(true); // Show the loader while submitting
-        setFlashMessage(null); // Clear any existing flash messages
+        setLoading(true); 
+        setFlashMessage(null); 
 
-        // Post the form data to the sign-up API
+        
         axios.post('api/sign-up', formData)
             .then(response => {
                 setFlashMessage({ type: 'success', message: 'Un email de vérification vous a été envoyé.' });
@@ -40,19 +40,19 @@ export default function SignUp() {
             })
             .catch(error => {
                 setFlashMessage({ type: 'error', message: 'Une erreur est survenue.' });
-                setErrors(error.response.data.errors || {}); // Set the errors if they exist
+                setErrors(error.response.data.errors || {}); 
             })
             .finally(() => {
-                setLoading(false); // Stop the loader after the request finishes
+                setLoading(false);
             });
     }
 
     return (
         <>
-            <section className={`first-section ${signStyles.section}`}>
-                <div className={signStyles.container}>
-                    <div className={signStyles.textContainer}>
-                        <h1 className={`${signStyles.title} typical-title`}>Rejoins nous !</h1>
+            <section className={`first-section ${formStyles.section}`}>
+                <div className={formStyles.container}>
+                    <div className={formStyles.textContainer}>
+                        <h1 className={`${formStyles.title} typical-title`}>Rejoins nous !</h1>
                         
                         {flashMessage && (
                             <div className={`flash flash-${flashMessage.type}`}>
@@ -61,17 +61,17 @@ export default function SignUp() {
                         )}
 
                         {loading ? (
-                            <div className={`${signStyles.loaderContainer} loader-container`}>
-                                <span className={`loader ${signStyles.loader}`}></span>
+                            <div className={`${formStyles.loaderContainer} loader-container`}>
+                                <span className={`loader ${formStyles.loader}`}></span>
                                 <span className="loader-text">Chargement...</span>
                             </div>
                         ) : (
-                            <form className={signStyles.form} onSubmit={handleSubmit}>
+                            <form className={formStyles.form} onSubmit={handleSubmit}>
                                 <div>
-                                    <div className={`input2_elementsContainer`}>
+                                    <div className={`input2_elementsContainer ${signStyles.input}`}>
                                         <label htmlFor="email">Email<span className={`input2_requiredSpan`}>*</span></label>
                                         <div className={`input2_container`}>
-                                            <span className={`${signStyles.spanEmail} ${signStyles.span}`}></span>
+                                            <span className={`${formStyles.spanEmail} ${formStyles.span}`}></span>
                                             <input 
                                                 type="email" 
                                                 name="email" 
@@ -86,10 +86,10 @@ export default function SignUp() {
                                     {errors.email && <small className={`smallFormError`}>{errors.email}</small>}
                                 </div>
                                 <div>
-                                    <div className={`input2_elementsContainer`}>
+                                    <div className={`input2_elementsContainer ${signStyles.input}`}>
                                         <label htmlFor="username">Nom d'utilisateur<span className={`input2_requiredSpan`}>*</span></label>
                                         <div className={`input2_container`}>
-                                            <span className={`${signStyles.spanUser} ${signStyles.span}`}></span>
+                                            <span className={`${formStyles.spanUser} ${formStyles.span}`}></span>
                                             <input 
                                                 type="text" 
                                                 name="username" 
@@ -102,7 +102,7 @@ export default function SignUp() {
                                     </div>
                                     {errors.username && <small className={`smallFormError`}>{errors.username}</small>}
                                 </div>
-                                <InputsPasswords errors={errors} />
+                                <InputsPasswords errors={errors} styles={signStyles} />
                                 <div>
                                     <input className={`input2_checkbox`} type="checkbox" name="agreeTerms" id="agreeTerms" />
                                     <label htmlFor="agreeTerms">Vous acceptez les conditions d'utilisations.</label>
@@ -114,7 +114,7 @@ export default function SignUp() {
                             </form>
                         )}
                     </div>
-                    <img src={img} className={signStyles.img} alt="Sign up" />
+                    <img src={img} className={formStyles.img} alt="Sign up" />
                 </div>
             </section>
             <Footer />

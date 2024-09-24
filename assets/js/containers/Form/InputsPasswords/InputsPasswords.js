@@ -1,11 +1,11 @@
 import React from "react";
 import formStyles from "../Form.module.css";
 
-export default function InputsPasswords({errors}) {
+export default function InputsPasswords({errors, styles}) {
   return (
     <>
       <div>
-        <div className={`input2_elementsContainer`}>
+        <div className={`input2_elementsContainer ${styles.input}`}>
           <label htmlFor='password'>
             Mot de passe<span className={`input2_requiredSpan`}>*</span>
           </label>
@@ -33,12 +33,12 @@ export default function InputsPasswords({errors}) {
         </small>
       </div>
       <div>
-        <div className={`input2_elementsContainer`}>
+        <div className={`input2_elementsContainer ${styles.input}`}>
           <label htmlFor='confirmPassword'>
             Confirmer le mot de passe
             <span className={`input2_requiredSpan`}>*</span>
           </label>
-          <div className={`input2_container`}>
+          <div className={`input2_container ${styles.input}`}>
             <span
               className={`${formStyles.spanPassword} ${formStyles.span}`}
             ></span>

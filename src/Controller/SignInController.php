@@ -26,24 +26,23 @@ class SignInController extends AbstractController
         EntityManagerInterface $em, 
         UserPasswordHasherInterface $passwordEncoder
     ): JsonResponse {
-        // Handle JSON login request
+        // Handle request
         $data = $request->request->all();
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
         $rememberMe = $data['remember_me'] ?? false;
 
-        // Check if authentication was successful
         $error = $authenticationUtils->getLastAuthenticationError();
 
         if ($error) {
             return new JsonResponse(['error' => 'Invalid credentials.'], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        // Fetch the user (this should be done automatically by Symfony security)
+        // Fetch the user
         $user = $userRepository->findOneBy(['email' => $email]);
 
         if (!$user) {
-            return new JsonResponse(['error' => 'User not found.'], JsonResponse::HTTP_UNAUTHORIZED);
+            return new JsonResponse(['error' => 'Invalid credentials.'], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         // Validate the password
@@ -51,7 +50,7 @@ class SignInController extends AbstractController
             return new JsonResponse(['error' => 'Invalid credentials.'], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        // Log the user in programmatically
+        // Log the user 
         $security->login($user);
         
         if ($rememberMe) {
