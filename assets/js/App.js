@@ -66,7 +66,7 @@ function App() {
               <Route path={paths.SIGNUP} element={<SignUp />} />
               <Route path={paths.SIGNIN} element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
               <Route path={paths.VERIFY_EMAIL} element={<VerifyEmail />} />
-              <Route path={paths.RESET_PASSWORD} element={<EmailForm />} />
+              <Route path={paths.RESET_PASSWORD} element={<EmailForm isAuthenticated={isAuthenticated} />} />
               <Route path={paths.RESET_PASSWORD_RESET} element={<ResetForm />} />
 
               {/* Protected route for authenticated users */}
