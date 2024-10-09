@@ -1,18 +1,78 @@
+.actvitiesContainer, .mapContainer {
+    margin: 0 auto;
+    width: 90%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-500);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+}
+.actvitiesContainer {
+    max-width: 1100px;
+}
+
+.mapContainer {
+    max-width: 600px;
+}
 .secondTitle {
     color: var(--color-500);
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.mapContainer {
-    width: 90%;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: var(--color-primary);
+.formFieldsContainer {
+    display: flex;
+    border: solid 1px var(--form-color-error-green);
     border-radius: var(--radius-500);
-    box-shadow: var(--shadow);
-    padding: 2rem;
 }
+.formFieldsContainer input:not(.submit) {
+    background-color: transparent;
+    border: none;
+}
+.formFieldsContainer input, 
+.formFieldsContainer label {
+    padding: .5rem;
+    color: var(--color-500);
+}
+
+.formFieldsContainer label,
+.submit {
+    background-color: var(--form-color-error-green);
+    color: var(--color-500);
+    border: none;
+}
+
+.searchInputContainer label {
+    border-radius: 15px 0 0 15px;
+}
+
+.searchInputContainer {
+    flex: 1; 
+    display: flex;
+}
+
+.searchInputContainer input {
+    flex: 1;
+}
+
+.submit {
+    cursor: pointer;
+    border-radius: 0 15px 15px 0;
+}
+
+.searchFormContainer input::placeholder {
+    color: var(--color-500-tr);
+}
+
+.submit {
+    padding: 0 1rem;
+}
+
+.autocompleteContainer {
+    display: flex;
+}
+.autocompleteContainer > div {
+    position: relative;
+} 
 
 .mapForm {
     display: flex;
@@ -34,25 +94,6 @@
 
 .input input::placeholder, .input textarea::placeholder {
     color: var(--color-500-tr) !important;
-}
-
-.suggestionsList {
-    position: absolute;
-    top: 100%;
-    background: var(--color-500);
-    color: var(--color-900);
-    font-family: var(--ff-secondary);
-    width: 100%;
-    padding: .5rem 1rem;
-    z-index: 100;
-}
-
-.suggestionsList li {
-    transition: .2s;
-    cursor: pointer;
-}
-.suggestionsList li:hover {
-    background-color: var(--color-450);
 }
 
 .map > p {

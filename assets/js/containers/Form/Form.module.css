@@ -88,6 +88,26 @@
     height: 1px !important;
 }
 
+/* List autocomplete */
+.suggestionsList {
+    position: absolute;
+    top: 100%;
+    background: var(--color-500);
+    color: var(--color-900);
+    font-family: var(--ff-secondary);
+    width: 100%;
+    padding: .5rem 1rem;
+    z-index: 100;
+}
+
+.suggestionsList li {
+    transition: .2s;
+    cursor: pointer;
+}
+.suggestionsList li:hover {
+    background-color: var(--color-450);
+}
+
 /* Error on primary color */
 /* Errors */
 .flashGreen {
