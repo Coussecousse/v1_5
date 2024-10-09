@@ -10,7 +10,8 @@ export default function EmailForm({ isAuthenticated }) {
     const [csrfToken, setCsrfToken] = useState('');
     const [loading, setLoading] = useState(true);
     const [flashMessage, setFlashMessage] = useState(null);
-    const [email, setEmail] = useState(null);
+    const [email, setEmail] = useState('');
+    const [inputEmail, setInputEmail] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,7 +46,7 @@ export default function EmailForm({ isAuthenticated }) {
 
         if (email) {
             formData.append('email', email);
-        }
+        } 
 
         // Post the form data to the sign-up API
         axios.post('api/reset-password', formData)
@@ -95,7 +96,8 @@ export default function EmailForm({ isAuthenticated }) {
                                             required 
                                             autoComplete="email"
                                             className={errors.email ? `inputError` : ''}
-                                            value={email ?? ''}
+                                            value={email ? email : inputEmail}
+                                            onChange={(e) => setInputEmail(e.target.value)}
                                             disabled={email ? true : false}
                                         />
                                     </div>

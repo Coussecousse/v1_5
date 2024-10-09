@@ -11,7 +11,9 @@ const paths = {
     LOGOUT: '/api/logout',
     PROFILE_ROADTRIPS: '/profile/roadtrips',
     PROFILE_ACTIVITIES: '/profile/activities',
-    PROFILE_CHANGE_INFORMATIONS: '/profile/change-informations'
+    PROFILE_CHANGE_INFORMATIONS: '/profile/change-informations',
+    ACTIVITIES : '/activities',
+    CREATE_ACTIVITY : '/activities/create'
 }
 
 export default paths;

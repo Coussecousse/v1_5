@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Profile.module.css'
+import formStyles from '../../containers/Form/Form.module.css';
 import paths from '../../config/paths';
 import { Link } from 'react-router-dom';
 import neutralPic from '../../../images/ProfilePic/Neutral/neutral.png'
@@ -37,8 +38,8 @@ export default function Profile() {
                 <ProfileNavigation />
                 {loading ? (                            
                     <div className={`${styles.loaderContainer} loader-container`}>
-                        <span className={`loader ${styles.loader}`}></span>
-                        <span className={`loader-text ${styles.loaderText}`}>Chargement...</span>
+                        <span className={`loader ${formStyles.loader} ${formStyles.loaderGreen}`}></span>
+                        <span className={`loader-text ${formStyles.loaderTextGreen}`}>Chargement...</span>
                     </div>)
                 : (
                     <div className={`${styles.informationsContainer}`}>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -38,16 +39,18 @@ class ResetPasswordController extends AbstractController
      * Display & process form to request a password reset.
      */
     #[Route('api/reset-password', name: 'app_forgot_password_request')]
-    public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): JsonResponse
+    public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator, UserRepository $userRepository): JsonResponse
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $data = $request->request->all();
         $form->submit($data);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $email = $this->getUser() ? $this->getUser()->getUserIdentifier() : $form->get('email')->getData();
             try {
                 $this->processSendingPasswordResetEmail(
-                    $form->get('email')->getData(),
+                    $email,
                     $mailer,
                     $translator
                 );

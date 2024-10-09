@@ -109,40 +109,6 @@
     background-color: var(--color-450);
 }
 
-/* Loader */
-.loaderContainer {
-    min-height: 400px;
-}
-
-.loader {
-    width: 48px;
-    height: 48px;
-    border-color: var(--color-500) !important;
-}
-
-.loader::after {
-    width: 24px;
-    height: 24px;
-    border-color: var(--color-500) !important;
-}
-
-.loaderText {
-    color: var(--color-500) !important;
-}
-
-/* Errors */
-.flash {
-    background-color: var(--form-color-error-green) !important;
-}
-
-.error, .flash {
-    color: var(--color-500) !important;
-}
-
-.error {
-    font-weight: 400;
-}
-
 @media screen and (min-width:768px) {   
     .container {
         flex-direction: row;

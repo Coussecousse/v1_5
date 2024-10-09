@@ -16,6 +16,8 @@ import EmailForm from './components/ResetPassword/ResetPasswordForm/EmailForm/Em
 import ResetForm from './components/ResetPassword/ResetPasswordForm/ResetForm/ResetForm'; 
 import axios from 'axios';
 import ChangeInformations from './components/Profile/ChangeInformations/ChangeInformations';
+import Activities from './components/Activities/Activities';
+import CreateActivity from './components/Activities/Create/CreateActivity';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -83,6 +85,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ChangeInformations />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={paths.ACTIVITIES}
+                element={
+                  <ProtectedRoute>
+                    <Activities />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={paths.CREATE_ACTIVITY}
+                element={
+                  <ProtectedRoute>
+                    <CreateActivity />
                   </ProtectedRoute>
                 }
               />

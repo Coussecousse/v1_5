@@ -26,7 +26,7 @@ class ChangeProfileInformationsFormType extends AbstractType
                             'image/png',
                         ],
                         'mimeTypesMessage' => 'Veuillez télécharger une image valide (formats autorisés : .jpeg, .jpg, .png).',
-                        'maxSizeMessage' => 'L\'image ne doit pas dépasser {{ limit }} {{ suffix }}.', // Custom size message
+                        'maxSizeMessage' => 'L\'image ne doit pas dépasser {{ limit }} {{ suffix }}.', 
                     ]),
                 ],
             ])

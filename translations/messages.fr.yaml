@@ -1,0 +1,62 @@
+# Food and Drink Establishments
+restaurant: "Restaurant"
+cafe: "Café"
+pub: "Pub"
+bar: "Bar"
+fast_food: "Restauration rapide"
+ice_cream: "Glacier"
+
+# Accommodation
+hotel: "Hôtel"
+hostel: "Auberge"
+guest_house: "Maison d'hôtes"
+motel: "Motel"
+camp_site: "Camping"
+caravan_site: "Site de caravaning"
+chalet: "Chalet"
+
+# Attractions
+attraction: "Attraction"
+theme_park: "Parc à thème"
+zoo: "Zoo"
+aquarium: "Aquarium"
+museum: "Musée"
+art_gallery: "Galerie d'art"
+castle: "Château"
+monument: "Monument"
+viewpoint: "Point de vue"
+
+# Nature and Outdoor Activities
+park: "Parc"
+nature_reserve: "Réserve naturelle"
+beach: "Plage"
+waterfall: "Cascade"
+mountain_peak: "Sommet de montagne"
+garden: "Jardin"
+forest: "Forêt"
+hiking_route: "Itinéraire de randonnée"
+lake: "Lac"
+
+# Entertainment and Leisure
+cinema: "Cinéma"
+theatre: "Théâtre"
+nightclub: "Boîte de nuit"
+amusement_arcade: "Salle de jeux"
+sports_centre: "Centre sportif"
+swimming_pool: "Piscine"
+
+# Shopping and Services
+mall: "Centre commercial"
+souvenir_shop: "Boutique de souvenirs"
+tourist_information: "Bureau d'information touristique"
+marketplace: "Marché"
+
+# Cultural and Religious Sites
+church: "Eglise"
+temple: "Temple"
+mosque: "Mosquée"
+historic_site: "Site historique"
+memorial: "Mémorial"
+
+# Other Tourism-Related Amenities
+picnic_site: "Aire de pique-nique"

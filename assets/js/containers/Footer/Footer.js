@@ -29,6 +29,9 @@ export default function Footer({ isAuthenticated }) {
                     ) : (
                         <>
                         <li>
+                            <Link to={paths.ACTIVITIES}>Activités</Link>
+                        </li>
+                        <li>
                             <Link to={paths.PROFILE}>Profil</Link>
                         </li>
                         <li>

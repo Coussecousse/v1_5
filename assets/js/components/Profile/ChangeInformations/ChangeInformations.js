@@ -89,13 +89,13 @@ export default function ChangeInformations() {
             <div className={profileStyles.container}>
                 {loading ? (                            
                     <div className={`${styles.loaderContainer} loader-container`}>
-                        <span className={`loader ${formStyles.loader} ${styles.loader}`}></span>
-                        <span className={`loader-text ${profileStyles.loaderText}`}>Chargement...</span>
+                        <span className={`loader ${formStyles.loader} ${formStyles.loaderGreen}`}></span>
+                        <span className={`loader-text ${formStyles.loaderTextGreen}`}>Chargement...</span>
                     </div>)
                 : (
                     <form className={styles.form} onSubmit={handleSubmit}>
                         {flashMessage && (
-                            <div className={`flash flash-${flashMessage.type} ${profileStyles.flash}`}>
+                            <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
                                 {flashMessage.message}
                             </div>
                         )}
@@ -111,7 +111,7 @@ export default function ChangeInformations() {
                                     onChange={handleInputChange} />
                                 </div>
                             </div>
-                            {errors.profile_pic && <small className={`smallFormError ${profileStyles.error}`}>{errors.profile_pic}</small>}
+                            {errors.profile_pic && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.profile_pic}</small>}
                         </div>
                         <div>
                             <div className={`${styles.input} input2_elementsContainer`}>
@@ -127,7 +127,7 @@ export default function ChangeInformations() {
                                         onChange={handleInputChange} />
                                 </div>
                             </div>
-                            {errors.username && <small className={`smallFormError ${profileStyles.error}`}>{errors.username}</small>}
+                            {errors.username && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.username}</small>}
                         </div>
                         <div>
                             <div className={`${styles.input} input2_elementsContainer`}>
@@ -143,7 +143,7 @@ export default function ChangeInformations() {
                                         onChange={handleInputChange} />
                                 </div>
                             </div>
-                            {errors.email && <small className={`smallFormError ${profileStyles.error}`}>{errors.email}</small>}
+                            {errors.email && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.email}</small>}
                         </div>
                         <span className={profileStyles.spanDiviser}></span>
                         <p>Indiquez votre mot de passe pour modifier :</p>
@@ -161,7 +161,7 @@ export default function ChangeInformations() {
                                         required/>
                                 </div>
                             </div>
-                            {errors.password && <small className={`smallFormError ${profileStyles.error}`}>{errors.password}</small>}
+                            {errors.password && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.password}</small>}
                         </div>
                         <input type="hidden" name="_token" value={csrfToken} />
                         <button type="submit" className={`small-button ${profileStyles.button}`} >Modifier</button>
