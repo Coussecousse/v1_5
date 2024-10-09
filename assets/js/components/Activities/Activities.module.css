@@ -21,24 +21,25 @@
 
 .formFieldsContainer {
     display: flex;
-    border: solid 1px var(--form-color-error-green);
+    border: solid 1px var(--color-700);
     border-radius: var(--radius-500);
 }
 .formFieldsContainer input:not(.submit) {
     background-color: transparent;
     border: none;
+    padding: .5rem;
 }
 .formFieldsContainer input, 
 .formFieldsContainer label {
-    padding: .5rem;
     color: var(--color-500);
 }
 
 .formFieldsContainer label,
 .submit {
-    background-color: var(--form-color-error-green);
+    background-color: var(--color-700);
     color: var(--color-500);
     border: none;
+    padding: .5rem 1rem;
 }
 
 .searchInputContainer label {
@@ -58,13 +59,12 @@
     cursor: pointer;
     border-radius: 0 15px 15px 0;
 }
+.submit:hover {
+    background-color: var(--color-650);
+}
 
 .searchFormContainer input::placeholder {
     color: var(--color-500-tr);
-}
-
-.submit {
-    padding: 0 1rem;
 }
 
 .autocompleteContainer {
