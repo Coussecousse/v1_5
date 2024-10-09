@@ -17,7 +17,7 @@ export default function CreateActivity() {
     const [JSONLocation, setJSONLocation] = useState({});
     const [selectionnedLocation, setSelectionnedLocation] = useState(null);
 
-    const handleInputChange = (event) => {
+    const handleTypeChange = (event) => {
         const value = event.target.value;
         setQuery(value);
 
@@ -202,13 +202,13 @@ export default function CreateActivity() {
                                         <input
                                             type="text"
                                             value={query}
-                                            onChange={handleInputChange}
+                                            onChange={handleTypeChange}
                                             placeholder="Indiquer le type"
                                             id="map_type"
                                             name="type"
                                         />
                                         {suggestions.length > 0 && (
-                                            <ul className={activitiesStyle.suggestionsList}>
+                                            <ul className={formStyles.suggestionsList}>
                                                 {suggestions.map((suggestion) => (
                                                     <li key={suggestion.id} onClick={() => handleSuggestionClick(suggestion)}>
                                                         {suggestion.name}
