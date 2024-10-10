@@ -16,6 +16,76 @@ export default function CreateActivity() {
     const debounceTimeout = useRef(null);
     const [JSONLocation, setJSONLocation] = useState({});
     const [selectionnedLocation, setSelectionnedLocation] = useState(null);
+    const [isTypingAddress, setIsTypingAddress] = useState(false);
+    const [isTypingLatLng, setIsTypingLatLng] = useState(false);
+    const addressRef = useRef();
+    const latLngRef = useRef();
+
+    const handleOnKeyUp = e => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
+
+        const elementName = e.target.name;
+        if (elementName === 'address') {
+            debounceTimeout.current = setTimeout(() => {
+                setIsTypingAddress(false);
+            }, 500)
+        } else {
+            setTimeout(() => {
+                setIsTypingLatLng(false);
+            }, 500);
+        }
+
+    }
+
+    useEffect(() => {
+
+        if (isTypingAddress) return;
+
+        const value = addressRef.current.value;
+        
+        if (value && value.length > 3) {
+            axios.get(`https://us1.locationiq.com/v1/search?key=${config.key}&q=${value}&format=json&`)
+            .then(response => {
+                if (response.data) {
+                    setJSONLocation(response.data);
+                } else {
+                    setErrors({ address: 'Adresse non trouvée' });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching autocomplete suggestions', error);
+                setErrors({ address: 'Une erreur est survenue lors de la recherche de l\'adresse' });
+            })
+        }
+    }, [isTypingAddress]);
+
+    useEffect(() =>{
+        if (isTypingLatLng) return;
+
+        const value = latLngRef.current.value;
+        
+        if (value && value.length > 15) {
+            const lat = value.split(';')[0];
+            const lgn = value.split(';')[1];
+
+            axios.get(`https://us1.locationiq.com/v1/reverse?key=${config.key}&lat=${lat}&lon=${lgn}&format=json&`)
+            .then(response => {
+                if (response.data) {
+                    setJSONLocation(response.data);
+                } else {
+                    setErrors({ address: 'Adresse non trouvée' });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching autocomplete suggestions', error);
+                setErrors({ address: 'Une erreur est survenue lors de la recherche de l\'adresse' });
+            })
+        } else {
+            setErrors({ lng_lat: 'Coordonnées non valides' });
+        }
+    }, [isTypingLatLng])
 
     const handleTypeChange = (event) => {
         const value = event.target.value;
@@ -39,62 +109,9 @@ export default function CreateActivity() {
         }, 300); 
     };
 
-    const handleInputChangeLngLat = (event) => {
-        const lgnLatValue = (event.target.value).replace(/ /g,'');
-        const lat = lgnLatValue.split(';')[0];
-        const lgn = lgnLatValue.split(';')[1];
-
-        if (debounceTimeout.current) {
-            clearTimeout(debounceTimeout.current);
-        }
-        
-        debounceTimeout.current = setTimeout(async () => {
-            if (lgnLatValue.length > 1) {
-                try {
-                    const response = await axios.get(`https://us1.locationiq.com/v1/reverse?key=${config.key}&lat=${lat}&lon=${lgn}&format=json&`);
-                    if (response.data) {
-                        setJSONLocation(response.data);
-                    } else {
-                        setErrors({ lng_lat: 'Adresse non trouvée' });
-                    }
-                } catch (error) {
-                    console.error('Error fetching autocomplete suggestions', error);
-                    setErrors({ lng_lat: 'Une erreur est survenue lors de la recherche de l\'adresse' });
-                }
-            } else {
-                setSuggestions([]);
-            }
-        }, 150); 
-    }
-
     const handleSuggestionClick = (suggestion) => {
         setQuery(suggestion.name);
         setSuggestions([]); 
-    };
-
-    const handleSearchLocation = (event) => {
-        const locationValue = event.target.value;
-        if (debounceTimeout.current) {
-            clearTimeout(debounceTimeout.current);
-        }
-        
-        debounceTimeout.current = setTimeout(async () => {
-            if (locationValue.length > 1) {
-                try {
-                    const response = await axios.get(`https://us1.locationiq.com/v1/search?key=${config.key}&q=${locationValue}&format=json&`);
-                    if (response.data) {
-                        setJSONLocation(response.data);
-                    } else {
-                        setErrors({ address: 'Adresse non trouvée' });
-                    }
-                } catch (error) {
-                    console.error('Error fetching autocomplete suggestions', error);
-                    setErrors({ address: 'Une erreur est survenue lors de la recherche de l\'adresse' });
-                }
-            } else {
-                setSuggestions([]);
-            }
-        }, 150); 
     };
 
     const handleSubmit = e => {
@@ -169,7 +186,10 @@ export default function CreateActivity() {
                                         id="address" 
                                         name="address" 
                                         placeholder="Chercher une adresse"
-                                        onChange={handleSearchLocation}/>
+                                        onKeyDown={e => setIsTypingAddress(true)}
+                                        onKeyUp={handleOnKeyUp}
+                                        ref={addressRef}
+                                        />
                                     </div>
                                 </div>
                                 {errors.address && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.address}</small>}
@@ -188,7 +208,9 @@ export default function CreateActivity() {
                                             id="lng_lat" 
                                             name="lng_lat" 
                                             placeholder= "Latitude; Longitude"
-                                            onChange={handleInputChangeLngLat}/>
+                                            onKeyDown={e => setIsTypingLatLng(true)}
+                                            onKeyUp={handleOnKeyUp}
+                                            ref={latLngRef}/>
                                         </div>
                                         <small className={activitiesStyle.smallExemple}>Exemple : 48.858370; 2.294481</small>
                                     </div>

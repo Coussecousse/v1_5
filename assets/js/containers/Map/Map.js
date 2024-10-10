@@ -34,7 +34,9 @@ export default function Map({ jsonLocation, setSelectionnedLocation }) {
                 setSelectionnedLocation(jsonLocation);
             }
             
-            map.markers[0].togglePopup();
+            if (map.markers.length) {
+                map.markers[0].togglePopup();
+            }
         }
     }, [jsonLocation]);
 
