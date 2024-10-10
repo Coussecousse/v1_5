@@ -143,7 +143,6 @@ export default function CreateActivity() {
         })
         .then(response => {
             setFlashMessage({ type: 'success', message: 'L\'activité a été créée.' });
-            console.log(response);
             setErrors({});
         })  
         .catch(error => {
@@ -168,7 +167,7 @@ export default function CreateActivity() {
                 {loading ? (
                     <div className={`${activitiesStyle.loaderContainer} loader-container`}>
                         <span className={`loader ${formStyles.loader} ${formStyles.loaderGreen}`}></span>
-                        <span className={`loader-text ${profileStyles.loaderText}`}>Chargement...</span>
+                        <span className={`loader-text ${formStyles.loaderTextGreen}`}>Chargement...</span>
                     </div>
                 ) : (
                         <form className={activitiesStyle.mapForm} onSubmit={handleSubmit}>

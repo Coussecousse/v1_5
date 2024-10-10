@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Activity;
 use App\Entity\ActivityPic;
+use App\Entity\Country;
 use App\Entity\User;
 use App\Form\ActivityFormType;
 use App\Repository\ActivityRepository;
@@ -44,12 +45,27 @@ class ActivityController extends AbstractController
 
                 // Set the activity
                 $activity = new Activity();
+
+                // Get the country : 
+                $display_name = $form->get('display_name')->getData();
+                $dataCountry = explode(',', $display_name);
+                $dataCountry = trim(end($dataCountry));
+                
+                $country = $em->getRepository(className: Country::class)->findOneBy(['name' => $dataCountry]);
+                if (!$country) {
+                    $country = new Country();
+                    $country->setName($dataCountry);
+                    $country->addActivity($activity);
+                    $em->persist($country);
+                }
+
                 $activity
                     ->setDisplayName($form->get('display_name')->getData())
                     ->setLat($form->get('lat')->getData())
                     ->setLng($form->get('lng')->getData())
                     ->setDescription($form->get('description')->getData())
-                    ->setType($type);
+                    ->setType($type)
+                    ->setCountry($country);
                 $em->persist($activity);
 
                 $activity_pics = $form->get('activity_pics')->getData();

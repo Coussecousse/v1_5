@@ -41,6 +41,10 @@ class Activity
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'activity')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Country $country = null;
+
     public function __construct()
     {
         $this->pic = new ArrayCollection();
@@ -149,6 +153,18 @@ class Activity
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }

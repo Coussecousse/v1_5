@@ -38,7 +38,7 @@ class ActivityFormType extends AbstractType
             ->add('description', type: TextType::class, options: [
                 'required' => false,
                 'constraints' => [
-                    new Length(['min' => 3, 'max' => 255, 'minMessage' => 'La description doit contenir au moins {{ limit }} caractères.']),
+                    new Length(['min' => 3, 'max' => 1000, 'minMessage' => 'La description doit contenir au moins {{ limit }} caractères.']),
                     new NotBlank(['message' => "Veuillez entrer une description."]),
                 ],
             ])
