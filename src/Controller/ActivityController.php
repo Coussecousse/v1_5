@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
-use App\Entity\ActivityPic;
 use App\Entity\Country;
+use App\Entity\Pic;
 use App\Entity\User;
 use App\Form\ActivityFormType;
 use App\Repository\ActivityRepository;
@@ -50,7 +50,7 @@ class ActivityController extends AbstractController
                 $display_name = $form->get('display_name')->getData();
                 $dataCountry = explode(',', $display_name);
                 $dataCountry = trim(end($dataCountry));
-                
+
                 $country = $em->getRepository(className: Country::class)->findOneBy(['name' => $dataCountry]);
                 if (!$country) {
                     $country = new Country();
@@ -80,7 +80,7 @@ class ActivityController extends AbstractController
                             $newFilename
                         );
     
-                        $activityPic = new ActivityPic();
+                        $activityPic = new Pic();
                         $activityPic->setPath($newFilename);
                         $activityPic->setActivity($activity);
     

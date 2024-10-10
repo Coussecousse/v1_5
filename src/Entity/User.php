@@ -41,9 +41,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?ProfilWarning $profilWarning = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?ProfilPic $profilPic = null;
-
     #[ORM\Column]
     private bool $isVerified = false;
 
@@ -55,6 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Activity::class, mappedBy: 'user')]
     private Collection $activities;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Pic $pic = null;
 
     public function __construct()
     {
@@ -164,23 +164,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getProfilPic(): ?ProfilPic
-    {
-        return $this->profilPic;
-    }
-
-    public function setProfilPic(ProfilPic $profilPic): static
-    {
-        // set the owning side of the relation if necessary
-        if ($profilPic->getUser() !== $this) {
-            $profilPic->setUser($this);
-        }
-
-        $this->profilPic = $profilPic;
-
-        return $this;
-    }
-
     public function isVerified(): bool
     {
         return $this->isVerified;
@@ -236,6 +219,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $activity->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPic(): ?Pic
+    {
+        return $this->pic;
+    }
+
+    public function setPic(?Pic $pic): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($pic === null && $this->pic !== null) {
+            $this->pic->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($pic !== null && $pic->getUser() !== $this) {
+            $pic->setUser($this);
+        }
+
+        $this->pic = $pic;
 
         return $this;
     }

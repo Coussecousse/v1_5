@@ -26,12 +26,6 @@ class Activity
     #[ORM\JoinColumn(nullable: false)]
     private ?Tag $type = null;
 
-    /**
-     * @var Collection<int, ActivityPic>
-     */
-    #[ORM\OneToMany(targetEntity: ActivityPic::class, mappedBy: 'activity', orphanRemoval: true)]
-    private Collection $pic;
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
@@ -41,15 +35,21 @@ class Activity
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, Pic>
+     */
+    #[ORM\OneToMany(targetEntity: Pic::class, mappedBy: 'activity')]
+    private Collection $pics;
+
     #[ORM\ManyToOne(inversedBy: 'activity')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country = null;
 
     public function __construct()
     {
-        $this->pic = new ArrayCollection();
+        $this->pics = new ArrayCollection();
     }
-
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -91,36 +91,6 @@ class Activity
         return $this;
     }
 
-    /**
-     * @return Collection<int, ActivityPic>
-     */
-    public function getPic(): Collection
-    {
-        return $this->pic;
-    }
-
-    public function addPic(ActivityPic $pic): static
-    {
-        if (!$this->pic->contains($pic)) {
-            $this->pic->add($pic);
-            $pic->setActivity($this);
-        }
-
-        return $this;
-    }
-
-    public function removePic(ActivityPic $pic): static
-    {
-        if ($this->pic->removeElement($pic)) {
-            // set the owning side to null (unless already changed)
-            if ($pic->getActivity() === $this) {
-                $pic->setActivity(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -153,6 +123,36 @@ class Activity
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pic>
+     */
+    public function getPics(): Collection
+    {
+        return $this->pics;
+    }
+
+    public function addPic(Pic $pic): static
+    {
+        if (!$this->pics->contains($pic)) {
+            $this->pics->add($pic);
+            $pic->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removePic(Pic $pic): static
+    {
+        if ($this->pics->removeElement($pic)) {
+            // set the owning side to null (unless already changed)
+            if ($pic->getActivity() === $this) {
+                $pic->setActivity(null);
+            }
+        }
 
         return $this;
     }

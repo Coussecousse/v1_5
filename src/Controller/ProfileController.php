@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\ProfilPic;
+use App\Entity\Pic;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -66,7 +66,7 @@ class ProfileController extends AbstractController
 
             $profilePic = $form->get('profile_pic')->getData();
             if ($profilePic) {
-                $oldProfilePic = $userEntity->getProfilPic();
+                $oldProfilePic = $userEntity->getPic();
                 $filesystem = new Filesystem();
                 
                 $profilePicsDir = $this->getParameter('profile_pics_directory');
@@ -78,7 +78,7 @@ class ProfileController extends AbstractController
                 $newFilename = uniqid() . '.' . $profilePic->guessExtension();
                 $profilePic->move($profilePicsDir, $newFilename);
             
-                $newProfilePic = $oldProfilePic ?: new ProfilPic();
+                $newProfilePic = $oldProfilePic ?: new Pic();
                 $newProfilePic->setPath($newFilename)->setUser($userEntity);
             
                 $en->persist($newProfilePic);

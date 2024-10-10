@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProfilPicRepository;
+use App\Repository\PicRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProfilPicRepository::class)]
-class ProfilPic
+#[ORM\Entity(repositoryClass: PicRepository::class)]
+class Pic
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,9 +16,11 @@ class ProfilPic
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\OneToOne(inversedBy: 'profilPic', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(inversedBy: 'pic', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pics')]
+    private ?Activity $activity = null;
 
     public function getId(): ?int
     {
@@ -42,10 +44,23 @@ class ProfilPic
         return $this->user;
     }
 
-    public function setUser(User $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
+
+    public function getActivity(): ?Activity
+    {
+        return $this->activity;
+    }
+
+    public function setActivity(?Activity $activity): static
+    {
+        $this->activity = $activity;
+
+        return $this;
+    }
+
 }
