@@ -31,8 +31,8 @@ class ProfileController extends AbstractController
             'user' => [
                 'username' => $userEntity->getUsername(),
                 'email' => $userEntity->getEmail(),
-                'profile_pic' => $userEntity->getProfilPic() ?
-                    $userEntity->getProfilPic()->getPath()
+                'profile_pic' => $userEntity->getPic() ?
+                    $userEntity->getPic()->getPath()
                     : null,
             ],
         ]);
