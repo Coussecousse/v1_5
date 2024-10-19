@@ -24,6 +24,14 @@ doctrine:
                 alias: App
         controller_resolver:
             auto_mapping: false
+        dql:
+            string_functions:
+                ACOS: DoctrineExtensions\Query\Mysql\Acos
+            numeric_functions:
+                SIN: DoctrineExtensions\Query\Mysql\Sin
+                COS: DoctrineExtensions\Query\Mysql\Cos
+                RADIANS: DoctrineExtensions\Query\Mysql\Radians
+                DEGREES: DoctrineExtensions\Query\Mysql\Degrees
 
 when@test:
     doctrine:

@@ -55,7 +55,7 @@ export default function CreateActivity() {
                 }
             })
             .catch(error => {
-                console.error('Error fetching autocomplete suggestions', error);
+                console.error('Error fetching result', error);
                 setErrors({ address: 'Une erreur est survenue lors de la recherche de l\'adresse' });
             })
         }
@@ -79,7 +79,7 @@ export default function CreateActivity() {
                 }
             })
             .catch(error => {
-                console.error('Error fetching autocomplete suggestions', error);
+                console.error('Error fetching results', error);
                 setErrors({ address: 'Une erreur est survenue lors de la recherche de l\'adresse' });
             })
         } else {

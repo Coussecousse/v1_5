@@ -7,6 +7,7 @@ use App\Entity\Country;
 use App\Entity\Pic;
 use App\Entity\User;
 use App\Form\ActivityFormType;
+use App\Form\ActivitySearchFormType;
 use App\Repository\ActivityRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/activities')]
 class ActivityController extends AbstractController 
 {
-    #[Route('/create', name: 'activity_create', methods: ['POST'])]
+    #[Route('/create', name: 'app_activity_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, TagRepository $tagRepository, ActivityRepository $activityRepository): JsonResponse
     {
         $form = $this->createForm(ActivityFormType::class);
@@ -33,7 +34,7 @@ class ActivityController extends AbstractController
                 // Get the type 
                 $type = $tagRepository->findOneBy(['name' => $form->get('type')->getData()]);
                 if (!$type) {
-                    $errors['type'] = 'Type non trouvé';
+                    $errors['type'] = "Ce type n'existe pas";
                     return new JsonResponse(['error' => 'An error occurred.', 'errors' => $errors], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
@@ -109,6 +110,45 @@ class ActivityController extends AbstractController
                 $errors['exception'] = $e->getMessage();
                 return new JsonResponse(['error' => 'An error occurred.', 'errors' => $errors], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
+        }
+
+        foreach ($form->getErrors(true) as $error) {
+            $errors[$error->getOrigin()->getName()] = $error->getMessage();
+        }
+
+        return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Route('/search', name: 'app_activity_search',  methods: ['GET'])]
+    public function search(Request $request, ActivityRepository $activityRepository, TagRepository $tagRepository): JsonResponse
+    {
+        $form = $this->createForm(ActivitySearchFormType::class);
+        $data = $request->query->all();
+        $form->submit($data);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // Check for the type
+            $type = $form->get('type')->getData();
+            $type = $tagRepository->findOneBy(['name' => $type]);
+            if (!$type) {
+                $errors['type'] = "Ce type n'existe pas";
+                return new JsonResponse(['error' => 'An error occurred.', 'errors' => $errors], Response::HTTP_INTERNAL_SERVER_ERROR);            
+            }
+
+
+            $lat = $form->get('lat')->getData();
+            $lng = $form->get('lng')->getData();
+
+            // Check for activities within the perimeter
+            $activities = $activityRepository->findWithinRadiusAndType($lat, $lng, $type->getId());
+            if (!$activities) {
+                return new JsonResponse(['error' => 'No activities found.'], Response::HTTP_NOT_FOUND);
+            }
+
+            dump($activities);  
+
+            return new JsonResponse(['activities' => $activities], Response::HTTP_OK);
         }
 
         foreach ($form->getErrors(true) as $error) {
