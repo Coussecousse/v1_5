@@ -188,8 +188,13 @@ export default function Activities() {
             <h1 className={`typical-title ${styles.title}`}>Activités</h1>
             <div className={styles.container}>
                 <div className={`${styles.actvitiesContainer}`}>
-                    <Link to={paths.CREATE_ACTIVITY}>Créer une activité</Link>
-                    <h2 className={styles.secondTitle}>Chercher une activité dans la communauté</h2>
+                    <div className={styles.textTitleContainer}>
+                        <h2 className={styles.secondTitle}>Chercher une activité dans la communauté</h2>
+                        <div>
+                            <p>Ou vous préférez peut être...</p>
+                            <Link to={paths.CREATE_ACTIVITY} className={`${styles.createLink} link`}>Créer une activité</Link>
+                        </div>
+                    </div>
                     <form className={styles.searchFormContainer} onSubmit={handleSubmit} ref={formRef} >
                         <div className={styles.formFieldsContainer}>
                             <div className={styles.searchInputContainer}>
