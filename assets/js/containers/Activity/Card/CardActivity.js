@@ -84,7 +84,7 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
                 {limitedPics.length > 0 && (
                 <div className={styles.carouselContainer}>
                     {limitedPics.length > 1 && (
-                        <button className={`${styles.prev} ${styles.button}`} onClick={prevSlide} disabled={currentIndex === 0}>❮</button>
+                        <button className={`${styles.prev} ${styles.button}`} onClick={prevSlide} disabled={currentIndex === 0} aria-label="Precedent">❮</button>
                     )}
                     <div className={styles.carouselImgWrapper}
                     style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
@@ -98,7 +98,7 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
                         ))}
                     </div>
                     {limitedPics.length > 1 && (
-                        <button className={`${styles.next} ${styles.button}`} onClick={nextSlide} disabled={currentIndex === activity.pics.length - 1}>❯</button>
+                        <button className={`${styles.next} ${styles.button}`} onClick={nextSlide} disabled={currentIndex === activity.pics.length - 1} aria-label="Suivant">❯</button>
                     )}
                 </div>
                 )}

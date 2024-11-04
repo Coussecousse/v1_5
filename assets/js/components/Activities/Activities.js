@@ -21,10 +21,43 @@ export default function Activities() {
     const [activities, setActivities] = useState([]);   
     const formRef = useRef();
 
+    // -- Pagination --
+    const [currentPage, setCurrentPage] = useState(1);
+    const activitiesPerPage = 10; 
+    const [currentActivities, setCurrentActivities] = useState([]);
+
+    // Fetch activities when component mount
+    useEffect(() => {
+        axios.get('/api/activities')
+        .then(response => {
+            setActivities(response.data);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching activities', error);
+            setLoading(false);
+        });
+    }, []);
+
+    // Update currentActivities based on currentPage and activities array
+    useEffect(() => {
+        const startIndex = (currentPage - 1) * activitiesPerPage;
+        const endIndex = startIndex + activitiesPerPage;
+        setCurrentActivities(activities.slice(startIndex, endIndex));
+    }, [activities, currentPage]);
+
+    const totalPages = Math.ceil(activities.length / activitiesPerPage);
+
+    const handlePageClick = (page) => setCurrentPage(page);
+    const handlePrevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+    const handleNextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+
+
+    // -- Type --
     const handleTypeChange = (event) => {
         const value = event.target.value;
         setQuery(value);
-        setErrors({ ...errors, type: null }); // Clear specific error when user types
+        setErrors({ ...errors, type: null }); 
 
         if (debounceTimeout.current) {
             clearTimeout(debounceTimeout.current);
@@ -50,10 +83,17 @@ export default function Activities() {
         setErrors({ ...errors, type: null }); 
     };
 
+
+    // -- Form Submit --
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        
         const localisation = localisationInput; 
+        if (!localisation && !event.target.type.value) {
+            setErrors({other: 'Veuillez renseigner une localisation ou un type d\'activité'});
+            return;
+        }
 
         if (!selectionnedLocation && localisation) {
             axios.get(`https://eu1.locationiq.com/v1/search?key=${config.key}&q=${localisation}&format=json&`)
@@ -99,6 +139,7 @@ export default function Activities() {
         }
     }
 
+    // -- Selection Location --
     useEffect(() => {
         if (selectionnedLocation) {
             const params = new URLSearchParams({
@@ -128,6 +169,8 @@ export default function Activities() {
         }
     }, [selectionnedLocation]);
 
+
+    // -- Search all activities --
     useEffect(() => {
         axios.get('/api/activities')
         .then(response => {
@@ -188,8 +231,10 @@ export default function Activities() {
                         </div>
                         {errors && (
                             <div className={formStyles.errorsContainer}>
-                                {Object.keys(errors).map((key) => (
-                                    <small key={key} className={formStyles.error}>{errors[key]}</small>
+                                 {Object.keys(errors).map((key) => (
+                                    <small key={key} className={`${formStyles.errorGreen} ${styles.error}`}>
+                                        <div className={styles.errorIcon}></div>{errors[key]}
+                                    </small>
                                 ))}
                             </div>
                         )}
@@ -212,11 +257,11 @@ export default function Activities() {
                     </div>
                 ) : (
                     <div className={styles.activitiesContainer}>
-                        {activities.length > 0 ? (
+                        {currentActivities.length > 0 ? (
                             <>
                                 {!selectionnedLocation && <h3>Toutes les activités :</h3>}
                                 {selectionnedLocation && <h3>Recherche :</h3>}
-                                {activities.map((activity, index) => (
+                                {currentActivities.map((activity, index) => (
                                     <CardActivity key={index} activity={activity} selectionnedLocation={selectionnedLocation} />
                                 ))}
                             </>
@@ -225,6 +270,15 @@ export default function Activities() {
                         }
                     </div>
                 )}
+                    <div className={styles.pagination}>
+                        <button onClick={handlePrevPage} disabled={currentPage === 1} aria-label="Precedent">❮</button>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <button key={index + 1} onClick={() => handlePageClick(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
+                                {index + 1}
+                            </button>
+                        ))}
+                        <button onClick={handleNextPage} disabled={currentPage === totalPages} aria-label="Suivant">❯</button>
+                    </div>
                 </div>
             </div>
         </section>
