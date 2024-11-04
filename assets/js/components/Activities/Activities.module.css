@@ -4,7 +4,7 @@
     background-color: var(--color-primary);
     border-radius: var(--radius-500);
     box-shadow: var(--shadow);
-    padding: 2rem;
+    padding: 2rem 1rem;
 }
 .actvitiesContainer {
     max-width: 1100px;
@@ -21,6 +21,7 @@
 
 .formFieldsContainer {
     display: flex;
+    flex-direction: column;
     border: solid 1px var(--color-700);
     border-radius: var(--radius-500);
 }
@@ -43,12 +44,17 @@
 }
 
 .searchInputContainer label {
-    border-radius: 15px 0 0 15px;
+    border-radius: 15px 15px 0 0;
 }
 
 .searchInputContainer {
     flex: 1; 
+
+}
+.searchInputContainer,
+.autocompleteContainer {
     display: flex;
+    flex-direction: column;
 }
 
 .searchInputContainer input {
@@ -57,7 +63,7 @@
 
 .submit {
     cursor: pointer;
-    border-radius: 0 15px 15px 0;
+    border-radius: 0 0 15px 15px;
 }
 .submit:hover {
     background-color: var(--color-650);
@@ -67,9 +73,6 @@
     color: var(--color-500-tr);
 }
 
-.autocompleteContainer {
-    display: flex;
-}
 .autocompleteContainer > div {
     position: relative;
 } 
@@ -206,7 +209,7 @@
 
 /* Pagination */
 .pagination {
-    margin: 0 auto;
+    margin: 2rem auto 0 auto;
     width: fit-content;
     display: flex;
     gap: .5rem;
@@ -226,4 +229,24 @@
 }
 .pagination > button:disabled {
     opacity: .5;
+}
+
+@media screen and (min-width: 855px) {
+    .activitiesContainer {
+        padding: 2rem;
+    }
+    .formFieldsContainer {
+        flex-direction: row;
+    }
+    .searchInputContainer,
+    .autocompleteContainer {
+        flex-direction: row;
+    }
+    .submit {
+        border-radius: 0 15px 15px 0;
+        margin-top: 0;
+    }
+    .searchInputContainer label {
+        border-radius: 15px 0 0 15px;
+    }
 }

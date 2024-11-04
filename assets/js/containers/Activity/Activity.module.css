@@ -3,7 +3,17 @@
     flex-direction: row;
     color: var(--color-500);
     gap: 1rem;
+    flex-direction: column;
 }
 .container > * {
-    width: 50%;
+    width: 100%;
+}
+
+@media screen and (min-width: 758px) {
+    .container {
+        flex-direction: row;
+    }
+    .container > * {
+        width: 50%;
+    }
 }
