@@ -56,8 +56,7 @@ export default function Activities() {
     // -- Type --
     const handleTypeChange = (event) => {
         const value = event.target.value;
-        setQuery(value);
-        setErrors({ ...errors, type: null }); 
+        setQuery(value); 
 
         if (debounceTimeout.current) {
             clearTimeout(debounceTimeout.current);
@@ -80,14 +79,13 @@ export default function Activities() {
     const handleSuggestionClick = (suggestion) => {
         setQuery(suggestion.name);
         setSuggestions([]); 
-        setErrors({ ...errors, type: null }); 
     };
 
 
     // -- Form Submit --
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        setErrors({})
         
         const localisation = localisationInput; 
         if (!localisation && !event.target.type.value) {
@@ -95,7 +93,7 @@ export default function Activities() {
             return;
         }
 
-        if (!selectionnedLocation && localisation) {
+        if (localisation) {
             axios.get(`https://eu1.locationiq.com/v1/search?key=${config.key}&q=${localisation}&format=json&`)
             .then(response => {
                 if (response.data) {
@@ -125,7 +123,7 @@ export default function Activities() {
             .then(response => {
                 setLoading(false);
                 setActivities(response.data.activities);
-                setErrors(response.data.errors)
+                if (response.data.errors) setErrors(...errors, response.data.errors)
             })
             .catch(error => {
                 setLoading(false);
