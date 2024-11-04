@@ -81,6 +81,7 @@ export default function Map({ jsonLocation, setSelectionnedLocation, zoom=1 }) {
         });
 
         setMap(newMap);
+        console.log(newMap);
 
         // Clean-up to avoid memory leaks
         return () => {

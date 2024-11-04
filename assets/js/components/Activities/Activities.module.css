@@ -32,6 +32,15 @@
     background-color: var(--color-500);
 }
 
+/* Second title */
+.secondTitle {
+    font-size: var(--fs-600);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-500);
+    text-align: center;
+}
+
 
 .formFieldsContainer {
     display: flex;

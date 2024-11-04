@@ -115,9 +115,11 @@
     background-color: var(--form-color-error-green) !important;
 }
 
-.errorGreen, .flashGreen, .requiredGreen {
+.flashGreen, .requiredGreen,.errorGreen {
     color: var(--color-500) !important;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
+    font-family: var(--ff-secondary) !important;
+    margin-top: .5rem;
 }
 
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import activitiesStyle from '../Activities.module.css';
-import profileStyles from '../../Profile/Profile.module.css';
 import formStyles from '../../../containers/Form/Form.module.css';
 import styles from './CreateActivity.module.css'
 import Map from '../../../containers/Map/Map';
@@ -14,7 +13,7 @@ export default function CreateActivity() {
     const [query, setQuery] = useState('')
     const [suggestions, setSuggestions] = useState([]);
     const debounceTimeout = useRef(null);
-    const [JSONLocation, setJSONLocation] = useState({});
+    const [JSONLocation, setJSONLocation] = useState(null);
     const [selectionnedLocation, setSelectionnedLocation] = useState(null);
     const [isTypingAddress, setIsTypingAddress] = useState(false);
     const [isTypingLatLng, setIsTypingLatLng] = useState(false);
@@ -191,13 +190,13 @@ export default function CreateActivity() {
                                         />
                                     </div>
                                 </div>
-                                {errors.address && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.address}</small>}
+                                {errors.address && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.address}</small>}
                             </div>
                             <div className={activitiesStyle.map}>
                                 <p>Sélectionner une adresse* :</p>
                                 <Map jsonLocation={JSONLocation} 
                                     setSelectionnedLocation={setSelectionnedLocation}
-                                    zoom={4} />
+                                    />
                                 <div className={activitiesStyle.lgnLat}>
                                     <p>Si vous ne trouvez pas votre adresse...</p>
                                     <div className={`${activitiesStyle.input} input2_elementsContainer`}>
@@ -214,7 +213,7 @@ export default function CreateActivity() {
                                         </div>
                                         <small className={activitiesStyle.smallExemple}>Exemple : 48.858370; 2.294481</small>
                                     </div>
-                                    {errors.lng_lat && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.lng_lat}</small>}
+                                    {errors.lng_lat && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.lng_lat}</small>}
                                 </div>
                             </div>
                             <div>
@@ -240,7 +239,7 @@ export default function CreateActivity() {
                                         )}
                                     </div>
                                 </div>
-                                {errors.type && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.type}</small>}
+                                {errors.type && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.type}</small>}
                             </div>
                             <div>
                                 <div className={`${activitiesStyle.input} input2_elementsContainer`}>
@@ -254,7 +253,7 @@ export default function CreateActivity() {
                                         multiple="multiple" />
                                     </div>
                                 </div>
-                                {errors.activity_pics && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.activity_pics}</small>}
+                                {errors.activity_pics && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.activity_pics}</small>}
                             </div>
                             <div>
                                 <div className={`${activitiesStyle.input} input2_elementsContainer`}>
@@ -266,7 +265,7 @@ export default function CreateActivity() {
                                         placeholder="Saisir une description"></textarea>
                                     </div>
                                 </div>
-                                {errors.description && <small className={`smallFormError ${formStyles.errorGreen}`}>{errors.description}</small>}
+                                {errors.description && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.description}</small>}
                             </div>
                             <small className={`input2_required ${formStyles.requiredGreen}`}>* Requis</small>
                             <input className={`form-button ${activitiesStyle.button}`} type="submit" value="Créer" />            
