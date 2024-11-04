@@ -53,7 +53,6 @@ export default function DrawMap({ drawJson, localisations }) {
         startElement.style.width = '25px';
         startElement.style.height = '25px';
         startElement.style.backgroundSize = 'cover';
-        console.log(drawJson);
         const startPopup = new maplibregl.Popup({ offset: 25 })
             .setText(localisations[0].display_name);
 
@@ -84,12 +83,10 @@ export default function DrawMap({ drawJson, localisations }) {
         if (map) return;
 
         locationiq.key = config.key;
-        console.log(localisations);
         const center = [
             (parseFloat(localisations[0].lng ? localisations[0].lng : localisations[0].lon) + parseFloat(localisations[1].lng ? localisations[1].lng : localisations[1].lon)) / 2,
             (parseFloat(localisations[0].lat) + parseFloat(localisations[1].lat)) / 2
         ];
-        console.log(center);        
 
         const newMap = new maplibregl.Map({
             container: mapRef.current,

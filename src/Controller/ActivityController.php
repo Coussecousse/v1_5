@@ -148,7 +148,6 @@ class ActivityController extends AbstractController
         $form = $this->createForm(ActivitySearchFormType::class);
         $data = $request->query->all();
         $form->submit($data);
-        dump($data);
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Check for the type

@@ -90,7 +90,6 @@ class ResetPasswordController extends AbstractController
     public function getResetCsrfToken(CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
     {
         $csrfToken = $csrfTokenManager->getToken('change_password_form')->getValue();
-        dump($csrfToken);
         return new JsonResponse(['csrfToken' => $csrfToken]);
     }
     /**
@@ -99,14 +98,11 @@ class ResetPasswordController extends AbstractController
     #[Route('api/reset-password/reset/{token}', name: 'app_api_reset_password', methods: ['POST'])]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, string $token = null): Response
     {
-        dump('hoy sir');
-
         if ($token) {
             $this->storeTokenInSession($token);
         } else {
             $token = $this->getTokenFromSession();
         }
-        dump($token);
         if (null === $token) {
             return new JsonResponse(['message' => 'No reset token found.'], Response::HTTP_NOT_FOUND);
         }

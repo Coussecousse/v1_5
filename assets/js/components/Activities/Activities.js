@@ -118,7 +118,6 @@ export default function Activities() {
             })
             .catch(error => {
                 setLoading(false);
-                console.log(error);
                 if (error.response.status === 404) {
                     setActivities([]);
                 } else {
