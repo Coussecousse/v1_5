@@ -16,21 +16,12 @@ class ActivitySearchFormType extends AbstractType
         $builder
             ->add('lat', NumberType::class, [
                 'required' => true,
-                'constraints' => [
-                    new NotBlank()
-                ]
             ])
             ->add('lng', NumberType::class, [
                 'required' => true,
-                'constraints' => [
-                    new NotBlank()
-                ]
             ])
             ->add('type', TextType::class, [
                 'required' => true,
-                'constraints' => [
-                    new NotBlank()
-                ]
             ]);
     }
 

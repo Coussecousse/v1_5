@@ -18,6 +18,7 @@ import axios from 'axios';
 import ChangeInformations from './components/Profile/ChangeInformations/ChangeInformations';
 import Activities from './components/Activities/Activities';
 import CreateActivity from './components/Activities/Create/CreateActivity';
+import ActivityDetails from './containers/Activity/Show/ActivityDetails';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -101,6 +102,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <CreateActivity />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={`${paths.ACTIVITIES}/:uid`}
+                element={
+                  <ProtectedRoute>
+                    <ActivityDetails />
                   </ProtectedRoute>
                 }
               />

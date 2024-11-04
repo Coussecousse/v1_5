@@ -20,6 +20,29 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api/activities')]
 class ActivityController extends AbstractController 
 {
+    #[Route('/', name: 'app_activity_all', methods: ['GET'])]
+    public function index(ActivityRepository $activityRepository): JsonResponse
+    {
+        $activities = $activityRepository->findAll();
+        $jsonActivities = [];
+        foreach ($activities as $activity) {
+            $jsonActivities[] = [
+                'lat' => $activity->getLat(),
+                'lng' => $activity->getLng(),
+                'display_name' => $activity->getDisplayName(),
+                'description' => $activity->getDescription(),
+                'type' => $activity->getType()->getName(),
+                'country' => $activity->getCountry()->getName(),
+                'user' => $activity->getUser()->getUsername(),
+                'pics' => array_map(function(Pic $pic) {
+                    return $pic->getPath();
+                }, $activity->getPics()->toArray())
+            ];
+        }
+
+        return new JsonResponse($jsonActivities, Response::HTTP_OK);
+    }
+
     #[Route('/create', name: 'app_activity_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, TagRepository $tagRepository, ActivityRepository $activityRepository): JsonResponse
     {
@@ -125,30 +148,78 @@ class ActivityController extends AbstractController
         $form = $this->createForm(ActivitySearchFormType::class);
         $data = $request->query->all();
         $form->submit($data);
-
+        dump($data);
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Check for the type
             $type = $form->get('type')->getData();
             $type = $tagRepository->findOneBy(['name' => $type]);
             if (!$type) {
-                $errors['type'] = "Ce type n'existe pas";
-                return new JsonResponse(['error' => 'An error occurred.', 'errors' => $errors], Response::HTTP_INTERNAL_SERVER_ERROR);            
+                $errors['type'] = "Vous n'avez pas sélectionné un type valide";
             }
-
-
+    
             $lat = $form->get('lat')->getData();
             $lng = $form->get('lng')->getData();
-
-            // Check for activities within the perimeter
-            $activities = $activityRepository->findWithinRadiusAndType($lat, $lng, $type->getId());
+    
+            // Search for coordinates
+            if (!$lat || !$lng) {
+                if ($type) {
+                    // Return all activities with a certain type
+                    $activities = $activityRepository->findBy(['type' => $type]);
+                } else {
+                    // Return all activitie
+                    $activities = $activityRepository->findAll();
+                }
+            } else {
+                // Filter activities within a radius
+                if ($type) {
+                    // With a certain type
+                    $activities = $activityRepository->findWithinRadiusAndType($lat, $lng, $type->getId());
+                } else {
+                    // Without a type
+                    $activities = $activityRepository->findWithinRadius($lat, $lng);
+                }
+            }
+    
             if (!$activities) {
                 return new JsonResponse(['error' => 'No activities found.'], Response::HTTP_NOT_FOUND);
             }
+    
+            // Prepare response data for activities
+            if ($activities[0] instanceof Activity) {
+                $activities = [$activities]; 
+            }
+            
+            // Loop through the activities
+            foreach ($activities as $activityArray) {
+            
+                $activity = $activityArray[0]; 
+                $distance = $activityArray['distance'] ?? null; 
 
-            dump($activities);  
+                // Build the jsonActivities structure
+                $jsonActivities[] = [
+                    'lat' => $activity->getLat(),
+                    'lng' => $activity->getLng(),
+                    'display_name' => $activity->getDisplayName(),
+                    'description' => $activity->getDescription(),
+                    'type' => $activity->getType()->getName(),
+                    'country' => $activity->getCountry()->getName(),
+                    'user' => $activity->getUser()->getUsername(),
+                    'pics' => array_map(function(Pic $pic) {
+                        return $pic->getPath();
+                    }, $activity->getPics()->toArray()),
+                    'distance' => $distance, 
+                ];
+            }
 
-            return new JsonResponse(['activities' => $activities], Response::HTTP_OK);
+
+            $responseData = ['activities' => $jsonActivities];
+
+            if (!empty($errors)) {
+                $responseData['errors'] = $errors;
+            }
+
+            return new JsonResponse($responseData, Response::HTTP_OK);
         }
 
         foreach ($form->getErrors(true) as $error) {
@@ -157,4 +228,5 @@ class ActivityController extends AbstractController
 
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }
+
 }

@@ -46,7 +46,7 @@ export default function CreateActivity() {
         const value = addressRef.current.value;
         
         if (value && value.length > 3) {
-            axios.get(`https://us1.locationiq.com/v1/search?key=${config.key}&q=${value}&format=json&`)
+            axios.get(`https://eu1.locationiq.com/v1/search?key=${config.key}&q=${value}&format=json&`)
             .then(response => {
                 if (response.data) {
                     setJSONLocation(response.data);
@@ -70,7 +70,7 @@ export default function CreateActivity() {
             const lat = value.split(';')[0];
             const lgn = value.split(';')[1];
 
-            axios.get(`https://us1.locationiq.com/v1/reverse?key=${config.key}&lat=${lat}&lon=${lgn}&format=json&`)
+            axios.get(`https://eu1.locationiq.com/v1/reverse?key=${config.key}&lat=${lat}&lon=${lgn}&format=json&`)
             .then(response => {
                 if (response.data) {
                     setJSONLocation(response.data);
@@ -196,7 +196,8 @@ export default function CreateActivity() {
                             <div className={activitiesStyle.map}>
                                 <p>Sélectionner une adresse* :</p>
                                 <Map jsonLocation={JSONLocation} 
-                                    setSelectionnedLocation={setSelectionnedLocation} />
+                                    setSelectionnedLocation={setSelectionnedLocation}
+                                    zoom={4} />
                                 <div className={activitiesStyle.lgnLat}>
                                     <p>Si vous ne trouvez pas votre adresse...</p>
                                     <div className={`${activitiesStyle.input} input2_elementsContainer`}>

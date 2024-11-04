@@ -45,8 +45,12 @@ class Activity
     #[ORM\JoinColumn(nullable: false)]
     private ?Country $country = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $uid = null;
+
     public function __construct()
     {
+        $this->uid = uniqid();
         $this->pics = new ArrayCollection();
     }
     
@@ -165,6 +169,18 @@ class Activity
     public function setCountry(?Country $country): static
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getUid(): ?string
+    {
+        return $this->uid;
+    }
+
+    public function setUid(string $uid): static
+    {
+        $this->uid = $uid;
 
         return $this;
     }

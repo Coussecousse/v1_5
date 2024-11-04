@@ -1,0 +1,142 @@
+.card {
+    margin: 2rem 0;
+}
+
+/* Carousel */
+.carouselContainer {
+    position: relative;
+    height: 400px;
+    overflow-x: hidden;
+}
+
+.button {
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    padding: 0 .5rem ;
+    cursor: pointer;
+    background-color: var(--color-700);
+    color: var(--color-500);
+    border: none;
+}
+
+.button:disabled {
+    opacity: .5;
+}
+
+.next {
+    right: 0;
+}
+
+/* Image carousel */
+.carouselImgWrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.img {
+    min-width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Content */
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.activityTitle::first-letter, 
+.activityDescription::first-letter {
+    text-transform: uppercase;
+}
+.activityDetails {
+    text-transform: capitalize;
+}
+
+.activityDescription,
+.activityDetails {
+    font-family: var(--ff-secondary);
+}
+
+.activityDescription {
+    margin: auto;
+    padding: 1rem 0;
+}
+
+.activityDetails {
+    display: flex;
+    align-items: center;
+}
+
+/* Icon */
+.icon {
+    display: inline-block;
+    margin-right: .5rem;
+    filter: invert(100%) sepia(0%) saturate(7443%) hue-rotate(340deg) brightness(121%) contrast(98%);
+    height: 16px;
+    width: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icon.type {
+    background-image: url('/assets/images/icon/house.svg');
+}
+.icon.pin {
+    background-image: url('/assets/images/icon/world.svg');
+}
+.icon.country {
+    background-image: url('/assets/images/icon/pin.svg');
+}
+
+/* Details links container */
+.detailsLinksContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    /* font-size: var(--fs-300); */
+    margin-top: 1rem;
+}
+
+/* Button */
+.mapButton {
+    cursor: pointer;
+    background-color: var(--color-700);
+    padding: .275rem .5rem;
+    border: var(--color-700) solid 1px;
+    color: var(--color-500);
+    transition: .2s;
+}
+.mapButton:hover {
+    background-color: var(--color-primary);
+    border: var(--color-500) solid 1px;
+}
+
+/* Link */
+.link::after {
+    height: 1px !important;
+    background-color: var(--color-500);
+}
+
+/* Map */
+.map {
+    height: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Flash Message */
+.flashMessage {
+    background-color: var(--color-700);
+    color: var(--color-500);
+    width: fit-content;
+    margin: 0 auto;
+    padding: .5rem 1rem;
+    border-radius: var(--radius-500);
+}

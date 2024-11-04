@@ -57,7 +57,33 @@ class ActivityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
+    public function findWithinRadius(float $lat, float $lng): array
+    {
+        // The Haversine formula for distance in km
+        // Calculates the great-circle distance between two points
+        // using latitude and longitude.
+        $haversineFormula = "
+            (6371 * acos(cos(radians(:latitude)) 
+            * cos(radians(a.lat)) 
+            * cos(radians(a.lng) - radians(:longitude)) 
+            + sin(radians(:latitude)) 
+            * sin(radians(a.lat))))
+        ";
+    
+        $radius = 30; // 30 km
+    
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->addSelect($haversineFormula . ' AS distance')
+            ->having('distance < :radius')
+            ->setParameter('latitude', $lat)
+            ->setParameter('longitude', $lng)
+            ->setParameter('radius', $radius)
+            ->orderBy('distance', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    
 //    /**
 //     * @return Activity[] Returns an array of Activity objects
 //     */

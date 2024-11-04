@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "@babel/plugin-transform-class-properties": "^7.24.7",
+        "@mapbox/polyline": "^1.2.1",
         "maplibre-gl": "^4.7.1",
         "react-router-dom": "^6.24.1"
     }

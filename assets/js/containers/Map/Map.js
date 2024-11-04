@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from './Map.module.css'
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import config from "../../config/locationIQ";
 
-export default function Map({ jsonLocation, setSelectionnedLocation }) {
+export default function Map({ jsonLocation, setSelectionnedLocation, zoom=1 }) {
     const [map, setMap] = useState(null);
+    const mapRef = useRef(null);
 
     useEffect(() => {
-        if (map) {
+        if (map && jsonLocation) {
             // If the jsonLocation is an array, we take the first element
             // Otherwise, we take the jsonLocation
             let informations = 
             jsonLocation.length ? jsonLocation[0] : jsonLocation;
 
             map.setCenter([informations.lon, informations.lat]);
-            map.setZoom(4);
+            map.setZoom(zoom);
 
             if (map.markers) {
                 map.markers.forEach(marker => marker.remove());
@@ -23,8 +24,8 @@ export default function Map({ jsonLocation, setSelectionnedLocation }) {
             map.markers = [];
             
             if (jsonLocation.length) {
-                const localisations = jsonLocation.slice(1);
-
+                // const localisations = jsonLocation.slice(1);
+                const localisations = jsonLocation;
                 localisations.forEach(localisation => {
                     createElementOnMap(localisation);
                 })
@@ -38,7 +39,7 @@ export default function Map({ jsonLocation, setSelectionnedLocation }) {
                 map.markers[0].togglePopup();
             }
         }
-    }, [jsonLocation]);
+    }, [jsonLocation, map]);
 
     const createElementOnMap = (localisation) => {
         const el = document.createElement('div');
@@ -69,13 +70,14 @@ export default function Map({ jsonLocation, setSelectionnedLocation }) {
     }
 
     useEffect(() => {
+        if (map) return;
         locationiq.key = config.key;
 
         const newMap = new maplibregl.Map({
-            container: 'map',
+            container: mapRef.current,
             style: locationiq.getLayer("Streets"), // stylesheet location
             center: [0, 0], // starting position [lng, lat]
-            zoom: 1 // starting zoom
+            zoom: zoom // starting zoom
         });
 
         setMap(newMap);
@@ -89,6 +91,6 @@ export default function Map({ jsonLocation, setSelectionnedLocation }) {
     }, []);
 
     return(
-        <div id="map"></div>
+        <div ref={mapRef} className={styles.map}></div>
     )
 }

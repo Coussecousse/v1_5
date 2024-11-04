@@ -74,6 +74,7 @@
 
 .loaderTextGreen {
     color: var(--color-500) !important;
+    font-weight: 500 !important;
 }   
 
 /* Link */
