@@ -140,3 +140,24 @@
     padding: .5rem 1rem;
     border-radius: var(--radius-500);
 }
+
+
+/* Animation */
+.containerAnimation {
+    position: relative;
+    overflow-y: hidden;
+}
+.routeMap {
+    position: relative;
+    animation: mapArrive 1.5s forwards;
+}
+@keyframes mapArrive {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

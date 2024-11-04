@@ -128,10 +128,12 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
                 </div>
             </div>
             { showMap && (
-                <div className={styles.map}>
-                    { flashMessageMap && <div className={styles.flashMessage}>{flashMessageMap}</div> }
-                    { drawJsonResponse && (<DrawMap drawJson={drawJsonResponse} localisations={localisations} />) }
-                    { jsonFormatActivity && (<Map jsonLocation={jsonFormatActivity} setSelectionnedLocation={setSelectionnedLocationMap} zoom={8} />) }
+                <div className={styles.containerAnimation}>
+                    <div className={`${styles.map} ${styles.routeMap}`}>
+                        { flashMessageMap && <div className={styles.flashMessage}>{flashMessageMap}</div> }
+                        { drawJsonResponse && (<DrawMap drawJson={drawJsonResponse} localisations={localisations} />) }
+                        { jsonFormatActivity && (<Map jsonLocation={jsonFormatActivity} setSelectionnedLocation={setSelectionnedLocationMap} zoom={8} />) }
+                    </div>
                 </div>
                 ) }
         </div>

@@ -164,8 +164,8 @@ export default function Activities() {
                                 />
                             </div>
                             <div className={styles.autocompleteContainer}>
-                                <label htmlFor="map_type">Type* :</label>
-                                <div className={``}>
+                                <label htmlFor="map_type">Type :</label>
+                                <div>
                                     <input
                                         type="text"
                                         value={query}
@@ -196,13 +196,15 @@ export default function Activities() {
                         )}
                     </form>
                     {(JSONLocation && choseLocalisation) && (
-                        <div className={styles.searchMapContainer}>
-                            <Map
-                                jsonLocation={JSONLocation}
-                                setSelectionnedLocation={setSelectionnedLocation}
-                                zoom={5}
-                            />
-                        </div>
+                        <div className={styles.containerAnimation}>
+                            <div className={`${styles.searchMapContainer} ${styles.show}`}>
+                                <Map
+                                    jsonLocation={JSONLocation}
+                                    setSelectionnedLocation={setSelectionnedLocation}
+                                    zoom={5}
+                                />
+                            </div>
+                        </div>    
                     )}
                 {loading ? (
                     <div className={`${styles.loaderContainer} loader-container`}>
