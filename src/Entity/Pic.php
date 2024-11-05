@@ -16,7 +16,7 @@ class Pic
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\OneToOne(inversedBy: 'pic', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'pics', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'pics')]

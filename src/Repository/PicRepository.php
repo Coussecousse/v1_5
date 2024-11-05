@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Pic;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,6 +17,15 @@ class PicRepository extends ServiceEntityRepository
         parent::__construct($registry, Pic::class);
     }
 
+    public function getProfilePic(User $user): ?Pic
+{
+    return $this->createQueryBuilder('p')
+        ->andWhere('p.user = :user')
+        ->andWhere('p.activity IS NULL')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
 //    /**
 //     * @return Pic[] Returns an array of Pic objects
 //     */

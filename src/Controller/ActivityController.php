@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Activity;
 use App\Entity\Country;
+use App\Entity\Description;
 use App\Entity\Pic;
 use App\Entity\User;
 use App\Form\ActivityFormType;
 use App\Form\ActivitySearchFormType;
 use App\Repository\ActivityRepository;
+use App\Repository\DescriptionRepository;
+use App\Repository\PicRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,13 +33,13 @@ class ActivityController extends AbstractController
                 'lat' => $activity->getLat(),
                 'lng' => $activity->getLng(),
                 'display_name' => $activity->getDisplayName(),
-                'description' => $activity->getDescription(),
+                'description' => $activityRepository->getFirstDescription($activity),
                 'type' => $activity->getType()->getName(),
                 'country' => $activity->getCountry()->getName(),
-                'user' => $activity->getUser()->getUsername(),
                 'pics' => array_map(function(Pic $pic) {
                     return $pic->getPath();
-                }, $activity->getPics()->toArray())
+                }, $activity->getPics()->toArray()),
+                'uid' => $activity->getUid()
             ];
         }
 
@@ -82,12 +85,17 @@ class ActivityController extends AbstractController
                     $country->addActivity($activity);
                     $em->persist($country);
                 }
+                $description = new Description();
+                $description->setDescription($form->get('description')->getData());
+                $description->setActivity($activity);
+                $description->setUser($this->getUser());
+                $em->persist($description);
 
                 $activity
                     ->setDisplayName($form->get('display_name')->getData())
                     ->setLat($form->get('lat')->getData())
                     ->setLng($form->get('lng')->getData())
-                    ->setDescription($form->get('description')->getData())
+                    ->addDescription($description)
                     ->setType($type)
                     ->setCountry($country);
                 $em->persist($activity);
@@ -121,7 +129,7 @@ class ActivityController extends AbstractController
                 // Set the user
                 $user = $this->getUser();
                 $userEntity = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
-                $activity->setUser($userEntity);
+                $activity->addUser($userEntity);
                 $userEntity->addActivity($activity);
                 $em->persist($userEntity);
 
@@ -200,14 +208,14 @@ class ActivityController extends AbstractController
                     'lat' => $activity->getLat(),
                     'lng' => $activity->getLng(),
                     'display_name' => $activity->getDisplayName(),
-                    'description' => $activity->getDescription(),
+                    'description' => $activityRepository->getFirstDescription($activity),
                     'type' => $activity->getType()->getName(),
                     'country' => $activity->getCountry()->getName(),
-                    'user' => $activity->getUser()->getUsername(),
                     'pics' => array_map(function(Pic $pic) {
                         return $pic->getPath();
                     }, $activity->getPics()->toArray()),
                     'distance' => $distance, 
+                    'uid' => $activity->getUid() 
                 ];
             }
 
@@ -228,4 +236,50 @@ class ActivityController extends AbstractController
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }
 
+
+    #[route('/search/{uid}', name: 'app_activity_search_uid', methods: ['GET'])]
+    public function searchUid(
+        Request $request, 
+        ActivityRepository $activityRepository,
+        PicRepository $picRepository,
+        DescriptionRepository $descriptionRepository): JsonResponse
+    {
+        $uid = $request->attributes->get('uid');
+        try {
+            $activity = $activityRepository->findOneBy(['uid' => $uid]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        if (!$activity) {
+            return new JsonResponse(['error' => 'Activity not found.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $jsonActivity = [
+            'lat' => $activity->getLat(),
+            'lng' => $activity->getLng(),
+            'display_name' => $activity->getDisplayName(),
+            'uid' => $activity->getUid(),
+            'type' => $activity->getType()->getName(),
+            'country' => $activity->getCountry()->getName(),
+        ];
+
+        $users = $activity->getUsers();
+        dump($users);
+        foreach($users as $user) {
+            $jsonActivity['opinions'][] = [
+                'user' => [
+                    'username' => $user->getUsername(),
+                    'uid' => $user->getUid(),
+                    'profile_pic' => $picRepository->getProfilePic($user)->getPath()
+                ],
+                'description' => $descriptionRepository->findOneBy(['activity' => $activity, 'user' => $user])->getDescription(),
+                'pics' => array_map(function(Pic $pic) {
+                    return $pic->getPath();
+                }, $picRepository->findBy(['activity' => $activity, 'user' => $user]))
+            ];
+        }
+        dump($jsonActivity);
+
+        return new JsonResponse($jsonActivity, Response::HTTP_OK);
+    }
 }

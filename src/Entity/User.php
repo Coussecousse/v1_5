@@ -50,15 +50,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Activity>
      */
-    #[ORM\OneToMany(targetEntity: Activity::class, mappedBy: 'user')]
+    #[ORM\ManyToMany(targetEntity: Activity::class, mappedBy: 'users')]
     private Collection $activities;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Pic $pic = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Pic::class, cascade: ['persist', 'remove'])]
+    private Collection $pics;
+
+    /**
+     * @var Collection<int, Description>
+     */
+    #[ORM\OneToMany(targetEntity: Description::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $descriptions;
+
+    #[ORM\Column(length: 255)]
+    private ?string $uid = null;
 
     public function __construct()
     {
+        $this->uid = uniqid();
         $this->activities = new ArrayCollection();
+        $this->descriptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,46 +212,90 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->activities;
     }
 
-    public function addActivity(Activity $activity): static
+    public function addActivity(Activity $activity): self
     {
         if (!$this->activities->contains($activity)) {
-            $this->activities->add($activity);
-            $activity->setUser($this);
+            $this->activities[] = $activity;
+            $activity->addUser($this);
         }
 
         return $this;
     }
 
-    public function removeActivity(Activity $activity): static
+    public function removeActivity(Activity $activity): self
     {
         if ($this->activities->removeElement($activity)) {
-            // set the owning side to null (unless already changed)
-            if ($activity->getUser() === $this) {
-                $activity->setUser(null);
+            $activity->removeUser($this); // Ensure the reverse side is set
+        }
+
+        return $this;
+    }
+
+    public function getPics(): Collection
+    {
+        return $this->pics;
+    }
+
+    public function addPic(Pic $pic): self
+    {
+        if (!$this->pics->contains($pic)) {
+            $this->pics[] = $pic;
+            $pic->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePic(Pic $pic): self
+    {
+        if ($this->pics->contains($pic)) {
+            $this->pics->removeElement($pic);
+            if ($pic->getUser() === $this) {
+                $pic->setUser(null);
             }
         }
 
         return $this;
     }
 
-    public function getPic(): ?Pic
+    /**
+     * @return Collection<int, Description>
+     */
+    public function getDescriptions(): Collection
     {
-        return $this->pic;
+        return $this->descriptions;
     }
 
-    public function setPic(?Pic $pic): static
+    public function addDescription(Description $description): static
     {
-        // unset the owning side of the relation if necessary
-        if ($pic === null && $this->pic !== null) {
-            $this->pic->setUser(null);
+        if (!$this->descriptions->contains($description)) {
+            $this->descriptions->add($description);
+            $description->setUser($this);
         }
 
-        // set the owning side of the relation if necessary
-        if ($pic !== null && $pic->getUser() !== $this) {
-            $pic->setUser($this);
+        return $this;
+    }
+
+    public function removeDescription(Description $description): static
+    {
+        if ($this->descriptions->removeElement($description)) {
+            // set the owning side to null (unless already changed)
+            if ($description->getUser() === $this) {
+                $description->setUser(null);
+            }
         }
 
-        $this->pic = $pic;
+        return $this;
+    }
+
+    public function getUid(): ?string
+    {
+        return $this->uid;
+    }
+
+    public function setUid(string $uid): static
+    {
+        $this->uid = $uid;
 
         return $this;
     }

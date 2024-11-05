@@ -92,7 +92,7 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
                             <img
                                 key={index}
                                 src={`/uploads/activity_pics/${pic}`}
-                                alt={activity.display_name}
+                                alt={`Picture ${index + 1}`}
                                 className={`${styles.img}`}
                             />
                         ))}

@@ -26,14 +26,11 @@ class Activity
     #[ORM\JoinColumn(nullable: false)]
     private ?Tag $type = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
-
     #[ORM\Column(length: 255)]
     private ?string $display_name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'activities')]
-    private ?User $user = null;
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'activities')]
+    private Collection $users;
 
     /**
      * @var Collection<int, Pic>
@@ -48,10 +45,18 @@ class Activity
     #[ORM\Column(length: 255)]
     private ?string $uid = null;
 
+    /**
+     * @var Collection<int, Description>
+     */
+    #[ORM\OneToMany(targetEntity: Description::class, mappedBy: 'activity', orphanRemoval: true)]
+    private Collection $descriptions;
+
     public function __construct()
     {
         $this->uid = uniqid();
         $this->pics = new ArrayCollection();
+        $this->descriptions = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -95,18 +100,6 @@ class Activity
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
     public function getDisplayName(): ?string
     {
         return $this->display_name;
@@ -119,14 +112,23 @@ class Activity
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
-    public function setUser(?User $user): static
+    public function addUser(User $user): self
     {
-        $this->user = $user;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }
@@ -181,6 +183,36 @@ class Activity
     public function setUid(string $uid): static
     {
         $this->uid = $uid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Description>
+     */
+    public function getDescriptions(): Collection
+    {
+        return $this->descriptions;
+    }
+
+    public function addDescription(Description $description): static
+    {
+        if (!$this->descriptions->contains($description)) {
+            $this->descriptions->add($description);
+            $description->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDescription(Description $description): static
+    {
+        if ($this->descriptions->removeElement($description)) {
+            // set the owning side to null (unless already changed)
+            if ($description->getActivity() === $this) {
+                $description->setActivity(null);
+            }
+        }
 
         return $this;
     }

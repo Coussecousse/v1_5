@@ -83,6 +83,19 @@ class ActivityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getFirstDescription(Activity $activity): ?string
+    {
+        return $this->createQueryBuilder('a')
+            ->select('d.description')
+            ->leftJoin('a.descriptions', 'd')
+            ->andWhere('a = :activity')
+            ->setParameter('activity', $activity)
+            ->orderBy('d.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
     
 //    /**
 //     * @return Activity[] Returns an array of Activity objects

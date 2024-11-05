@@ -1,0 +1,138 @@
+.container {
+    margin: 2rem;
+    height: 600px;
+    display: flex;
+    color: var(--color-500);
+    gap: 1rem;
+}
+
+.picsContainer {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Images */
+.bigImg, .minPic {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Big container img */
+.carouselImgWrapper {
+    flex: 1;
+    display: flex;
+    transition: transform 0.5s ease-in-out; 
+    height: 100%;
+}
+
+/*  -- Img */
+.bigImg {
+    min-width: 100%;
+}
+
+/* Small Container */
+.smallContainer {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .8)
+}
+
+.smallPicContainer {
+    height: 100%;
+    display: flex;
+    gap: .5rem;
+    width: fit-content;;
+}
+
+/* -- Small img */
+.minPic {
+    width: 60px;
+    cursor: pointer;
+    transition: all .2s;
+    opacity: .5;
+}
+.minPic:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+.minPic.active {
+    opacity: 1;
+}
+
+/* Button */
+.button {
+    cursor: pointer;
+    padding: 0 .5rem;
+    background-color: transparent;
+    color: var(--color-500);
+    border: none;
+}
+.button:disabled {
+    opacity: .5;
+}
+
+/* Text container */
+.textContainer {
+    width: 45%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+/* -- Text */
+.text {
+    overflow-y: auto;
+    max-height: calc(100% - 100px - 2rem - (16px * 2));
+}
+.text:first-letter {
+    text-transform: uppercase;
+}
+/* Description container */
+.descriptionContainer {
+    flex: 1;
+}
+
+/* -- Profile pic */
+.profilePic {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 2rem auto;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+}
+
+/* Icon */
+.iconsContainer p {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.icon {
+    display: inline-block;
+    margin-right: .5rem;
+    filter: invert(100%) sepia(0%) saturate(7443%) hue-rotate(340deg) brightness(121%) contrast(98%);
+    height: 16px;
+    width: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icon.type {
+    background-image: url('/assets/images/icon/house.svg');
+}
+.icon.country {
+    background-image: url('/assets/images/icon/pin.svg');
+}

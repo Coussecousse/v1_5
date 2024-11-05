@@ -18,7 +18,7 @@ import axios from 'axios';
 import ChangeInformations from './components/Profile/ChangeInformations/ChangeInformations';
 import Activities from './components/Activities/Activities';
 import CreateActivity from './components/Activities/Create/CreateActivity';
-import ActivityDetails from './containers/Activity/Show/ActivityDetails';
+import ActivityDetails from './components/Activities/Show/ActivityDetails';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

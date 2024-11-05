@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Pic;
 use App\Entity\User;
+use App\Repository\PicRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,18 +22,20 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 class ProfileController extends AbstractController
 {
     #[Route('/', name: '_index')]
-    public function index(UserRepository $userRepository): JsonResponse
+    public function index(UserRepository $userRepository, PicRepository $picRepository): JsonResponse
     {
         $user = $this->getUser();
 
         $userEntity = $userRepository->findOneBy(['email' => $user->getUserIdentifier()]);
+        $userPic = $picRepository->getProfilePic($userEntity);
+        dump($userPic);
 
         return new JsonResponse([
             'user' => [
                 'username' => $userEntity->getUsername(),
                 'email' => $userEntity->getEmail(),
-                'profile_pic' => $userEntity->getPic() ?
-                    $userEntity->getPic()->getPath()
+                'profile_pic' => $userPic ?
+                    $userPic->getPath()
                     : null,
             ],
         ]);
