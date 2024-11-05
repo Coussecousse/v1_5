@@ -1,3 +1,24 @@
+/* Map */
 .map {
     height: 400px;
+    margin-top: 2rem;
+}
+
+/* Button */
+.contribButton {
+    display: block;
+    width: fit-content;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: var(--radius-500);
+    border: 1px solid var(--color-700);
+    background-color: var(--color-700);
+    color: var(--color-500);
+    transition: .2s;
+    padding: .372rem 1rem;
+}
+.contribButton:hover {
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-500);
 }

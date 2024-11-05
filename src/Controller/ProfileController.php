@@ -36,6 +36,7 @@ class ProfileController extends AbstractController
                 'profile_pic' => $userPic ?
                     $userPic->getPath()
                     : null,
+                'uid' => $userEntity->getUid(),
             ],
         ]);
     }
