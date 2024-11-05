@@ -67,9 +67,9 @@ export default function CreateActivity() {
         
         if (value && value.length > 15) {
             const lat = value.split(';')[0];
-            const lgn = value.split(';')[1];
+            const lng = value.split(';')[1];
 
-            axios.get(`https://eu1.locationiq.com/v1/reverse?key=${config.key}&lat=${lat}&lon=${lgn}&format=json&`)
+            axios.get(`https://eu1.locationiq.com/v1/reverse?key=${config.key}&lat=${lat}&lon=${lng}&format=json&`)
             .then(response => {
                 if (response.data) {
                     setJSONLocation(response.data);

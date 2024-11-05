@@ -4,7 +4,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import config from "../../config/locationIQ";
 
-export default function Map({ jsonLocation, setSelectionnedLocation, zoom=1 }) {
+export default function Map({ jsonLocation, setSelectionnedLocation=null, zoom=1 }) {
     const [map, setMap] = useState(null);
     const mapRef = useRef(null);
 
@@ -29,10 +29,10 @@ export default function Map({ jsonLocation, setSelectionnedLocation, zoom=1 }) {
                 localisations.forEach(localisation => {
                     createElementOnMap(localisation);
                 })
-                setSelectionnedLocation(localisations[0]);
+                if (setSelectionnedLocation) setSelectionnedLocation(localisations[0]);
             } else {
                 createElementOnMap(jsonLocation);
-                setSelectionnedLocation(jsonLocation);
+                if (setSelectionnedLocation) setSelectionnedLocation(jsonLocation);
             }
             
             if (map.markers.length) {
@@ -81,7 +81,6 @@ export default function Map({ jsonLocation, setSelectionnedLocation, zoom=1 }) {
         });
 
         setMap(newMap);
-        console.log(newMap);
 
         // Clean-up to avoid memory leaks
         return () => {

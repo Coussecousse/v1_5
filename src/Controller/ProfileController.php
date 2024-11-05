@@ -28,7 +28,6 @@ class ProfileController extends AbstractController
 
         $userEntity = $userRepository->findOneBy(['email' => $user->getUserIdentifier()]);
         $userPic = $picRepository->getProfilePic($userEntity);
-        dump($userPic);
 
         return new JsonResponse([
             'user' => [

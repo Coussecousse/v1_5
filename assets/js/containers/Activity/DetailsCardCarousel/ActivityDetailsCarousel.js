@@ -7,7 +7,6 @@ export default function ActivityDetailsCarousel({activity, opinion}) {
 
     // -- Carousel functions --
     const nextSlide = () => {
-        console.log('coucou');
         setCurrentIndex((prevIndex) => 
             prevIndex < opinion.pics.length - 1 ? prevIndex + 1 : prevIndex
         );

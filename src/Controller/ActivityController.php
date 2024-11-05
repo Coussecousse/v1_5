@@ -264,7 +264,6 @@ class ActivityController extends AbstractController
         ];
 
         $users = $activity->getUsers();
-        dump($users);
         foreach($users as $user) {
             $jsonActivity['opinions'][] = [
                 'user' => [
@@ -278,7 +277,6 @@ class ActivityController extends AbstractController
                 }, $picRepository->findBy(['activity' => $activity, 'user' => $user]))
             ];
         }
-        dump($jsonActivity);
 
         return new JsonResponse($jsonActivity, Response::HTTP_OK);
     }
