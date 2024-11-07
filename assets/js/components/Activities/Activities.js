@@ -259,7 +259,7 @@ export default function Activities() {
                         <span className={`loader-text ${formStyles.loaderTextGreen}`}>Chargement...</span>
                     </div>
                 ) : (
-                    <div className={styles.activitiesContainer}>
+                    <div className={styles.activitiesContainerBis}>
                         {currentActivities.length > 0 ? (
                             <>
                                 {!selectionnedLocation && <h3>Toutes les activités :</h3>}
