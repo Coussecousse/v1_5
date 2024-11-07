@@ -20,6 +20,8 @@ import Activities from './components/Activities/Activities';
 import CreateActivity from './components/Activities/Create/CreateActivity';
 import ActivityDetails from './components/Activities/Show/ActivityDetails';
 import UpdateActivities from './components/Activities/Update/UpdateActivities';
+import Roadtrips from './components/Roadtrips/Roadtrips';
+import CreateRoadtrip from './components/Roadtrips/Create/CreateRoadtrip';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -119,6 +121,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <UpdateActivities />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={`${paths.ROADTRIPS}`}
+                element={
+                  <ProtectedRoute>
+                    <Roadtrips />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={`${paths.CREATE_ROADTRIP}`}
+                element={
+                  <ProtectedRoute>
+                    <CreateRoadtrip />
                   </ProtectedRoute>
                 }
               />

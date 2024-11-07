@@ -196,7 +196,7 @@ export default function Activities() {
                     <form className={styles.searchFormContainer} onSubmit={handleSubmit} ref={formRef} >
                         <div className={styles.formFieldsContainer}>
                             <div className={styles.searchInputContainer}>
-                                <label>Localisation :</label>
+                                <label htmlFor="localisation">Localisation :</label>
                                 <input
                                     type="text"
                                     placeholder="Localisation"
@@ -269,7 +269,8 @@ export default function Activities() {
                                 ))}
                             </>
                         ) : (
-                            <p>Aucune activité trouvée</p> )
+                            <p>Aucune activité trouvée</p> 
+                        )
                         }
                     </div>
                 )}

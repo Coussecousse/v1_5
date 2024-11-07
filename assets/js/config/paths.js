@@ -15,7 +15,9 @@ const paths = {
     ACTIVITIES : '/activities',
     DETAILS_ACTIVITY : '/activities/:uid',
     UPDATE_ACTIVITY : '/activities/update/:uid',
-    CREATE_ACTIVITY : '/activities/create'
+    CREATE_ACTIVITY : '/activities/create',
+    ROADTRIPS : '/roadtrips',
+    CREATE_ROADTRIP : '/roadtrips/create',
 }
 
 export default paths;
