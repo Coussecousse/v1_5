@@ -1,0 +1,11 @@
+app_verify_email:
+  path: /verify-email
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+
+app_profile:
+  path: /profile
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+
+app_reset_password:
+  path: /reset-password/reset/{token}
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController

@@ -1,0 +1,8 @@
+/* Inputs */
+.input {
+    border-color: var(--color-primary) !important;
+}
+
+.input > label {
+    background-color: var(--color-500) !important;
+}

@@ -1,0 +1,275 @@
+.actvitiesContainer, .mapContainer {
+    margin: 0 auto;
+    width: 90%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-500);
+    box-shadow: var(--shadow);
+    padding: 2rem 1rem;
+}
+.actvitiesContainer {
+    max-width: 1100px;
+}
+
+.mapContainer {
+    max-width: 600px;
+}
+/* Container text informations */
+.textTitleContainer {
+    margin-bottom: 2rem;
+    color: var(--color-500);
+    text-align: center;
+}   
+
+
+/* Link */
+.createLink {
+    margin: 0 auto;
+    font-size: var(--fs-500);
+    font-weight: 700;
+}
+.createLink::after {
+    height: 1px !important;
+    background-color: var(--color-500);
+}
+
+/* Second title */
+.secondTitle {
+    font-size: var(--fs-600);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-500);
+    text-align: center;
+}
+
+
+.formFieldsContainer {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px var(--color-700);
+    border-radius: var(--radius-500);
+}
+.formFieldsContainer input:not(.submit) {
+    background-color: transparent;
+    border: none;
+    padding: .5rem;
+}
+.formFieldsContainer input, 
+.formFieldsContainer label {
+    color: var(--color-500);
+}
+
+.formFieldsContainer label,
+.submit {
+    background-color: var(--color-700);
+    color: var(--color-500);
+    border: none;
+    padding: .5rem 1rem;
+}
+
+.searchInputContainer label {
+    border-radius: 15px 15px 0 0;
+}
+
+.searchInputContainer {
+    flex: 1; 
+
+}
+.searchInputContainer,
+.autocompleteContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchInputContainer input {
+    flex: 1;
+}
+
+.submit {
+    cursor: pointer;
+    border-radius: 0 0 15px 15px;
+}
+.submit:hover {
+    background-color: var(--color-650);
+}
+
+.searchFormContainer input::placeholder {
+    color: var(--color-500-tr);
+}
+
+.autocompleteContainer > div {
+    position: relative;
+} 
+
+.mapForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--color-500);
+}
+.input {
+    border-color: var(--color-500) !important;
+}
+
+.input > label {
+    background-color: var(--color-primary) !important;
+}
+
+.input input, .input textarea {
+    color: var(--color-500) !important;
+}
+
+.input input::placeholder, .input textarea::placeholder {
+    color: var(--color-500-tr) !important;
+}
+
+
+/* Map */
+.map > p {
+    font-size: var(--fs-500);
+    font-weight: 600;
+}
+
+.map > div {
+    height: 350px;
+}
+
+.lgnLat {
+    height: fit-content !important;
+    margin: 1rem 0 2rem 0;
+}
+.lgnLat p {
+    padding-bottom: 1rem;
+}
+
+.lgnLat .smallExemple {
+    font-family: var(--ff-secondary);
+    padding: 2rem;
+}
+
+.button {
+    border: none !important;
+    margin-top: 2rem;
+}
+
+.button:hover {
+    border: 0 !important;
+    background-color: var(--color-450);
+    margin: 2rem 0 0 0 !important;
+}
+
+.link {
+    text-decoration: underline;
+}
+
+.lgnLatExample {
+    font-family: var(--ff-secondary);
+    padding-left: 2rem;
+}
+
+
+/* Map search activities */
+.containerAnimation {
+    position: relative;
+    overflow-y: hidden;
+}
+.searchMapContainer {
+    width: 100%;
+    height: 400px;
+    margin: 1rem 0;
+    transition: all .5s;
+}
+.searchMapContainer,
+.routeMap {
+    position: relative;
+    animation: mapArrive 1s forwards;
+}
+@keyframes mapArrive {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Activities */
+.activitiesContainer {
+    margin-top: 2rem;
+    color: var(--color-500);
+    position: relative;
+}
+
+/* Loader */
+.loaderContainer {
+    padding-top: 2rem;
+}
+
+/* Input */
+.searchInputContainer input,
+.autocompleteContainer input {
+    font-family: var(--ff-secondary);
+}
+
+/* Icon */
+.error {
+    font-weight: 600 !important;
+    display: flex;
+    align-items: center;
+}
+.errorIcon {
+    background-image: url('/assets/images/icon/warning.svg');
+    filter: invert(100%) sepia(99%) saturate(0%) hue-rotate(138deg) brightness(102%) contrast(100%);
+    background-size: contain; 
+    background-repeat: no-repeat;
+    width: 16px; 
+    height: 16px; 
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle; 
+}
+
+/* Pagination */
+.pagination {
+    margin: 2rem auto 0 auto;
+    width: fit-content;
+    display: flex;
+    gap: .5rem;
+}
+.pagination > button {
+    font-family: var(--ff-secondary);
+    padding: 0 .375rem;
+    cursor: pointer;
+    color: var(--color-500);
+    background-color: var(--color-700);
+    transition: .2s;
+    border: 1px solid var(--color-700);
+}
+.pagination > button:hover {
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-500);
+}
+.pagination > button:disabled {
+    opacity: .5;
+}
+
+@media screen and (min-width: 855px) {
+    .activitiesContainer {
+        padding: 2rem 0;
+    }
+    .formFieldsContainer {
+        flex-direction: row;
+    }
+    .searchInputContainer,
+    .autocompleteContainer {
+        flex-direction: row;
+    }
+    .submit {
+        border-radius: 0 15px 15px 0;
+        margin-top: 0;
+    }
+    .searchInputContainer label {
+        border-radius: 15px 0 0 15px;
+    }
+}

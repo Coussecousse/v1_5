@@ -1,0 +1,13 @@
+.section {
+    background-color: var(--color-500); 
+    display: flex;
+    flex-direction: column;
+    gap: 5.625rem;
+}
+
+.title {
+    font-size: var(--fs-700);
+    color: var(--color-800);
+    text-align: center;
+    font-weight: 700;
+}

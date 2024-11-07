@@ -1,0 +1,143 @@
+.section {
+    background-color: var(--color-500);
+}
+.container {
+    padding: 2.5rem 2.5rem 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1132px;
+    margin: 0 auto;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 1.5rem;
+}
+.img {
+    object-fit: cover;
+    min-height: 300px;
+    width: 100%;
+    overflow: visible;
+    align-self: flex-end;
+}
+.textContainer {
+    width: 90%;
+    color: var(--color-800);
+    display: grid;
+    max-width: 400px;
+}
+.title {
+    font-size: var(--fs-800);
+    font-weight: 900;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+/* Differents icons */ 
+.span {
+    height: 100%;
+    width: 1rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; 
+}
+.spanEmail {
+    background-image: url('/assets/images/icon/email.svg');
+}
+.spanUser {
+    background-image: url('/assets/images/icon/user.svg');
+}
+.spanPassword {
+    background-image: url('/assets/images/icon/lock.svg');
+}   
+
+/* Loader */
+.loaderContainer {
+    min-height: 400px;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+}
+.loader::after {
+    width: 24px;
+    height: 24px;
+}
+
+.loaderGreen, .loaderGreen::after {
+    border-color: var(--color-500) !important;
+}
+
+.loaderTextGreen {
+    color: var(--color-500) !important;
+    font-weight: 500 !important;
+}   
+
+/* Link */
+.link {
+    font-weight: 800;
+    margin-left: 2rem;
+    font-size: .825rem;
+    color: var(--color-primary);
+}
+.link::after {
+    background-color: var(--color-primary);
+    height: 1px !important;
+}
+
+/* List autocomplete */
+.suggestionsList {
+    position: absolute;
+    top: 100%;
+    background: var(--color-500);
+    color: var(--color-900);
+    font-family: var(--ff-secondary);
+    width: 100%;
+    padding: .5rem 1rem;
+    z-index: 100;
+}
+
+.suggestionsList li {
+    transition: .2s;
+    cursor: pointer;
+}
+.suggestionsList li:hover {
+    background-color: var(--color-450);
+}
+
+/* Error on primary color */
+/* Errors */
+.flashGreen {
+    background-color: var(--form-color-error-green) !important;
+}
+
+.flashGreen, .requiredGreen,.errorGreen {
+    color: var(--color-500) !important;
+    font-weight: 500 !important;
+    font-family: var(--ff-secondary) !important;
+    margin-top: .5rem;
+}
+
+
+@media screen and (min-width: 895px) {
+    .container {
+        flex-direction: row;
+    }
+    .img {
+        width: 50%;
+        min-height: calc(100vh - 70px - 2.5rem);
+    }
+    .textContainer {
+        width: 50%;
+    }
+    .title {
+        text-align: left;
+    }
+    .form {
+        padding-bottom: 3.625rem;
+    }
+}

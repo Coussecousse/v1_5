@@ -3,7 +3,7 @@ import styles from './Header.module.css';
 import Navigation from '../Navigation/Navigation';
 import HamburgerButton from "./HamburgerButton/HamburgerButton";
 
-export default function Header() {
+export default function Header({ isAuthenticated }) {
 
     const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
@@ -21,16 +21,16 @@ export default function Header() {
             hamburger.classList.remove(styles.open);
         }
     }, [isHamburgerOpen])
+
     return (
         <header className={styles.header}>
             <div className={styles.navigationContainer}>
-                <a href="" className={styles.title}>
+                <a href="/" className={styles.title}> {/* Changed href to "/" for home navigation */}
                     RoadtripClub
                 </a>
                 <HamburgerButton hamburgerClickHandler={hamburgerClickHandler} styles={styles} />
             </div>
-            <Navigation hamburgerState={isHamburgerOpen}/>
+            <Navigation hamburgerState={isHamburgerOpen} isAuthenticated={isAuthenticated} />
         </header>
     );
 }
-

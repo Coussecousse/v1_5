@@ -1,0 +1,34 @@
+/* Form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2.5rem 2.5rem 3rem 2.5rem;
+}
+
+/* Inputs */
+.input {
+    border-color: var(--color-500) !important;
+}
+
+.input input {
+    color: var(--color-500) !important;
+}
+
+.input > label {
+    background-color: var(--color-primary) !important;
+}
+
+/* Span */
+.spanIcon {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(269deg) brightness(111%) contrast(101%);
+}
+
+.loader {
+    border-color: var(--color-500) !important;
+}
+
+.loader::after {
+    border-color: var(--color-500) !important;
+}
+

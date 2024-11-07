@@ -1,0 +1,89 @@
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.wait {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.loader {
+  width: 80px;
+  height: 80px;
+  border: 3px dotted var(--color-800);
+  border-style: solid solid dotted dotted;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+.loader::after {
+  width: 40px;
+  height: 40px;
+}
+
+
+.textMessage {
+    font-size: var(--fs-500);
+    width: 100%;
+    color: var(--color-800);
+    text-align: center;
+    padding: 1rem;
+}
+
+.textMessage h1 {
+    display: inline;
+}
+
+.img {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.img img {
+    flex: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    top: 4px;
+    margin-right: .5rem;
+    position: relative;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.goodIcon {
+    background-image: url(/assets/images/icon/check.svg);
+}
+
+.badIcon {
+    background-image: url(/assets/images/icon/cross.svg);
+}
+
+
+
+@media screen and (min-width: 768px) {
+  .textMessage {
+    padding: 2rem 5rem;
+  }
+}
