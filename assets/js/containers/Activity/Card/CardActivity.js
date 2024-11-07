@@ -9,8 +9,8 @@ import DrawMap from "../../Map/DrawMap/DrawMap";
 import Map from "../../Map/Map";
 
 export default function CardActivity({ activity, index, selectionnedLocation }) {
-    const maxPics = 3;
-    const limitedPics = activity.pics.slice(0, maxPics); 
+    const maxPics = 5;
+    const [limitedPics, setLimitedPics] = useState([]);
     const [showMap, setShowMap] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [drawJsonResponse, setDrawJsonResponse] = useState(null);
@@ -22,7 +22,7 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
     // -- Carousel functions --
     const nextSlide = () => {
         setCurrentIndex((prevIndex) => 
-            prevIndex < activity.pics.length - 1 ? prevIndex + 1 : prevIndex
+            prevIndex < limitedPics.length - 1 ? prevIndex + 1 : prevIndex
         );
     };
     
@@ -34,6 +34,7 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
 
     // -- Description --
     const truncateDescription = (description, maxLength) => {
+        if (!activity.description) return;
         return description.length > maxLength
             ? description.substring(0, maxLength) + "..."
             : description;
@@ -77,11 +78,16 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
         });
     }
 
+    useEffect(() => {
+        if (!activity) return;
+        setLimitedPics(activity.pics.length > maxPics ? activity.pics.slice(0, maxPics) : activity.pics);
+    }, [activity]);
+
     return (
         <div key={index} className={styles.allContainer}>
             <div className={`${styles.card} ${activityStyles.container}`}>
                 <div className={`${activityStyles.carousel} ${styles.carousel}`}>
-                {limitedPics.length > 0 && (
+                {limitedPics && limitedPics.length > 0 && (
                 <div className={styles.carouselContainer}>
                     {limitedPics.length > 1 && (
                         <button className={`${styles.prev} ${styles.button}`} onClick={prevSlide} disabled={currentIndex === 0} aria-label="Precedent">❮</button>
@@ -123,7 +129,7 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
                         <small><button className={styles.mapButton} onClick={() => setShowMap(!showMap)}>
                             {showMap ? 'Cacher la carte' : 'Voir la carte'}
                         </button></small>
-                        <small><Link to={`${paths.ACTIVITIES}/${activity.uid}`} className={`link ${styles.link}`}>Plus de détails...</Link></small>
+                        <small><Link to={paths.DETAILS_ACTIVITY.replace(':uid', activity.uid)} className={`link ${styles.link}`}>Plus de détails...</Link></small>
                     </div>
                 </div>
             </div>

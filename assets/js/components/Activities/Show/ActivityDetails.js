@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import activitiesStyles from '../Activities.module.css';
 import styles from './ActivityDetails.module.css';
 import formStyles from '../../../containers/Form/Form.module.css';
 import ActivityDetailsCarousel from "../../../containers/Activity/DetailsCardCarousel/ActivityDetailsCarousel";
 import Map from "../../../containers/Map/Map";
 import config from "../../../config/locationIQ";
+import paths from "../../../config/paths";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 export default function ActivityDetails() {
     const [activity, setActivity] = useState(null);
@@ -48,7 +49,7 @@ export default function ActivityDetails() {
                 setFlashMessage({ error: 'Une erreur est survenue lors de l\'affichage de l\'activité ou de la carte' });
             });
     
-        // When we get all the informations :
+        // When we got all the informations :
         Promise.all([profilePromise, activityPromise])
             .finally(() => {
                 setLoading(false);
@@ -56,15 +57,13 @@ export default function ActivityDetails() {
     }, []);
 
     const getUserContribution = () => {
-        console.log(currentUser.uid)
-        console.log(activity.opinions.filter(opinion => opinion.user.uid === currentUser.uid))
         return activity.opinions.filter(opinion => opinion.user.uid === currentUser.uid);
     }
 
     return (
         <section className={`first-section ${activitiesStyles.section}`}>
             <h1 className={`typical-title ${activitiesStyles.title}`}>Détails de l'activité</h1>
-            <div className={activitiesStyles.actvitiesContainer}>
+            <div className={activitiesStyles.activitiesContainer}>
                 {loading ? (
                     <div className={`${activitiesStyles.loaderContainer} loader-container`}>
                         <span className={`loader ${formStyles.loader} ${formStyles.loaderGreen}`}></span>
@@ -77,9 +76,7 @@ export default function ActivityDetails() {
                         { activity.opinions.map((opinion,index) => (
                             <ActivityDetailsCarousel key={index} activity={activity} opinion={opinion} />
                         ))}
-                        {getUserContribution().length > 0 ? 
-                            <Link className={styles.contribButton}>Modifier ma contribution</Link> : <Link className={styles.contribButton}>Ajouter ma contribution</Link>
-                        }
+                        <Link to={paths.UPDATE_ACTIVITY.replace(':uid', activity.uid)} className={styles.contribButton}>{getUserContribution().length > 0 ? 'Modifier ma contribution' : 'Ajouter ma contribution'}</Link>
                         <div className={styles.map}>
                             <Map jsonLocation={JSONLocation} zoom={10}/>
                         </div>

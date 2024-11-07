@@ -185,7 +185,7 @@ export default function Activities() {
         <section className={`first-section ${styles.section}`}>
             <h1 className={`typical-title ${styles.title}`}>Activités</h1>
             <div className={styles.container}>
-                <div className={`${styles.actvitiesContainer}`}>
+                <div className={`${styles.activitiesContainer}`}>
                     <div className={styles.textTitleContainer}>
                         <h2 className={styles.secondTitle}>Chercher une activité dans la communauté</h2>
                         <div>

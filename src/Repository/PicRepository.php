@@ -18,14 +18,14 @@ class PicRepository extends ServiceEntityRepository
     }
 
     public function getProfilePic(User $user): ?Pic
-{
-    return $this->createQueryBuilder('p')
-        ->andWhere('p.user = :user')
-        ->andWhere('p.activity IS NULL')
-        ->setParameter('user', $user)
-        ->getQuery()
-        ->getOneOrNullResult();
-}
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :user')
+            ->andWhere('p.activity IS NULL')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 //    /**
 //     * @return Pic[] Returns an array of Pic objects
 //     */
