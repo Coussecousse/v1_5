@@ -9,12 +9,14 @@ use App\Entity\Pic;
 use App\Entity\User;
 use App\Form\ActivityFormType;
 use App\Form\ActivitySearchFormType;
+use App\Form\UpdateActivityFormType;
 use App\Repository\ActivityRepository;
 use App\Repository\DescriptionRepository;
 use App\Repository\PicRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -115,10 +117,10 @@ class ActivityController extends AbstractController
                         $activityPic = new Pic();
                         $activityPic->setPath($newFilename);
                         $activityPic->setActivity($activity);
+                        $activityPic->setUser($this->getUser());    
     
                         $em->persist($activityPic);
                         $activity->addPic($activityPic);
-                        $em->flush();
                     }
                 }
 
@@ -279,5 +281,104 @@ class ActivityController extends AbstractController
         }
 
         return new JsonResponse($jsonActivity, Response::HTTP_OK);
+    }
+
+    #[Route('/update/{uid}', name: 'app_activity_update_uid', methods: ['POST'])]
+    public function updateUid(Request $request, 
+        EntityManagerInterface $em, 
+        ActivityRepository $activityRepository, 
+        PicRepository $picRepository): JsonResponse
+    {
+
+        $uid = $request->attributes->get('uid');
+        $activity = $activityRepository->findOneBy(['uid' => $uid]);
+        if (!$activity) {
+            return new JsonResponse(['error' => 'Activity not found.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->createForm(UpdateActivityFormType::class);
+        $data = $request->request->all();
+        $files = $request->files->all();
+
+        // If there's file send and just file name from past contribution updated
+        if (isset($data['activity_pics']) && isset($files['activity_pics'])) {
+            $data['activity_pics'] = array_merge((array)$data['activity_pics'], (array)$files['activity_pics']);
+        } elseif (isset($files['activity_pics'])) {
+            $data['activity_pics'] = $files['activity_pics'];
+        }
+        $form->submit($data);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $description = new Description();
+                $description->setDescription($form->get('description')->getData())
+                            ->setActivity($activity)
+                            ->setUser($this->getUser());
+                $em->persist($description);
+
+                $pics = $picRepository->findBy(['activity' => $activity, 'user' => $this->getUser()]);
+                $submitedPics = $form->get('activity_pics')->getData();  
+
+                // If a smarter person send more than 6 pics :)
+                if (count($submitedPics) > 6 ) {
+                    $submitedPics = array_slice($submitedPics, 0, 6);
+                }
+
+                // Delete the pics 
+                $activityPicsDir = $this->getParameter('activity_pics_directory');
+                foreach($pics as $pic) {
+                    $namePath = $pic->getPath();
+                    if (!in_array($namePath, array_map(function ($file) { return $file instanceof File ? null : $file; }, $data['activity_pics']))) {
+                        $user = $this->getUser();
+                        $userEntity = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+                        $userEntity->removePic($pic);
+                        $em->remove($pic);
+                        
+                        $fullFilePath = $activityPicsDir .'/'. $namePath;
+                        if (file_exists($fullFilePath)) {
+                            unlink($fullFilePath);  
+                        }
+                    }
+                }
+
+                // Add new pics
+                foreach($submitedPics as $pic) {
+                    if (in_array($pic->getClientOriginalName(), $pics)) continue;
+
+                    $newFilename = uniqid() . '.' . $pic->guessExtension();
+                    try {
+                        $pic->move($activityPicsDir, $newFilename);
+                    } catch (\Exception $e) {
+                        return new JsonResponse(['error' => 'Error uploading file.'], Response::HTTP_BAD_REQUEST);
+                    }
+
+                    // Create a new pic
+                    $newPic = new Pic();
+                    $newPic->setPath($newFilename); 
+                    $newPic->setActivity($activity);
+                    $newPic->setUser($this->getUser());
+
+                    $em->persist($newPic);
+                    $activity->addPic($newPic);
+                } 
+
+                $activity->addDescription($description);
+                $activity->addUser($this->getUser());
+                
+                $em->persist($activity);
+                $em->flush();
+
+                return new JsonResponse(['message' => 'Activity updated successfully.'], Response::HTTP_OK);
+            } catch (\Exception $e) {
+                return new JsonResponse(['error' => 'An error occurred while updating the activity.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
+
+
+        foreach ($form->getErrors(true) as $error) {
+            $errors[$error->getOrigin()->getName()] = $error->getMessage();
+        }
+
+        return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }
 }

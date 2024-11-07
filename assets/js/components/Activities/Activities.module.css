@@ -1,4 +1,4 @@
-.actvitiesContainer, .mapContainer {
+.activitiesContainer, .mapContainer {
     margin: 0 auto;
     width: 90%;
     background-color: var(--color-primary);
@@ -6,8 +6,12 @@
     box-shadow: var(--shadow);
     padding: 2rem 1rem;
 }
-.actvitiesContainer {
+.activitiesContainer {
     max-width: 1100px;
+}
+
+.activitiesContainerBis {
+    margin-top: 2rem;  
 }
 
 .mapContainer {
@@ -92,6 +96,9 @@
     background-color: var(--color-650);
 }
 
+.searchFormContainer {
+
+}
 .searchFormContainer input::placeholder {
     color: var(--color-500-tr);
 }
@@ -256,7 +263,7 @@
 
 @media screen and (min-width: 855px) {
     .activitiesContainer {
-        padding: 2rem 0;
+        padding: 2rem 2rem;
     }
     .formFieldsContainer {
         flex-direction: row;

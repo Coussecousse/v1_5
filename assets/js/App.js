@@ -19,6 +19,7 @@ import ChangeInformations from './components/Profile/ChangeInformations/ChangeIn
 import Activities from './components/Activities/Activities';
 import CreateActivity from './components/Activities/Create/CreateActivity';
 import ActivityDetails from './components/Activities/Show/ActivityDetails';
+import UpdateActivities from './components/Activities/Update/UpdateActivities';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -106,10 +107,18 @@ function App() {
                 }
               />
               <Route
-                path={`${paths.ACTIVITIES}/:uid`}
+                path={`${paths.DETAILS_ACTIVITY}`}
                 element={
                   <ProtectedRoute>
                     <ActivityDetails />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={`${paths.UPDATE_ACTIVITY}`}
+                element={
+                  <ProtectedRoute>
+                    <UpdateActivities />
                   </ProtectedRoute>
                 }
               />

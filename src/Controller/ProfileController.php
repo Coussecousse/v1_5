@@ -36,6 +36,7 @@ class ProfileController extends AbstractController
                 'profile_pic' => $userPic ?
                     $userPic->getPath()
                     : null,
+                'uid' => $userEntity->getUid(),
             ],
         ]);
     }
@@ -43,7 +44,8 @@ class ProfileController extends AbstractController
     #[Route('/change-informations', name: '_change_informations_api')]
     public function changeInformations(Request $request,
         UserPasswordHasherInterface $passwordEncoder,
-        EntityManagerInterface $en): JsonResponse
+        EntityManagerInterface $en,
+        PicRepository $picRepository): JsonResponse
     {
         $form = $this->createForm(ChangeProfileInformationsFormType::class);
         $data = array_merge($request->request->all(), $request->files->all());
@@ -68,7 +70,7 @@ class ProfileController extends AbstractController
 
             $profilePic = $form->get('profile_pic')->getData();
             if ($profilePic) {
-                $oldProfilePic = $userEntity->getPic();
+                $oldProfilePic = $picRepository->getProfilePic($userEntity);
                 $filesystem = new Filesystem();
                 
                 $profilePicsDir = $this->getParameter('profile_pics_directory');
@@ -84,7 +86,7 @@ class ProfileController extends AbstractController
                 $newProfilePic->setPath($newFilename)->setUser($userEntity);
             
                 $en->persist($newProfilePic);
-                $userEntity->setProfilPic($newProfilePic);
+                $userEntity->addPic($newProfilePic);
             
                 $en->persist($userEntity);
                 $en->flush();

@@ -13,6 +13,8 @@ const paths = {
     PROFILE_ACTIVITIES: '/profile/activities',
     PROFILE_CHANGE_INFORMATIONS: '/profile/change-informations',
     ACTIVITIES : '/activities',
+    DETAILS_ACTIVITY : '/activities/:uid',
+    UPDATE_ACTIVITY : '/activities/update/:uid',
     CREATE_ACTIVITY : '/activities/create'
 }
 
