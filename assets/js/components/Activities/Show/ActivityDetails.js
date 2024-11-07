@@ -15,6 +15,7 @@ export default function ActivityDetails() {
     const [JSONLocation, setJSONLocation] = useState(null);
     const [flashMessage, setFlashMessage] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         const uid = window.location.pathname.split("/").pop();
@@ -60,6 +61,19 @@ export default function ActivityDetails() {
         return activity.opinions.filter(opinion => opinion.user.uid === currentUser.uid);
     }
 
+    // -- Carousel functions --
+    const nextSlide = () => {
+        setCurrentIndex((prevIndex) => 
+            prevIndex < activity.opinions.length - 1 ? prevIndex + 1 : prevIndex
+        );
+    };
+    
+    const prevSlide = () => {
+        setCurrentIndex((prevIndex) => 
+            prevIndex > 0 ? prevIndex - 1 : prevIndex
+        );
+    };
+
     return (
         <section className={`first-section ${activitiesStyles.section}`}>
             <h1 className={`typical-title ${activitiesStyles.title}`}>Détails de l'activité</h1>
@@ -73,9 +87,19 @@ export default function ActivityDetails() {
                 (
                     <>
                         <h2 className={activitiesStyles.secondTitle}>{activity.display_name}</h2>
-                        { activity.opinions.map((opinion,index) => (
-                            <ActivityDetailsCarousel key={index} activity={activity} opinion={opinion} />
-                        ))}
+                        <div className={styles.opinionsCarousel}>
+                            <div className={styles.opinionsCarouselWrapper} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+                                { activity.opinions.map((opinion,index) => (
+                                    <ActivityDetailsCarousel key={index} activity={activity} opinion={opinion} />
+                                ))}
+                            </div>
+                            {activity.opinions.length > 0 && (
+                                <div className={styles.buttonsContainer}>
+                                    <button onClick={prevSlide} disabled={currentIndex === 0} aria-label="Precedent" className={styles.button}>❮</button>
+                                    <button onClick={nextSlide} disabled={currentIndex === activity.opinions.length - 1} aria-label="Precedent" className={styles.button}>❯</button>
+                                </div>
+                            )}
+                        </div>
                         <Link to={paths.UPDATE_ACTIVITY.replace(':uid', activity.uid)} className={styles.contribButton}>{getUserContribution().length > 0 ? 'Modifier ma contribution' : 'Ajouter ma contribution'}</Link>
                         <div className={styles.map}>
                             <Map jsonLocation={JSONLocation} zoom={10}/>

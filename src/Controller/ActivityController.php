@@ -361,6 +361,11 @@ class ActivityController extends AbstractController
                     $em->persist($newPic);
                     $activity->addPic($newPic);
                 } 
+
+                $activity->addDescription($description);
+                $activity->addUser($this->getUser());
+                
+                $em->persist($activity);
                 $em->flush();
 
                 return new JsonResponse(['message' => 'Activity updated successfully.'], Response::HTTP_OK);

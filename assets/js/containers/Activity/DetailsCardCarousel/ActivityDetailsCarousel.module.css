@@ -1,10 +1,12 @@
 .container {
-    margin: 2rem 0;
+    padding: 2rem 0;
     height: 800px;
     display: flex;
     flex-direction: column;
     color: var(--color-500);
     gap: 1rem;
+    width: 100%;
+    min-width: 100%;
 }
 
 .picsContainer {
@@ -143,7 +145,7 @@
 @media screen and (min-width: 768px) {
     .container {
         flex-direction: row;
-        margin: 2rem 0;
+        padding: 2rem 0;
         height: 600px;
     }
     .picsContainer {

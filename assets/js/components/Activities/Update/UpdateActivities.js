@@ -38,7 +38,8 @@ export default function UpdateActivities() {
         if (!user || !activity) return;
 
         const userOpinion = activity.opinions.find(opinion => opinion.user.uid === user.uid) || [];
-
+        
+        if (userOpinion.length === 0) return;
         setActivityPics(userOpinion.pics.map(pic => ({ name: pic })));
         setDescription(userOpinion.description);
     }, [user, activity]);
