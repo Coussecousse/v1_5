@@ -1,0 +1,153 @@
+.roadtripsContainer {
+    max-width: 1100px;
+    width: 90%;
+    margin: 0 auto;
+    background-color: var(--color-primary);
+    color: var(--color-500);
+    border-radius: var(--radius-500);
+    box-shadow: var(--shadow);
+    padding: 2rem 1rem;
+}
+
+/* Second title */
+.secondTitle {
+    font-size: var(--fs-600);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-500);
+    text-align: center;
+}
+
+/* Create Link */
+.linkContainer {
+    width: fit-content;
+    margin: 0 auto;
+}
+.createLink {
+    margin: 0 auto;
+    font-size: var(--fs-500);
+    font-weight: 700;
+}
+.createLink::after {
+    height: 1px !important;
+    background-color: var(--color-500);
+}
+
+/* Form */
+.searchRoadtrip {
+    margin-top: 2rem;
+}
+.searchFormContainer input::placeholder {
+    color: var(--color-500-tr);
+}
+
+.formPrincipal {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px var(--color-700);
+    border-radius: var(--radius-500);
+}
+.formPrincipal input:not(.submit) {
+    background-color: transparent;
+    border: none;
+    padding: .5rem;
+}
+.formPrincipal input, 
+.formPrincipal label {
+    color: var(--color-500);
+}
+
+.formPrincipal label,
+.submit {
+    background-color: var(--color-700);
+    color: var(--color-500);
+    border: none;
+    padding: .5rem 1rem;
+}
+
+/* -- Input container */
+.countryInputContainer, .filter {
+    display: flex;
+    flex-direction: column;
+}
+.countryInputContainer {
+    flex: 1;
+}
+.countryInputContainer input, 
+.filter option,
+.filter select, 
+.options label {
+    font-family: var(--ff-secondary);
+}
+.filter select {
+    background: transparent;
+    color: var(--color-500);
+    border-radius: none;
+    min-height: 40px;
+}
+.filter option {
+    background-color: var(--color-700);
+    border-radius: 0;
+}
+.countryInputContainer > div {
+    position: relative;
+} 
+.countryInputContainer label {
+    border-radius: 15px 15px 0 0;
+}
+
+/* -- Submit button */
+.submit {
+    cursor: pointer;
+    border-radius: 0 0 15px 15px;
+}
+.submit:hover {
+    background-color: var(--color-650);
+}
+
+/* -- Options */
+.options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: .5rem;
+}
+.options fieldset {
+    width: 180px;
+}
+.legend,
+.optionsList {
+    margin-left: 1rem;
+}
+.legend {
+    margin-right: .5rem;
+}
+.options label {
+    padding-left: .5rem;
+    font-size: .875rem;
+}
+.options li {
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+    .formPrincipal {
+        flex-direction: row;
+    }
+    .countryInputContainer,  .filter {
+        flex-direction: row;
+    }
+    .countryInputContainer label {
+        border-radius: 15px 0 0 15px;
+    }
+    .submit {
+        border-radius: 0 15px 15px 0;
+        margin-top: 0;
+    }
+    .options {
+        flex-direction: row;
+        align-items: baseline;
+    }
+}

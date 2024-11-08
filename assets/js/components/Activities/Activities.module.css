@@ -96,9 +96,6 @@
     background-color: var(--color-650);
 }
 
-.searchFormContainer {
-
-}
 .searchFormContainer input::placeholder {
     color: var(--color-500-tr);
 }
