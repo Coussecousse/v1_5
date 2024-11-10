@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./CreateRoadtrip.module.css";
 import roadtripsStyles from '../Roadtrips.module.css';
 import formStyles from '../../../containers/Form/Form.module.css';
+import config from "../../../config/locationIQ";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 
 export default function CreateRoadtrip() {
     const [loading, setLoading] = useState(false);
-    const [countrySuggestions, setCountrySuggestions] = useState([]);
+    const [countrySuggestions, setCountrySuggestions] = useState({});
+    const [countryQuery, setCountryQuery] = useState('');
     const [activityType, setActivityType] = useState([]);
     const [errors, setErrors] = useState({});
     const [elementOpen, setElementOpen] = useState({
@@ -17,6 +19,7 @@ export default function CreateRoadtrip() {
         activity: false,
         place: false,
     })
+    const debounceTimeout = useRef(null);
     const refStage = useRef(null);
     const refStageButton = useRef(null);
     const refStageList = useRef(null);
@@ -66,6 +69,30 @@ export default function CreateRoadtrip() {
         }
     }, [elementOpen]);
     
+    // -- Country --
+    const handleCountryChange = (e) => {
+        const value = e.target.value;
+        setCountryQuery(value);
+
+        if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+
+        debounceTimeout.current = setTimeout(async () => {
+            if (value.length > 2) {
+                try {
+                    const response = await axios.get(`https://eu1.locationiq.com/v1/autocomplete?q=${value}&tag=place%3Acountry&key=${config.key}`)
+                    setCountrySuggestions(response.data)
+                } catch (error) {
+                    console.error('Error fetching autocomplete suggestions', error);
+                }
+            } else {
+                setCountrySuggestions({})
+            }
+        }, 300)
+    };
+    const handleCountrySuggestionClick = (suggestion) => {
+        setCountryQuery(suggestion.display_place);
+        setCountrySuggestions({});
+    }
     
     return (
         <section className={`first-section`}>
@@ -106,13 +133,15 @@ export default function CreateRoadtrip() {
                                                 type="text"
                                                 id="country"
                                                 name="country"
-                                                placeholder="Pays">
+                                                placeholder="Pays"
+                                                onChange={handleCountryChange}
+                                                value={countryQuery}>
                                             </input>
                                         </div>
                                         {countrySuggestions.length > 0 && (
                                             <ul className={formStyles.suggestionsList}>
                                                 {countrySuggestions.map((country, index) => (
-                                                    <li key={index}>{country}</li>
+                                                    <li key={index} onClick={() => handleCountrySuggestionClick(country)}>{country.display_place}</li>
                                                 ))}
                                             </ul>
                                         )}
