@@ -1,0 +1,91 @@
+.map {
+    height: 500px;
+    width: 100%;
+}
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.standartInformations {
+    display: flex;
+    gap: 1rem;  
+}
+.standartInformations > div:first-child {
+    flex: 1;
+}
+/* -- Input */
+.input label {
+    background-color: var(--color-primary);
+}
+
+/* Button */
+.button {
+    cursor: pointer;
+    border: none;
+    color: var(--color-500);
+    padding: .375rem .5rem;
+    background-color: var(--color-700);
+}
+.openButton {
+    display: flex;
+    gap: .5rem;
+}
+.openButton .openIcon {
+    transition: transform .2s;
+}
+.openButton.open .openIcon {
+    transform: rotate(90deg);
+}
+/* Stage Buttons container */
+.stageButtonsContainer {
+    display: flex;
+    gap: 1rem;
+}   
+/* -- Hidden Container */
+.stageHiddenContainer {
+    position: relative;
+    display: none;
+}
+.stageHiddenContainer.open {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+/* ---- Popup Container */
+.popUpContainer {
+    display: none;
+    transition: all .2s;
+    gap: 1rem;
+    flex-direction: column;
+}
+.popUpContainer.open {
+    display: flex;
+    animation: .2s comeFromBottom forwards;
+}
+@keyframes comeFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* -- Differents form */
+.stageFormContainer {
+    display: none;
+}
+.stageFormContainer.open {
+    display: flex;
+}
+/* -- Buttons */
+.stageButtonsContainer {
+    display: flex;
+    gap: 1rem;
+}

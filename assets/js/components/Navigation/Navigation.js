@@ -40,8 +40,8 @@ export default function Navigation({ hamburgerState, isAuthenticated }) {
                     </>
                 ) : (
                     <>
-                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.ACTIVITIES}>Activités</NavLink></li>
                         <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.ROADTRIPS}>Roadtrips</NavLink></li>
+                        <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.ACTIVITIES}>Activités</NavLink></li>
                         <li className={`${styles.fromRight} nav__link`}><NavLink to={paths.PROFILE}>Profil</NavLink></li>
                         <li className={`${styles.fromLeft} nav__link`}><NavLink to={paths.LOGOUT}>Déconnexion</NavLink></li>
                     </>

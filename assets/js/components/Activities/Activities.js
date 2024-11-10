@@ -234,7 +234,7 @@ export default function Activities() {
                         </div>
                         {errors && (
                             <div className={formStyles.errorsContainer}>
-                                 {Object.keys(errors).map((key) => (
+                                {Object.keys(errors).map((key) => (
                                     <small key={key} className={`${formStyles.errorGreen} ${styles.error}`}>
                                         <div className={styles.errorIcon}></div>{errors[key]}
                                     </small>

@@ -39,7 +39,6 @@ export default function CreateActivity() {
     }
 
     useEffect(() => {
-
         if (isTypingAddress) return;
 
         const value = addressRef.current.value;
