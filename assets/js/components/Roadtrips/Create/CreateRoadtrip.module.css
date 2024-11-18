@@ -102,19 +102,6 @@
     padding: 1rem 0;
 }
 
-
-/* -- Differents form */
-.stageFormContainer {
-    display: none;
-}
-.stageFormContainer.open {
-    display: flex;
-    gap: 1rem;
-    min-height: 300px;
-}
-.stageFormContainer.open > div {
-    width: 50%;
-}
 /* -- Buttons */
 .stageButtonsContainer {
     display: flex;

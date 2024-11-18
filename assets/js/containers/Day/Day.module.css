@@ -17,7 +17,7 @@
 }
 /* Stage container */
 .stageContainer {
-    padding-top: 1rem;
+    padding: 1rem .5rem;
 }
 .stageContainer, .placesContainer, .addContainer {
     display: none;
@@ -30,11 +30,13 @@
     animation: fromBottom .2s forwards;
     overflow: hidden;
 }
+
 /* Add container */
 .addContainer.open,
 .addPlaceContainer.open {
     gap: 1rem;
 }
+
 
 /* Search Container */
 .searchContainer {
@@ -97,6 +99,8 @@
 .littleMap {
     height: 300px;
     animation: fromRight .2s forwards;
+    display: flex;
+    flex-direction: column;
 }
 
 @keyframes fromRight {
@@ -107,4 +111,21 @@
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+/* Location list */
+.locationList {
+    max-height: 200px;
+    overflow-y: auto ;
+    list-style: disc;
+}
+.locationList > li {
+    cursor: pointer;
+    padding: .5rem 0;
+    color: var(--color-500);
+    transition: .2s;
+}
+.locationList > li.activeJsonDrawLocation,
+.locationList > li:hover {
+    background-color: var(--color-700);
 }

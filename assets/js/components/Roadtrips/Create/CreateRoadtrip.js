@@ -83,7 +83,6 @@ export default function CreateRoadtrip() {
         setCountrySuggestions({});
     }
 
-
     return (
         <section className="first-section">
             <h1 className="typical-title">Créer un roadtrip</h1>
@@ -183,9 +182,9 @@ export default function CreateRoadtrip() {
                                         days.length > 0 ? (
                                             <ul >
                                                 {days.map((day, index) => (
-                                                    <li key={index}>
-                                                        <Day day={day} index={index} setDays={setDays} days={days}/>
-                                                    </li>
+                                                        <li key={index}>
+                                                            <Day day={day} index={index} setDays={setDays} days={days} />
+                                                        </li>
                                                 ))}
                                             </ul>
                                         ) : (<p>Vous n'avez pas encore ajouté de jours.</p>)

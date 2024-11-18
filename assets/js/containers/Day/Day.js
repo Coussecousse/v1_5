@@ -6,6 +6,7 @@ import Place from "../Place/Place";
 import Map from "../Map/Map";
 import config from "../../config/locationIQ";
 import axios from "axios";
+import DrawMap from "../Map/DrawMap/DrawMap";
 
 export default function Day({day, index, setDays, days}) {
     const [isOpen, setIsOpen] = useState(true);
@@ -18,6 +19,9 @@ export default function Day({day, index, setDays, days}) {
     });  
     const [errors, setErrors] = useState({});
     const [newQueryLocation, setNewQueryLocation] = useState({});
+    const [jsonDraw, setJsonDraw] = useState({});
+    const [localisations, setLocalisations] = useState([]);
+    const [currentSearchDraw, setCurrentSearchDraw] = useState({});
     const refDayButton = useRef(null);  
     const refStage = useRef(null);
     const refAddContainer = useRef(null);
@@ -40,7 +44,6 @@ export default function Day({day, index, setDays, days}) {
 
     useEffect(() => {
         if (isOpenAdd.state) {
-            console.log('merde');
             refPlacesContainer.current?.classList.remove(styles.open);
             if (isOpenAdd.type.place || isOpenAdd.type.activity) {
                 refAddContainer.current?.classList.add(styles.open);
@@ -62,7 +65,6 @@ export default function Day({day, index, setDays, days}) {
     // -- Search Place -- 
     const handleSearchPlace = () => {
         const query = refInputPlace.current.value;
-        console.log(query);
 
         if (query.length < 3) {
             setErrors({...errors, name_place: 'Vous devez donner plus d\'indications...'})
@@ -73,7 +75,6 @@ export default function Day({day, index, setDays, days}) {
         .then(response => {
             if (response.data) {
                 setNewQueryLocation(response.data);
-                console.log(response.data);
             } else {
                 setErrors({...errors, name_place : 'Adresse non trouvée' })
             }
@@ -83,15 +84,57 @@ export default function Day({day, index, setDays, days}) {
             setErrors({...errors, name_place: 'Une erreur est survenue lors de la recherche de l\adresse'})
         })
     }
+
+    useEffect(() => {
+        if (day.length > 0 && Object.keys(newQueryLocation).length > 0) {
+            setCurrentSearchDraw(prev => {
+                if (prev !== newQueryLocation[0]) return newQueryLocation[0];
+                return prev;
+            });
+        }
+    }, [day, newQueryLocation]);
+
+    useEffect(() => {
+        if (Object.keys(currentSearchDraw).length < 1) return;
+        const firstPlace = day[day.length - 1];
+        const secondPlace = currentSearchDraw;
+
+        axios.get(`https://eu1.locationiq.com/v1/directions/driving/${firstPlace.lng},${firstPlace.lat};${secondPlace.lon},${secondPlace.lat}?key=${config.key}&steps=true&alternatives=true&geometries=polyline&overview=full`)
+        .then(response => {
+            if (response.data) {
+                setJsonDraw(response.data);
+                setLocalisations([firstPlace, secondPlace]);
+            } else {
+                setErrors({...errors, name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire'})
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching result', error);
+            setErrors({...errors, name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire'})
+        });
+    }, [currentSearchDraw]);
     
     const handleAddNewLocationToDay = () => {
+        let locationData;
+        if (Object.keys(currentSearchDraw).length < 1) {
+            const { display_name, lat, lon } = newQueryLocation; 
+            locationData = { display_name: display_name, lat: lat, lng: lon };
+        } else { 
+            const {display_name, lat, lon} = currentSearchDraw;
+            locationData = { display_name: display_name, lat: lat, lng: lon };
+            setCurrentSearchDraw({});
+        }
+        setNewQueryLocation({});
+        refInputPlace.current.value = '';
+
         setDays(prevDays => {
             const updatedDays = [...prevDays];
-            updatedDays[index] = [...day, newQueryLocation];
+            updatedDays[index] = [...day, locationData];
             return updatedDays;
         });
-        setIsOpenAdd({state: false, type: {place: false, activity: false}});
+        setIsOpenAdd({ state: false, type: { place: false, activity: false } });
     };
+
 
     return (
         <div className={styles.container}>
@@ -125,8 +168,8 @@ export default function Day({day, index, setDays, days}) {
                 <div className={`${styles.placesContainer} ${styles.open}`} ref={refPlacesContainer}>
                     {day.length > 0 ? (
                         <ul className={styles.placesList}>
-                            {day.map((place, index) => (
-                                <li key={index}><Place place={place} index={index} /></li>
+                            {day.map((place, i) => (
+                                <li key={i}><Place place={place} index={i} /></li>
                             ))}
                         </ul>
                     ) : (
@@ -151,7 +194,20 @@ export default function Day({day, index, setDays, days}) {
                                     <div role="button" onClick={handleSearchPlace} className={`${styles.searchButton}`}>Chercher</div>
                                 </div>
                             </div>
-                            {errors.name_place && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={roadtripsStyles.errorIcon}></div>{errors.name_place}</small>}
+                            {errors.name_place && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={createRoadtripStyles.errorIcon}></div>{errors.name_place}</small>}
+                            {Object.keys(currentSearchDraw).length > 0 && (
+                                <ul className={styles.locationList}>
+                                    {newQueryLocation.map((newQueryLocation,index) => (
+                                        <li role="button" 
+                                            key={index} 
+                                            aria-label="Choisir cette adresse"
+                                            onClick={() => setCurrentSearchDraw(newQueryLocation)}
+                                            className={newQueryLocation.place_id === currentSearchDraw.place_id ? styles.activeJsonDrawLocation : ''}>
+                                            {newQueryLocation.display_name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                             {Object.keys(newQueryLocation).length > 0 && (
                                 <div 
                                     className={styles.addButton}
@@ -162,17 +218,24 @@ export default function Day({day, index, setDays, days}) {
                             )}
                         </div>
                         {/* Map */}
-                        {Object.keys(newQueryLocation).length > 0 && (
-                            day.length > 0 ? (
-                                <div className={styles.littleMap}>
-                                    {/* <DrawMap drawJson={} localisations={localisations} /> */}
-                                </div>
+                        <div className={styles.littleMap}>
+                        {Object.keys(newQueryLocation).length > 0 &&
+                            (day.length > 0 ? (
+                                (Object.keys(jsonDraw).length > 0 && localisations.length > 0) && (
+                                    <DrawMap
+                                    drawJson={jsonDraw}
+                                    localisations={localisations} 
+                                    zoom={6}
+                                />
+                                )
                             ) : (
-                                <div className={styles.littleMap}>
-                                    <Map jsonLocation={newQueryLocation} setSelectionnedLocation={setNewQueryLocation} zoom={5} />
-                                </div>
-                            )
-                        )}
+                                <Map
+                                    jsonLocation={newQueryLocation}
+                                    setSelectionnedLocation={setNewQueryLocation}
+                                    zoom={5}
+                                />
+                            ))}
+                        </div>
                     </div>
                     <div className={styles.activityContainer} ref={refAddActivityContainer}>
 

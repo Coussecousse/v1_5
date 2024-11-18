@@ -5,7 +5,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import polyline from '@mapbox/polyline';
 import config from "../../../config/locationIQ";
 
-export default function DrawMap({ drawJson, localisations }) {
+export default function DrawMap({ drawJson, localisations, zoom=null }) {
     const [map, setMap] = useState(null);
     const mapRef = useRef(null);
 
@@ -80,7 +80,6 @@ export default function DrawMap({ drawJson, localisations }) {
     };
 
     useEffect(() => {
-        if (map) return;
 
         locationiq.key = config.key;
         const center = [
@@ -92,7 +91,7 @@ export default function DrawMap({ drawJson, localisations }) {
             container: mapRef.current,
             style: locationiq.getLayer("Streets"),
             center: center,
-            zoom: 12
+            zoom: zoom
         });
 
         newMap.on('load', () => {
@@ -100,7 +99,7 @@ export default function DrawMap({ drawJson, localisations }) {
         });
 
         setMap(newMap);
-    }, []);
+    }, [drawJson]);
 
     return (
         <>
