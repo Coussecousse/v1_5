@@ -9,7 +9,6 @@ export default function Map({ jsonLocation, setSelectionnedLocation=null, zoom=1
     const mapRef = useRef(null);
 
     useEffect(() => {
-        console.log(jsonLocation);
         if (map && jsonLocation) {
             // If the jsonLocation is an array, we take the first element
             // Otherwise, we take the jsonLocation
@@ -72,7 +71,6 @@ export default function Map({ jsonLocation, setSelectionnedLocation=null, zoom=1
     }
 
     useEffect(() => {
-        console.log('hey');
         if (map) return;
         locationiq.key = config.key;
 

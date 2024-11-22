@@ -18,7 +18,7 @@ export default function CreateRoadtrip() {
     const [countryQuery, setCountryQuery] = useState('');
     const [activityType, setActivityType] = useState([]);
     const [newQueryLocation, setNewQueryLocation] = useState({});
-    const [roads, setRoads] = useState({});
+    const [roads, setRoads] = useState([]);
     const [localisations, setLocalisatons] = useState({});
     const [errors, setErrors] = useState({});
     const [elementOpen, setElementOpen] = useState({
@@ -165,7 +165,6 @@ export default function CreateRoadtrip() {
                                         <span className={styles.openIcon}>❯</span>
                                         <p>Jours :</p>
                                     </div>
-                                    {/* Add Day Button */}
                                     <div
                                         className={styles.button}
                                         role="button"
@@ -183,7 +182,7 @@ export default function CreateRoadtrip() {
                                             <ul >
                                                 {days.map((day, index) => (
                                                         <li key={index}>
-                                                            <Day day={day} index={index} setDays={setDays} days={days} />
+                                                            <Day day={day} index={index} setDays={setDays} days={days} setRoads={setRoads} />
                                                         </li>
                                                 ))}
                                             </ul>

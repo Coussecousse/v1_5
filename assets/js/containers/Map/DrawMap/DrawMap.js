@@ -80,7 +80,6 @@ export default function DrawMap({ drawJson, localisations, zoom=null }) {
     };
 
     useEffect(() => {
-
         locationiq.key = config.key;
         const center = [
             (parseFloat(localisations[0].lng ? localisations[0].lng : localisations[0].lon) + parseFloat(localisations[1].lng ? localisations[1].lng : localisations[1].lon)) / 2,
@@ -100,6 +99,7 @@ export default function DrawMap({ drawJson, localisations, zoom=null }) {
 
         setMap(newMap);
     }, [drawJson]);
+
 
     return (
         <>

@@ -7,8 +7,9 @@ import Map from "../Map/Map";
 import config from "../../config/locationIQ";
 import axios from "axios";
 import DrawMap from "../Map/DrawMap/DrawMap";
+import { object } from "prop-types";
 
-export default function Day({day, index, setDays, days}) {
+export default function Day({day, index, setDays, setRoads, days}) {
     const [isOpen, setIsOpen] = useState(true);
     const [isOpenAdd, setIsOpenAdd] = useState({
         state : false,
@@ -86,17 +87,19 @@ export default function Day({day, index, setDays, days}) {
     }
 
     useEffect(() => {
-        if (day.length > 0 && Object.keys(newQueryLocation).length > 0) {
-            setCurrentSearchDraw(prev => {
-                if (prev !== newQueryLocation[0]) return newQueryLocation[0];
-                return prev;
-            });
+        if (Object.keys(newQueryLocation).length > 0 && (day.length > 0 || index > 0)) {
+            setCurrentSearchDraw(prev => (prev !== newQueryLocation[0] ? newQueryLocation[0] : prev));
         }
     }, [day, newQueryLocation]);
 
     useEffect(() => {
         if (Object.keys(currentSearchDraw).length < 1) return;
-        const firstPlace = day[day.length - 1];
+        let firstPlace;
+        if (day.length == 0 && index > 0) {
+            firstPlace = days[index-1][days[index-1].length - 1];
+        } else {
+            firstPlace = day[day.length - 1];
+        }
         const secondPlace = currentSearchDraw;
 
         axios.get(`https://eu1.locationiq.com/v1/directions/driving/${firstPlace.lng},${firstPlace.lat};${secondPlace.lon},${secondPlace.lat}?key=${config.key}&steps=true&alternatives=true&geometries=polyline&overview=full`)
@@ -123,6 +126,16 @@ export default function Day({day, index, setDays, days}) {
             const {display_name, lat, lon} = currentSearchDraw;
             locationData = { display_name: display_name, lat: lat, lng: lon };
             setCurrentSearchDraw({});
+            setRoads((prevRoads) => {
+                const updatedRoads = [...prevRoads];
+                if (!updatedRoads[index]) {
+                    updatedRoads[index] = [];
+                }
+                updatedRoads[index] = [...updatedRoads[index], jsonDraw]; // Append jsonDraw to the array at the specified index
+                return updatedRoads;
+            })
+            setJsonDraw({});
+            setLocalisations([]);
         }
         setNewQueryLocation({});
         refInputPlace.current.value = '';
@@ -195,7 +208,7 @@ export default function Day({day, index, setDays, days}) {
                                 </div>
                             </div>
                             {errors.name_place && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={createRoadtripStyles.errorIcon}></div>{errors.name_place}</small>}
-                            {Object.keys(currentSearchDraw).length > 0 && (
+                            {(Object.keys(currentSearchDraw).length > 0 && newQueryLocation.length > 0 ) && (
                                 <ul className={styles.locationList}>
                                     {newQueryLocation.map((newQueryLocation,index) => (
                                         <li role="button" 
@@ -217,10 +230,9 @@ export default function Day({day, index, setDays, days}) {
                                 </div>
                             )}
                         </div>
-                        {/* Map */}
                         <div className={styles.littleMap}>
                         {Object.keys(newQueryLocation).length > 0 &&
-                            (day.length > 0 ? (
+                            (day.length > 0 || index > 0 ? (
                                 (Object.keys(jsonDraw).length > 0 && localisations.length > 0) && (
                                     <DrawMap
                                     drawJson={jsonDraw}
