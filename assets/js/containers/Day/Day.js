@@ -156,7 +156,7 @@ export default function Day({day, index, setDays, setRoads, days}) {
                     aria-label={`Jour ${index+1}`}
                     onClick={() => setIsOpen(!isOpen)}
                     role="button"
-                    className={`${createRoadtripStyles.button} ${createRoadtripStyles.openButton}`}
+                    className={`${createRoadtripStyles.button} ${createRoadtripStyles.openButton} ${styles.dayButton}`}
                     ref={refDayButton}>
                     <span className={createRoadtripStyles.openIcon}>❯</span>
                     <p>Jour {index+1} :</p>

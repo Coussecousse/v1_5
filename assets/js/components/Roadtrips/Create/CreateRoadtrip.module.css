@@ -141,3 +141,10 @@
         opacity: 1;
     }
 }
+
+/* Days container */
+.daysContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

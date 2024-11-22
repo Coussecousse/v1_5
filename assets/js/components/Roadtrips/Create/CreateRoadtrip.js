@@ -179,7 +179,7 @@ export default function CreateRoadtrip() {
                                 <div ref={refDays} className={styles.daysContainer}>
                                     {
                                         days.length > 0 ? (
-                                            <ul >
+                                            <ul className={styles.daysContainer}>
                                                 {days.map((day, index) => (
                                                         <li key={index}>
                                                             <Day day={day} index={index} setDays={setDays} days={days} setRoads={setRoads} />

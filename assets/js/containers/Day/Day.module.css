@@ -66,6 +66,10 @@
 }
 
 /* Buttons */
+.dayButton {
+    width: 90px;
+    justify-content: center;
+}
 .searchButton, .addButton {
     background-color: var(--color-500);
     color: var(--color-800);
