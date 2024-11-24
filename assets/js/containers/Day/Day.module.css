@@ -43,7 +43,13 @@
     flex-direction: column;
 }
 /* Add place container */
-.addPlaceContainer, .searchContainer {
+.addPlaceContainer, 
+.activityContainer {
+    display: none;
+}
+.addPlaceContainer.open, 
+.activityContainer.open,
+.searchContainer {
     display: flex;
     gap: 1rem;
 }
@@ -51,7 +57,8 @@
 .addContainer {
     min-height: 300px;
 }
-.addPlaceContainer > div {
+.addPlaceContainer > div,
+.activityContainer > div {
     width: 50%;
 }
 @keyframes fromBottom {
@@ -133,3 +140,15 @@
 .locationList > li:hover {
     background-color: var(--color-700);
 }
+
+/* Autocomplete container */
+.autocompleteContainer {
+    display: flex;
+    flex-direction: column;
+}
+.autocompleteContainer input {
+    font-family: var(--ff-secondary);
+}
+.autocompleteContainer > div {
+    position: relative;
+} 
