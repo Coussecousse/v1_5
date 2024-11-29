@@ -32,23 +32,17 @@
 }
 
 /* Add container */
-.addContainer.open,
-.addPlaceContainer.open {
+.addContainer.open {
     gap: 1rem;
 }
-
 
 /* Search Container */
 .searchContainer {
     flex-direction: column;
 }
+
 /* Add place container */
-.addPlaceContainer, 
-.activityContainer {
-    display: none;
-}
-.addPlaceContainer.open, 
-.activityContainer.open,
+.addPlaceContainer,
 .searchContainer {
     display: flex;
     gap: 1rem;
@@ -57,8 +51,7 @@
 .addContainer {
     min-height: 300px;
 }
-.addPlaceContainer > div,
-.activityContainer > div {
+.addPlaceContainer > div {
     width: 50%;
 }
 @keyframes fromBottom {

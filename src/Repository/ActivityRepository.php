@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
+use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -28,7 +29,7 @@ class ActivityRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findWithinRadiusAndType(float $lat, float $lng, float $type): array
+    public function findWithinRadiusAndType(float $lat, float $lng, Tag $type): array
     {
         // The Haversine formula for distance in km
         // Allow to determine the distance of the great circle 
@@ -96,7 +97,7 @@ class ActivityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    
+
 //    /**
 //     * @return Activity[] Returns an array of Activity objects
 //     */
