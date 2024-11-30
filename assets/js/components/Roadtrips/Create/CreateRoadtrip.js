@@ -5,8 +5,6 @@ import roadtripsStyles from '../Roadtrips.module.css';
 import formStyles from '../../../containers/Form/Form.module.css';
 import config from "../../../config/locationIQ";
 import RoadtripDrawMap from "../../../containers/Map/RoadtripDraw/RoadtripDrawMap";
-import DrawMap from "../../../containers/Map/DrawMap/DrawMap";
-import Map from "../../../containers/Map/Map";
 import axios from "axios";
 import Day from "../../../containers/Day/Day";
 
@@ -96,7 +94,7 @@ export default function CreateRoadtrip() {
                     <>
                         {/* Map section */}
                         <div className={styles.map}>
-                            <RoadtripDrawMap country={countryMap} roads={roads} />
+                            <RoadtripDrawMap country={countryMap} roads={roads} firstPlace={days.length > 0 ? days[0][0] : null}/>
                         </div>
                         <form className={styles.form}>
                             {/* Standard Information */}

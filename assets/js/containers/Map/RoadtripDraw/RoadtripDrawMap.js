@@ -5,7 +5,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import polyline from "@mapbox/polyline";
 
-export default function RoadtripDrawMap({country, roads}) {
+export default function RoadtripDrawMap({country, roads, firstPlace}) {
     const [map, setMap] = useState(null);
     const [zoom, setZoom] = useState(null);
     const [center, setCenter] = useState(null);
@@ -20,8 +20,8 @@ export default function RoadtripDrawMap({country, roads}) {
         setMarkers([]);
 
         layersAndSourceId.forEach(layer => {
-            map.removeLayer(layer.layer);
-            map.removeSource(layer.source);
+            if (map.getLayer(layer.layer)) map.removeLayer(layer.layer);
+            if (map.getSource(layer.source)) map.removeSource(layer.source);
         });
         setLayersAndSourceId([]);
 
@@ -30,19 +30,22 @@ export default function RoadtripDrawMap({country, roads}) {
         markersElement.forEach(marker => marker.remove());  
     }
 
+    const createBasicMarker = () => {
+        const element = document.createElement('div');
+        element.className = styles.marker;
+        element.style.backgroundImage = 'url(https://tiles.locationiq.com/static/images/marker50px.png)';
+        element.style.backgroundSize = 'cover';
+        return element;
+    }
+
     useEffect(() => {
         if (map) {
-
             if (markers.length > 0) {
                 // Reset map
                 resetMap();
             }
 
-
-            if (country.length > 1) {
-                map.setCenter([country.lon, country.lat]);
-                map.setZoom(5);
-            } else if (roads.length > 0 && roads[0][0].waypoints) {
+            if (roads.length > 0 && roads[0][0].waypoints) {
                 const [lon, lat] = roads[0][0].waypoints[0].location
                 map.setCenter([lon, lat]);
                 map.setZoom(5);
@@ -51,52 +54,62 @@ export default function RoadtripDrawMap({country, roads}) {
                 roads.forEach((day, index) => {
                     AddDayToMap(day, index);
                 })
-            } 
+            } else if (firstPlace) {
+                map.setCenter([firstPlace.lng, firstPlace.lat]);
+                map.setZoom(5);
+
+                // Add only one marker :
+                const element = createBasicMarker();
+                element.style.width = '25px';
+                element.style.height = '25px';
+                // Popup
+                const popup = new maplibregl.Popup({ offset: 25 });
+                popup.setText(`Jours 1:\n${firstPlace.name}`);
+
+                // Marker
+                const marker = new maplibregl.Marker({ element })
+                .setLngLat([firstPlace.lng, firstPlace.lat])
+                .setPopup(popup)
+                .addTo(map);
+
+                setMarkers([...markers, marker]);
+
+            } else if (Object.keys(country).length > 0) {
+                map.setCenter([country.lon, country.lat]);
+                map.setZoom(5);
+            }
         }
-    }, [roads, country]);
+    }, [roads, country, firstPlace]);
 
     const AddDayToMap = (day, index) => { 
         // Add roads
         day.forEach((road, roadIndex) => {
             road.waypoints.forEach((waypoint, waypointIndex) => {
                 // Create marker element
-                const element = document.createElement('div');
-                element.className = styles.marker;
-                element.style.backgroundImage = 'url(https://tiles.locationiq.com/static/images/marker50px.png)';
-                element.style.backgroundSize = 'cover';
+                const element = createBasicMarker();
 
                 // Check if it's the start of the day or the end of the day
                 let marker;
+                const popup = new maplibregl.Popup({ offset: 25 });
                 if (roadIndex === 0 && waypointIndex === 0) {
                     element.style.width = '25px';
                     element.style.height = '25px';
-
-                    // Create a popup
-                    const popup = new maplibregl.Popup({ offset: 25 });
                     
+                    // Set the text of the popup
                     popup.setText(`Jour ${index + 1} :\n ${waypoint.name}`);
-
-                    // Attach the marker and popup to the map
-                    marker = new maplibregl.Marker({ element })
-                        .setLngLat([waypoint.location[0], waypoint.location[1]])
-                        .setPopup(popup)
-                        .addTo(map);
-
                 } else {
                     // Intermediate points
                     element.style.width = '15px';
                     element.style.height = '15px';
 
-                    // Create a popup
-                    const popup = new maplibregl.Popup({ offset: 25 });
+                    // Set the text of the popup
                     popup.setText(`${waypoint.name}`);
-
-                    // Attach the marker and popup to the map
-                    marker = new maplibregl.Marker({ element })
-                        .setLngLat([waypoint.location[0], waypoint.location[1]])
-                        .setPopup(popup)
-                        .addTo(map);
                 }
+                // Attach the marker and popup to the map
+                marker = new maplibregl.Marker({ element })
+                .setLngLat([waypoint.location[0], waypoint.location[1]])
+                .setPopup(popup)
+                .addTo(map);
 
                 // Add marker to the state
                 setMarkers([...markers, marker]);
