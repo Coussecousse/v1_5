@@ -10,9 +10,35 @@ export default function RoadtripDrawMap({country, roads}) {
     const [zoom, setZoom] = useState(null);
     const [center, setCenter] = useState(null);
     const mapRef = useRef(null);
+    const [markers, setMarkers] = useState([]); 
+    const [layersAndSourceId, setLayersAndSourceId] = useState([]);
+
+    const resetMap = () => {
+        markers.forEach(marker => {
+            marker.remove();
+        });
+        setMarkers([]);
+
+        layersAndSourceId.forEach(layer => {
+            map.removeLayer(layer.layer);
+            map.removeSource(layer.source);
+        });
+        setLayersAndSourceId([]);
+
+        // Remove all html markers
+        const markersElement = document.querySelectorAll(`.${styles.marker}`);
+        markersElement.forEach(marker => marker.remove());  
+    }
 
     useEffect(() => {
         if (map) {
+
+            if (markers.length > 0) {
+                // Reset map
+                resetMap();
+            }
+
+
             if (country.length > 1) {
                 map.setCenter([country.lon, country.lat]);
                 map.setZoom(5);
@@ -21,10 +47,11 @@ export default function RoadtripDrawMap({country, roads}) {
                 map.setCenter([lon, lat]);
                 map.setZoom(5);
 
+                // Add roads
                 roads.forEach((day, index) => {
                     AddDayToMap(day, index);
                 })
-            };
+            } 
         }
     }, [roads, country]);
 
@@ -39,6 +66,7 @@ export default function RoadtripDrawMap({country, roads}) {
                 element.style.backgroundSize = 'cover';
 
                 // Check if it's the start of the day or the end of the day
+                let marker;
                 if (roadIndex === 0 && waypointIndex === 0) {
                     element.style.width = '25px';
                     element.style.height = '25px';
@@ -49,10 +77,11 @@ export default function RoadtripDrawMap({country, roads}) {
                     popup.setText(`Jour ${index + 1} :\n ${waypoint.name}`);
 
                     // Attach the marker and popup to the map
-                    new maplibregl.Marker({ element })
+                    marker = new maplibregl.Marker({ element })
                         .setLngLat([waypoint.location[0], waypoint.location[1]])
                         .setPopup(popup)
                         .addTo(map);
+
                 } else {
                     // Intermediate points
                     element.style.width = '15px';
@@ -63,12 +92,14 @@ export default function RoadtripDrawMap({country, roads}) {
                     popup.setText(`${waypoint.name}`);
 
                     // Attach the marker and popup to the map
-                    new maplibregl.Marker({ element })
+                    marker = new maplibregl.Marker({ element })
                         .setLngLat([waypoint.location[0], waypoint.location[1]])
                         .setPopup(popup)
                         .addTo(map);
                 }
 
+                // Add marker to the state
+                setMarkers([...markers, marker]);
             });
             const decodedPath = polyline.decode(road.routes[0].geometry);
 
@@ -82,10 +113,7 @@ export default function RoadtripDrawMap({country, roads}) {
             const routeSourceId = `route-source-${index}-${roadIndex}`;
             const routeLayerId = `route-layer-${index}-${roadIndex}`;
 
-            if (map.getLayer(routeLayerId)) {
-                map.removeLayer(routeLayerId);
-                map.removeSource(routeSourceId);
-            }
+            setLayersAndSourceId([...layersAndSourceId, {source : routeSourceId, layer : routeLayerId}]);
 
             // Add source with a unique ID
             map.addSource(routeSourceId, {
@@ -107,6 +135,7 @@ export default function RoadtripDrawMap({country, roads}) {
                     'line-width': 4
                 }
             });
+
         });
     }
 

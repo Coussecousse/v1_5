@@ -128,6 +128,29 @@ export default function Day({ day, index, setDays, setRoads, days }) {
         setIsOpenAdd(false);
     };
 
+    // -- Delete Day --
+    const handleDeleteDay = () => {
+        setDays(prevDays => {
+            const updatedDays = [...prevDays];
+            updatedDays.splice(index, 1);
+            return updatedDays;
+        });
+
+        setRoads(prevRoads => {
+            const updatedRoads = [...prevRoads];
+            updatedRoads.splice(index, 1);
+
+            // Remove the first road
+            updatedRoads[index].shift();
+            // Remove empty array if empty
+            if (updatedRoads[index].length === 0) {
+                updatedRoads.splice(index, 1);
+            }
+            
+            return updatedRoads;
+        });
+    }
+
     return (
         <div className={styles.container}>
             <div className={createRoadtripStyles.stageButtonsContainer}>
@@ -150,7 +173,8 @@ export default function Day({ day, index, setDays, setRoads, days }) {
                 <div
                     aria-label="Bouton supprimer la journée"
                     role="button"
-                    className={createRoadtripStyles.button}>
+                    className={createRoadtripStyles.button}
+                    onClick={handleDeleteDay}>
                     Supprimer la journée
                 </div>
             </div>
