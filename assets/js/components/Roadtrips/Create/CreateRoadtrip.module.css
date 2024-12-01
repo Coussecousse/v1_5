@@ -71,6 +71,10 @@
     color: var(--color-500);
     padding: .375rem .5rem;
     background-color: var(--color-700);
+    transition: .2s
+}
+.button:hover {
+    background-color: var(--color-750);
 }
 .openButton {
     display: flex;

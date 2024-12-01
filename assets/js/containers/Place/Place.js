@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import createRoadtripStyles from '../../components/Roadtrips/Create/CreateRoadtrip.module.css';
 import styles from './Place.module.css';
 
 export default function Place({place, indexPlace, indexDay, setDays}) {{}
@@ -21,11 +22,13 @@ export default function Place({place, indexPlace, indexDay, setDays}) {{}
     return (
         <div className={styles.placeContainer}>
             <h3>{indexPlace + 1}. {place.informations.display_name}</h3>
-            <small role="button" onClick={handleNote} aria-label="Bouton créer une note">
-                {note ? (isNoteOpen ? 
-                    'Fermer la note' : 'Voir la note')
-                    : 'Créer une note'}</small>
-            <small role="button" aria-label="Boutton supprimer le lieu">Supprimer le lieu</small>
+            <div className={styles.buttonsContainer}>
+                <small className={createRoadtripStyles.button} role="button" onClick={handleNote} aria-label="Bouton créer une note">
+                    {note ? (isNoteOpen ?
+                        'Fermer la note' : 'Voir la note')
+                        : 'Créer une note'}</small>
+                <small className={createRoadtripStyles.button} role="button" aria-label="Boutton supprimer le lieu">Supprimer le lieu</small>
+            </div>
             {isNoteOpen && 
                 <textarea
                     value={note}

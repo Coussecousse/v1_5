@@ -2,3 +2,35 @@
     background-color: var(--color-700);
     padding: .5rem;
 }
+
+.buttonsContainer {
+    display: flex;
+    gap: .5rem;
+}
+
+.note {
+    display: block;
+    margin-top: .5rem;
+    width: 100%;
+    min-height: 100px;
+    background-color: rgba(78, 93, 58, .4);
+    color: var(--color-500);
+    border-color: var(--color-700);
+    padding: .5rem;
+    animation: fromBottom .2s forwards;
+}
+
+.note::placeholder {
+    color: var(--color-500-tr);
+}
+
+@keyframes fromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
