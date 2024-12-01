@@ -27,13 +27,6 @@ export default function CreateRoadtrip() {
     const debounceTimeout = useRef(null);
     const refDays = useRef(null);
     const refDaysButton = useRef(null);
-    const refStageList = useRef(null);
-    const refPopUpWindow = useRef(null);  
-    const refPopUpPlace = useRef(null);
-    const refPopUpActivity = useRef(null);  
-    const refInformations = useRef(null);
-    const refInformationsButton = useRef(null);
-    const refInputPlace = useRef(null);
     
     // -- Open button -- 
     const handleClickStage = (element) => {
@@ -94,7 +87,12 @@ export default function CreateRoadtrip() {
                     <>
                         {/* Map section */}
                         <div className={styles.map}>
-                            <RoadtripDrawMap country={countryMap} roads={roads} firstPlace={days.length > 0 ? days[0][0] : null}/>
+                            <RoadtripDrawMap 
+                                country={countryMap}    
+                                roads={roads} 
+                                firstPlace={days.length > 0 && Object.keys(days[0]).length > 0 ? 
+                                    days[0][0].informations : null}
+                            />
                         </div>
                         <form className={styles.form}>
                             {/* Standard Information */}

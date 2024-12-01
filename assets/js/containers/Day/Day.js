@@ -76,9 +76,9 @@ export default function Day({ day, index, setDays, setRoads, days }) {
         if (Object.keys(currentSearchDraw).length < 1) return;
         let firstPlace;
         if (day.length === 0 && index > 0) {
-            firstPlace = days[index - 1][days[index - 1].length - 1];
+            firstPlace = days[index - 1][days[index - 1].length - 1].informations;
         } else {
-            firstPlace = day[day.length - 1];
+            firstPlace = day[day.length - 1].informations;
         }
         const secondPlace = currentSearchDraw;
 
@@ -108,7 +108,7 @@ export default function Day({ day, index, setDays, setRoads, days }) {
 
         setDays(prevDays => {
             const updatedDays = [...prevDays];
-            updatedDays[index] = [...day, locationData]            
+            updatedDays[index] = [...day, {informations: locationData}]            
             return updatedDays;
         });
 
@@ -221,7 +221,7 @@ export default function Day({ day, index, setDays, setRoads, days }) {
                     {day.length > 0 ? (
                         <ul className={styles.placesList}>
                             {day.map((place, i) => (
-                                <li key={i}><Place place={place} index={i} /></li>
+                                <li key={i}><Place place={place} indexPlace={i} indexDay={index} setDays={setDays} /></li>
                             ))}
                         </ul>
                     ) : (
