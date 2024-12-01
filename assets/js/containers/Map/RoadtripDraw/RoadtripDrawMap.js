@@ -17,13 +17,13 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
         markers.forEach(marker => {
             marker.remove();
         });
-        setMarkers([]);
+        setMarkers(prevMarkers => []);
 
-        layersAndSourceId.forEach(layer => {
-            if (map.getLayer(layer.layer)) map.removeLayer(layer.layer);
-            if (map.getSource(layer.source)) map.removeSource(layer.source);
+        layersAndSourceId.forEach(id => {
+            if (map.getLayer(id.layer)) map.removeLayer(id.layer);
+            if (map.getSource(id.source)) map.removeSource(id.source);
         });
-        setLayersAndSourceId([]);
+        setLayersAndSourceId(prevLayersAndSourceId => []);
 
         // Remove all html markers
         const markersElement = document.querySelectorAll(`.${styles.marker}`);
@@ -125,8 +125,7 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
             };
             const routeSourceId = `route-source-${index}-${roadIndex}`;
             const routeLayerId = `route-layer-${index}-${roadIndex}`;
-
-            setLayersAndSourceId([...layersAndSourceId, {source : routeSourceId, layer : routeLayerId}]);
+            setLayersAndSourceId(prevLayers => [...prevLayers, { source: routeSourceId, layer: routeLayerId }]);
 
             // Add source with a unique ID
             map.addSource(routeSourceId, {

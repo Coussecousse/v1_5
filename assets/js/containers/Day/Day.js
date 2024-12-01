@@ -113,14 +113,52 @@ export default function Day({ day, index, setDays, setRoads, days }) {
         });
 
         if (Object.keys(jsonDraw).length > 0) {
-            setRoads((prevRoads) => {
-                const updatedRoads = [...prevRoads];
-                if (!updatedRoads[index]) {
-                    updatedRoads[index] = [];
-                }
-                updatedRoads[index] = [...updatedRoads[index], jsonDraw]; // Append jsonDraw to the array at the specified index
-                return updatedRoads;
-            })
+            if (days[index + 1]) {
+                // If there is a next day, calculate the road between the last place of the current day and the first place of the next day
+                const firstPlace = locationData;
+                const secondPlace = days[index + 1][0];
+                
+                axios.get(`https://eu1.locationiq.com/v1/directions/driving/${firstPlace.lng},${firstPlace.lat};${secondPlace.lng},${secondPlace.lat}?key=${config.key}&steps=true&alternatives=true&geometries=polyline&overview=full`)
+                .then(response => {
+                    if (response.data) {
+                        // I need to change only the first one
+                        const newRoad = response.data;
+                        setRoads(prevRoads => {
+                            const updatedRoads = [...prevRoads];
+                            if (!updatedRoads[index]) {
+                                updatedRoads[index] = [];
+                            }
+                            updatedRoads[index] = [...updatedRoads[index], jsonDraw];
+
+                            // Change the first road of the next day
+                            updatedRoads[index + 1][0] = newRoad;
+                            return updatedRoads;
+                        })
+                    } else {
+                        setErrors(prevErrors => ({
+                            ...prevErrors,
+                            road_error: 'Une erreur est survenue lors du calcul de l\'itinéraire'
+                        }));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching result', error);
+                    setErrors(prevErrors => ({
+                        ...prevErrors,
+                        road_error: 'Une erreur est survenue lors du calcul de l\'itinéraire'
+                    }));
+                });
+            } else {
+                // Only add the road to the current day
+                setRoads(prevRoads => {
+                    const updatedRoads = [...prevRoads];
+                    if (!updatedRoads[index]) {
+                        updatedRoads[index] = [];
+                    }
+                    updatedRoads[index] = [...updatedRoads[index], jsonDraw];
+                    return updatedRoads;
+                });
+            }
         }
 
         setJsonDraw({});
