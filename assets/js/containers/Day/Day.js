@@ -8,7 +8,7 @@ import config from "../../config/locationIQ";
 import axios from "axios";
 import DrawMap from "../Map/DrawMap/DrawMap";
 
-export default function Day({ day, index, setDays, setRoads, days }) {
+export default function Day({ day, index, setDays, setRoads, days, roads }) {
     const [isOpen, setIsOpen] = useState(true);
     const [isOpenAdd, setIsOpenAdd] = useState(false);
     const [errors, setErrors] = useState({});
@@ -116,7 +116,7 @@ export default function Day({ day, index, setDays, setRoads, days }) {
             if (days[index + 1]) {
                 // If there is a next day, calculate the road between the last place of the current day and the first place of the next day
                 const firstPlace = locationData;
-                const secondPlace = days[index + 1][0];
+                const secondPlace = days[index + 1][0].informations;
                 
                 axios.get(`https://eu1.locationiq.com/v1/directions/driving/${firstPlace.lng},${firstPlace.lat};${secondPlace.lng},${secondPlace.lat}?key=${config.key}&steps=true&alternatives=true&geometries=polyline&overview=full`)
                 .then(response => {
@@ -177,13 +177,6 @@ export default function Day({ day, index, setDays, setRoads, days }) {
         setRoads(prevRoads => {
             const updatedRoads = [...prevRoads];
             updatedRoads.splice(index, 1);
-
-            // Remove the first road
-            updatedRoads[index].shift();
-            // Remove empty array if empty
-            if (updatedRoads[index].length === 0) {
-                updatedRoads.splice(index, 1);
-            }
             
             return updatedRoads;
         });
@@ -202,11 +195,11 @@ export default function Day({ day, index, setDays, setRoads, days }) {
                     <p>Jour {index + 1} :</p>
                 </div>
                 <div
-                    aria-label="Bouton rajouter un lieu"
+                    aria-label="Bouton rajouter une ville"
                     role="button"
                     className={createRoadtripStyles.button}
                     onClick={() => setIsOpenAdd(true)}>
-                    Rajouter un lieu
+                    Rajouter une ville
                 </div>
                 <div
                     aria-label="Bouton supprimer la journée"
@@ -221,7 +214,7 @@ export default function Day({ day, index, setDays, setRoads, days }) {
                     {day.length > 0 ? (
                         <ul className={styles.placesList}>
                             {day.map((place, i) => (
-                                <li key={i}><Place place={place} indexPlace={i} indexDay={index} setDays={setDays} /></li>
+                                <li key={i}><Place place={place} indexPlace={i} indexDay={index} setDays={setDays} setRoads={setRoads} roads={roads} days={days} /></li>
                             ))}
                         </ul>
                     ) : (
