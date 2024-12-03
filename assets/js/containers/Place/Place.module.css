@@ -5,7 +5,7 @@
 
 .buttonsContainer {
     display: flex;
-    gap: .5rem;
+    gap: 1rem;
 }
 
 .note {

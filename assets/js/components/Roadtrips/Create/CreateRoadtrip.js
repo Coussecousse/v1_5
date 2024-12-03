@@ -178,7 +178,7 @@ export default function CreateRoadtrip() {
                                             <ul className={styles.daysContainer}>
                                                 {days.map((day, index) => (
                                                         <li key={index}>
-                                                            <Day day={day} index={index} setDays={setDays} days={days} setRoads={setRoads} />
+                                                            <Day day={day} index={index} setDays={setDays} days={days} setRoads={setRoads} roads={roads} />
                                                         </li>
                                                 ))}
                                             </ul>

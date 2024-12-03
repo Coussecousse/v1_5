@@ -44,9 +44,15 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
                 // Reset map
                 resetMap();
             }
-
-            if (roads.length > 0 && roads[0][0].waypoints) {
-                const [lon, lat] = roads[0][0].waypoints[0].location
+            if (roads.length > 0) {
+                let lon, lat;
+                for (const roadDay of roads) {
+                    if (roadDay?.[0]?.waypoints?.[0]?.location) {
+                        [lon, lat] = roadDay[0].waypoints[0].location;
+                        break;
+                    }
+                }
+                if (!lon && !lat) return;
                 map.setCenter([lon, lat]);
                 map.setZoom(5);
 

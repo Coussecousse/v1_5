@@ -124,6 +124,7 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                         // I need to change only the first one
                         const newRoad = response.data;
                         setRoads(prevRoads => {
+                            // if (days[0].length === 1 && index !== 0) index-= 1;
                             const updatedRoads = [...prevRoads];
                             if (!updatedRoads[index]) {
                                 updatedRoads[index] = [];
@@ -131,7 +132,7 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                             updatedRoads[index] = [...updatedRoads[index], jsonDraw];
 
                             // Change the first road of the next day
-                            updatedRoads[index + 1][0] = newRoad;
+                            updatedRoads[index + 1].splice(0, 1, newRoad);
                             return updatedRoads;
                         })
                     } else {
