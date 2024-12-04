@@ -44,7 +44,8 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
                 // Reset map
                 resetMap();
             }
-            if (roads.length > 0) {
+
+            if (roads.length > 0 && (roads[0]?.length > 0 || roads[1])) {
                 let lon, lat;
                 for (const roadDay of roads) {
                     if (roadDay?.[0]?.waypoints?.[0]?.location) {
@@ -58,7 +59,7 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
 
                 // Add roads
                 roads.forEach((day, index) => {
-                    AddDayToMap(day, index);
+                    if (day) AddDayToMap(day, index);
                 })
             } else if (firstPlace) {
                 map.setCenter([firstPlace.lng, firstPlace.lat]);
@@ -70,7 +71,7 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
                 element.style.height = '25px';
                 // Popup
                 const popup = new maplibregl.Popup({ offset: 25 });
-                popup.setText(`Jours 1:\n${firstPlace.name}`);
+                popup.setText(`Jours 1:\n${firstPlace.display_name}`);
 
                 // Marker
                 const marker = new maplibregl.Marker({ element })

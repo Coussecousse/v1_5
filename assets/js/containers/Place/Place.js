@@ -7,6 +7,7 @@ import axios from "axios";
 export default function Place({place, indexPlace, indexDay, setDays, setRoads, roads, days}) {
     const [note, setNote] = useState('');
     const [isNoteOpen, setIsNoteOpen] = useState(false);
+
     const handleNote = () => {
         setIsNoteOpen(!isNoteOpen);
     }
@@ -125,7 +126,7 @@ export default function Place({place, indexPlace, indexDay, setDays, setRoads, r
             const newRoad = await calculateRoad(firstPlace, secondPlace);
     
             // Insert the recalculated road
-            if (indexDay === 0 && indexPlace === days[indexDay].length) {
+            if ((indexDay === 0 && indexPlace === days[0].length) || indexPlace === days[indexDay].length) {
                 insertRoad(indexDay + 1, 0, newRoad);
             } else {
                 insertRoad(indexDay, indexPlace - 1, newRoad);
@@ -133,7 +134,7 @@ export default function Place({place, indexPlace, indexDay, setDays, setRoads, r
         }
     
         // Clean up empty road arrays
-        updatedRoads = updatedRoads.filter((dayRoads, index) => dayRoads.length > 0 || (index === 0 && days[0].length > 0));
+        updatedRoads = updatedRoads.filter((dayRoads, index) => dayRoads?.length > 0 || (index === 0 && days[0].length > 0));
     
         // Update the state with the new roads
         setRoads(updatedRoads);

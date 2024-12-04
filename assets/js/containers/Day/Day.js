@@ -124,7 +124,6 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                         // I need to change only the first one
                         const newRoad = response.data;
                         setRoads(prevRoads => {
-                            // if (days[0].length === 1 && index !== 0) index-= 1;
                             const updatedRoads = [...prevRoads];
                             if (!updatedRoads[index]) {
                                 updatedRoads[index] = [];
@@ -169,19 +168,65 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
 
     // -- Delete Day --
     const handleDeleteDay = () => {
+        let newRoad = null; // Placeholder for the recalculated road, if needed
+        let prevLastPlace, nextFirstPlace;
+    
+        // Determine the places to recalculate the road if needed
+        if (index > 0 && days[index + 1]) {
+            prevLastPlace = days[index - 1][days[index - 1].length - 1].informations;
+            nextFirstPlace = days[index + 1][0].informations;
+        }
+    
+        const calculateNewRoad = async () => {
+            if (prevLastPlace && nextFirstPlace) {
+                try {
+                    const response = await axios.get(
+                        `https://eu1.locationiq.com/v1/directions/driving/${prevLastPlace.lng},${prevLastPlace.lat};${nextFirstPlace.lng},${nextFirstPlace.lat}?key=${config.key}&steps=true&alternatives=true&geometries=polyline&overview=full`
+                    );
+                    if (response.data) {
+                        newRoad = response.data; // Save the new road data
+                    }
+                } catch (error) {
+                    console.error('Error recalculating road:', error);
+                    setErrors(prevErrors => ({
+                        ...prevErrors,
+                        road_error: 'Une erreur est survenue lors du recalcul de l\'itinéraire'
+                    }));
+                }
+            }
+        };
+    
+        calculateNewRoad().then(() => {
+            // Perform all updates in one `setRoads`
+            setRoads(prevRoads => {
+                const updatedRoads = [...prevRoads];
+    
+                // Remove the first road of the next day
+                if (updatedRoads[index + 1] && updatedRoads[index + 1].length > 0) {
+                    updatedRoads[index + 1].splice(0, 1);
+                }
+    
+                // Remove the roads for the deleted day
+                updatedRoads.splice(index, 1);
+    
+                // If a new road was calculated, insert it at the start of the next day's roads
+                if (newRoad && updatedRoads[index]) {
+                    updatedRoads[index].unshift(newRoad);
+                }
+    
+                return updatedRoads;
+            });
+        });
+
+        // Remove the day and the first road of the next day (if any)
         setDays(prevDays => {
             const updatedDays = [...prevDays];
             updatedDays.splice(index, 1);
             return updatedDays;
         });
-
-        setRoads(prevRoads => {
-            const updatedRoads = [...prevRoads];
-            updatedRoads.splice(index, 1);
-            
-            return updatedRoads;
-        });
-    }
+    };
+    
+    
 
     return (
         <div className={styles.container}>

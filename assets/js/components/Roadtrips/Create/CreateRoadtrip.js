@@ -14,11 +14,9 @@ export default function CreateRoadtrip() {
     const [countrySuggestions, setCountrySuggestions] = useState({});
     const [countryMap, setCountryMap] = useState({});
     const [countryQuery, setCountryQuery] = useState('');
-    const [activityType, setActivityType] = useState([]);
-    const [newQueryLocation, setNewQueryLocation] = useState({});
     const [roads, setRoads] = useState([]);
-    const [localisations, setLocalisatons] = useState({});
     const [errors, setErrors] = useState({});
+    const [firstPlace, setFirstPlace] = useState(null);
     const [elementOpen, setElementOpen] = useState({
         days: true,
         informations: false
@@ -27,7 +25,15 @@ export default function CreateRoadtrip() {
     const debounceTimeout = useRef(null);
     const refDays = useRef(null);
     const refDaysButton = useRef(null);
-    
+
+    useEffect(() => {
+        if (days.length > 0 && days[0].length > 0) {
+            setFirstPlace(days[0][0].informations);
+        } else {
+            setFirstPlace(null)
+        }
+    },[days])
+
     // -- Open button -- 
     const handleClickStage = (element) => {
         if (element === 'stage') {
@@ -90,8 +96,7 @@ export default function CreateRoadtrip() {
                             <RoadtripDrawMap 
                                 country={countryMap}    
                                 roads={roads} 
-                                firstPlace={days.length > 0 && Object.keys(days[0]).length > 0 ? 
-                                    days[0][0].informations : null}
+                                firstPlace={firstPlace}
                             />
                         </div>
                         <form className={styles.form}>
