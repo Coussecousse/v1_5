@@ -102,7 +102,7 @@ export default function CreateRoadtrip() {
                             <div className={styles.standartInformations}>
                                 {/* Title Input */}
                                 <div className={`${styles.input} input2_elementsContainer`}>
-                                    <label htmlFor="title">Titre :</label>
+                                    <label htmlFor="title">Titre* :</label>
                                     <div className="input2_container">
                                         <input
                                             type="text"
@@ -120,7 +120,7 @@ export default function CreateRoadtrip() {
                                 )}
                                 {/* Country Input */}
                                 <div className={`${styles.input} input2_elementsContainer`}>
-                                    <label htmlFor="country">Pays :</label>
+                                    <label htmlFor="country">Pays* :</label>
                                     <div className="input2_container">
                                         <input
                                             type="text"
@@ -189,6 +189,36 @@ export default function CreateRoadtrip() {
                                     }
                                 </div>
                             </div>
+                            {/* Description Input */}
+                            <div className={`${styles.input} input2_elementsContainer`}>
+                                <label htmlFor="description">Description :</label>
+                                <div className="input2_container">
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        placeholder="Description de votre roadrip"
+                                    /> 
+                                </div>
+                            </div>
+                            {errors.description && (
+                                <small className={`smallFormError ${formStyles.errorGreen}`}>
+                                    <div className={roadtripsStyles.errorIcon}></div>
+                                    {errors.description}
+                                </small>
+                            )}
+                            <div className={`${styles.input} input2_elementsContainer`}>
+                                <label htmlFor="pics">Photos :</label>
+                                <div className={`input2_container`}>
+                                    <input 
+                                    type="file" 
+                                    id="pics" 
+                                    name="pics" 
+                                    accept="image/png, image/jpeg, image/jpg" 
+                                    multiple="multiple" />
+                                </div>
+                                <small className={styles.picsInformation}>Vous ne pouvez partager que 6 photos maximum.</small>
+                            </div>
+                            {errors.pics && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.pics}</small>}
                         </form>
                     </>
                 )}
