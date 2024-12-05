@@ -48,6 +48,8 @@ class ImageOptimizer
         $maxHeight = $maxWidth / $aspectRatio;
 
         $image = $this->imagine->open($source);
+        dump($image);
+        dump($destination);
         $image->resize(new Box((int)$maxWidth, (int)$maxHeight))->save($destination);
     }
 }

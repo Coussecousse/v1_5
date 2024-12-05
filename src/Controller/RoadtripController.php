@@ -68,7 +68,6 @@ class RoadtripController extends AbstractController
                     foreach ($pics as $pic) {
                         $roadtripPicsDir = $this->getParameter('roadtrip_pics_directory');
                         $filename = $this->imageOptimizer->processAndResizeFile($pic, $roadtripPicsDir);
-                        dump($filename);
                         $newPic = new Pic();
                         $newPic->setPath($filename);
                         $newPic->setRoadtrip($roadtrip);

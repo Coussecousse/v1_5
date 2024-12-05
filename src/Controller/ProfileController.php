@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\UserRepository;
+use App\Service\ImageOptimizer;
 use ChangeProfileInformationsFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,6 +22,13 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 #[Route('api/profile', name: 'app_profile')]
 class ProfileController extends AbstractController
 {
+    private ImageOptimizer $imageOptimizer;
+
+    public function __construct(ImageOptimizer $imageOptimizer)
+    {
+        $this->imageOptimizer = $imageOptimizer;
+    }
+
     #[Route('/', name: '_index')]
     public function index(UserRepository $userRepository, PicRepository $picRepository): JsonResponse
     {
@@ -74,13 +82,19 @@ class ProfileController extends AbstractController
                 $filesystem = new Filesystem();
                 
                 $profilePicsDir = $this->getParameter('profile_pics_directory');
-                
-                if ($oldProfilePic && $filesystem->exists($profilePicsDir . '/' . $oldProfilePic->getPath())) {
-                    $filesystem->remove($profilePicsDir . '/' . $oldProfilePic->getPath());
+                if ($oldProfilePic) {
+                    dump($oldProfilePic);
+                    $profilePicName = '/' . $oldProfilePic->getPath();
+                    $folders = ['small', 'medium', 'large', 'extraLarge'];
+                    foreach($folders as $f) {
+                        $pic = $profilePicsDir . '/' . $f . $profilePicName;
+                        if (!$filesystem->exists($pic)) {
+                            $filesystem->remove($pic);
+                        }
+                    }
                 }
             
-                $newFilename = uniqid() . '.' . $profilePic->guessExtension();
-                $profilePic->move($profilePicsDir, $newFilename);
+                $newFilename = $this->imageOptimizer->processAndResizeFile($profilePic, $profilePicsDir);
             
                 $newProfilePic = $oldProfilePic ?: new Pic();
                 $newProfilePic->setPath($newFilename)->setUser($userEntity);

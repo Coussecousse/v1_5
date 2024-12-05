@@ -19,7 +19,7 @@ export default function Profile() {
                 setUser(response.data.user);
                 const userPic = response.data.user.profile_pic;
                 if (userPic) {
-                    setUserPic(`/uploads/profile_pics/${userPic}`);
+                    setUserPic(userPic);
                 } else {
                     setUserPic(neutralPic);
                 }
@@ -43,10 +43,25 @@ export default function Profile() {
                     </div>)
                 : (
                     <div className={`${styles.informationsContainer}`}>
-                        <div 
-                            className={`${styles.profilePick}`} 
-                            style={{ backgroundImage: `url(${userPic})` }}>
-                        </div>
+                        <picture className={styles.profilePick}>
+                                <source 
+                                    srcSet={`/uploads/profile_pics/small/${userPic}`} 
+                                    media="(min-width: 1200px)" 
+                                />
+                                <source 
+                                    srcSet={`/uploads/profile_pics/medium/${userPic}`} 
+                                    media="(min-width: 990px)" 
+                                />
+                                <source 
+                                    srcSet={`/uploads/profile_pics/large/${userPic}`} 
+                                    media="(min-width: 768px)" 
+                                />
+                                <img 
+                                    src={`/uploads/profile_pics/extraLarge/${userPic}`} 
+                                    alt="User Profile" 
+                                    className="w-11/12 drop-shadow-lg lg:w-auto max-w-[380px] max-h-[480px] mx-auto pb-4 object-contain" 
+                                />
+                            </picture>
                         <span className={`${styles.spanDiviser}`}></span>
                         <div className={`${styles.textContainer}`}>
                             <p><span>Nom d'utilisateur :</span> {user.username}</p>

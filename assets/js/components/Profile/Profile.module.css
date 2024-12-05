@@ -20,6 +20,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     margin-bottom: 2rem;
+    overflow: hidden;
 }
 
 .container {
