@@ -92,13 +92,11 @@ export default function CreateRoadtrip() {
                 ) : (
                     <>
                         {/* Map section */}
-                        <div className={styles.map}>
-                            <RoadtripDrawMap 
-                                country={countryMap}    
-                                roads={roads} 
-                                firstPlace={firstPlace}
-                            />
-                        </div>
+                        <RoadtripDrawMap 
+                            country={countryMap}    
+                            roads={roads} 
+                            firstPlace={firstPlace}
+                        />
                         <form className={styles.form}>
                             {/* Standard Information */}
                             <div className={styles.standartInformations}>

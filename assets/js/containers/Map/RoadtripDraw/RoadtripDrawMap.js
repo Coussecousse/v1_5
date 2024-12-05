@@ -208,7 +208,9 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
 
     return (
         <>
-            <div ref={mapRef} className={styles.map}></div>
+            <div className={styles.roadtripDrawMapContainer}>
+                <div ref={mapRef} className={styles.map}></div>
+            </div>
             <div className={styles.informations}>
                 <p>Nombre de jours : {numberOfDays}</p>
                 <p>Distance parcourue : {(distance / 1000).toFixed(2)} km</p>

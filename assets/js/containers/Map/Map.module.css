@@ -18,3 +18,12 @@
 }
 
 .endMarker {}
+
+.roadtripDrawMapContainer {
+    height: 500px;
+}
+
+.informations {
+    margin-bottom: 1rem;
+    font-size: .875rem;
+}
