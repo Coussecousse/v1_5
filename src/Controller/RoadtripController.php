@@ -7,6 +7,7 @@ use App\Entity\Pic;
 use App\Entity\Roadtrip;
 use App\Entity\User;
 use App\Repository\CountryRepository;
+use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use RoadtripFormType;
@@ -18,7 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/roadtrip')]
 class RoadtripController extends AbstractController
-{
+{ 
+    private ImageOptimizer $imageOptimizer;
+
+    public function __construct(ImageOptimizer $imageOptimizer)
+    {
+        $this->imageOptimizer = $imageOptimizer;
+    }
+
     #[Route('/create', name: 'app_roadtrip_create', methods: ['POST'])]
     public function create(Request $request,
         CountryRepository $countryRepository,
@@ -55,12 +63,12 @@ class RoadtripController extends AbstractController
 
                 // Create and add pics
                 $pics = $form->get('pics')->getData();
+                dump($pics);
                 if ($pics) {
                     foreach ($pics as $pic) {
                         $roadtripPicsDir = $this->getParameter('roadtrip_pics_directory');
-
-                        $filename = uniqid() . '.' . $pic->guessExtension();
-                        $pic->move($roadtripPicsDir, $filename);
+                        $filename = $this->imageOptimizer->processAndResizeFile($pic, $roadtripPicsDir);
+                        dump($filename);
                         $newPic = new Pic();
                         $newPic->setPath($filename);
                         $newPic->setRoadtrip($roadtrip);

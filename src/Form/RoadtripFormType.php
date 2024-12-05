@@ -33,8 +33,7 @@ class RoadtripFormType extends AbstractType
             ->add('description', TextType::class, options: [
                 'required' => false,
                 'constraints' => [
-                    new Length(['min' => 3, 'max' => 1000, 'minMessage' => 'La description doit contenir au moins {{ limit }} caractères.']),
-                    new NotBlank(['message' => 'Veuillez entrer une description.']),
+                    new Length(['min' => 0, 'max' => 2500, 'minMessage' => 'La description doit contenir au moins {{ limit }} caractères.']),
                 ]
             ])
             ->add('pics', type: FileType::class, options: [
