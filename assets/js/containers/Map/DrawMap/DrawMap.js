@@ -106,7 +106,12 @@ export default function DrawMap({ drawJson, localisations, zoom=null }) {
             <div ref={mapRef} className={styles.map}></div>
             <div className={styles.informations}>
                 <p>Distance: {(drawJson.routes[0].distance / 1000).toFixed(2)} km</p>
-                <p>Temps estimé: {Math.round(drawJson.routes[0].duration / 60)} min</p>
+                <p>Temps estimé : 
+                {drawJson.routes[0].duration >= 3600
+                    ? `${Math.floor(drawJson.routes[0].duration / 3600)}h${Math.round((drawJson.routes[0].duration % 3600) / 60)} min`
+                    : `${Math.round(drawJson.routes[0].duration / 60)} min`
+                }
+                </p>
             </div>
         </>
     );
