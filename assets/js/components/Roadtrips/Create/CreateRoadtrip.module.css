@@ -142,14 +142,20 @@
 .searchButton {
     border-bottom-right-radius: var(--radius-500);
 }
-.searchButton:hover, .addButton:hover {
+.searchButton:hover, .addButton:hover, .submitButton:hover {
     background-color: var(--color-450);
+    border: none !important;
+    margin: 0 !important;
+}
+.submitButton {
+    border: none !important;
 }
 .inputContainer {
     margin-right: 0 !important;
 }
 .addButton {
     margin: 2rem auto 0 auto;
+    border-radius: var(--radius-500);
 }
 @keyframes fadeIn {
     from {

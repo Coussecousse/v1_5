@@ -17,6 +17,7 @@ export default function CreateRoadtrip() {
     const [roads, setRoads] = useState([]);
     const [errors, setErrors] = useState({});
     const [firstPlace, setFirstPlace] = useState(null);
+    const [pics, setPics] = useState([]);
     const [elementOpen, setElementOpen] = useState({
         days: true,
         informations: false
@@ -25,6 +26,7 @@ export default function CreateRoadtrip() {
     const debounceTimeout = useRef(null);
     const refDays = useRef(null);
     const refDaysButton = useRef(null);
+    const inputPicFile = useRef(null);
 
     useEffect(() => {
         if (days.length > 0 && days[0].length > 0) {
@@ -74,11 +76,29 @@ export default function CreateRoadtrip() {
             }
         }, 300)
     };
+
+    // -- Country suggestions --
     const handleCountrySuggestionClick = (country) => {
         setCountryQuery(country.display_place);
         setCountryMap(country);
         setCountrySuggestions({});
     }
+
+    // -- Pics --
+    handleFileChange = e => {
+        const newFiles = Array.from(e.target.files);
+        setPics((pivPics) => [...pivPics, ...newFiles]);
+    }
+
+    useEffect(() => {
+        if (pics.length > 6) {
+            inputPicFile.current.disabled = true;    
+            setErrors(prevErrors => ({...prevErrors, pics: 'Vous ne pouvez pas ajouter plus de 6 photos.'}));
+        } else {
+            inputPicFile.current.disabled = false;
+            setErrors(prevErrors => ({...prevErrors, pics: ''}));
+        }
+    }, [pics])
 
     return (
         <section className="first-section">
@@ -214,11 +234,15 @@ export default function CreateRoadtrip() {
                                     id="pics" 
                                     name="pics" 
                                     accept="image/png, image/jpeg, image/jpg" 
-                                    multiple="multiple" />
+                                    onChange={handleFileChange}
+                                    multiple="multiple" 
+                                    ref={inputPicFile}/>
                                 </div>
                                 <small className={styles.picsInformation}>Vous ne pouvez partager que 6 photos maximum.</small>
                             </div>
                             {errors.pics && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.pics}</small>}
+
+                            <input className={`form-button ${styles.submitButton}`} type="submit" value="Enregistrer le roadtrip" />            
                         </form>
                     </>
                 )}
