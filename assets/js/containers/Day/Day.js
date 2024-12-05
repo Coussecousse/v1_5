@@ -40,6 +40,11 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
         } else {
             refAddContainer.current?.classList.remove(styles.open);
             refPlacesContainer.current?.classList.add(styles.open);
+
+            setNewQueryLocation({});
+            refInputPlace.current.value = '';
+            setErrors({});
+            setJsonDraw({});
         }
     }, [isOpenAdd]);
 
@@ -48,7 +53,7 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
         const query = refInputPlace.current.value;
 
         if (query.length < 3) {
-            setErrors({ ...errors, name_place: 'Vous devez donner plus d\'indications...' });
+            setErrors({name_place: 'Vous devez donner plus d\'indications...' });
             return;
         }
 
@@ -57,12 +62,12 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                 if (response.data) {
                     setNewQueryLocation(response.data);
                 } else {
-                    setErrors({ ...errors, name_place: 'Adresse non trouvée' });
+                    setErrors({name_place: 'Adresse non trouvée' });
                 }
             })
             .catch(error => {
                 console.error('Error fetching result', error);
-                setErrors({ ...errors, name_place: 'Une erreur est survenue lors de la recherche de l\'adresse' });
+                setErrors({name_place: 'Une erreur est survenue lors de la recherche de l\'adresse' });
             });
     };
 
@@ -88,12 +93,12 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                     setJsonDraw(response.data);
                     setLocalisations([firstPlace, secondPlace]);
                 } else {
-                    setErrors({ ...errors, name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire' });
+                    setErrors({name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire' });
                 }
             })
             .catch(error => {
                 console.error('Error fetching result', error);
-                setErrors({ ...errors, name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire' });
+                setErrors({name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire' });
             });
     }, [currentSearchDraw]);
 
@@ -135,18 +140,12 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                             return updatedRoads;
                         })
                     } else {
-                        setErrors(prevErrors => ({
-                            ...prevErrors,
-                            road_error: 'Une erreur est survenue lors du calcul de l\'itinéraire'
-                        }));
+                        setErrors({ name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire'});
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching result', error);
-                    setErrors(prevErrors => ({
-                        ...prevErrors,
-                        road_error: 'Une erreur est survenue lors du calcul de l\'itinéraire'
-                    }));
+                    setErrors({name_place: 'Une erreur est survenue lors du calcul de l\'itinéraire'});
                 });
             } else {
                 // Only add the road to the current day
@@ -188,10 +187,7 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                     }
                 } catch (error) {
                     console.error('Error recalculating road:', error);
-                    setErrors(prevErrors => ({
-                        ...prevErrors,
-                        road_error: 'Une erreur est survenue lors du recalcul de l\'itinéraire'
-                    }));
+                    setErrors({name_place: 'Une erreur est survenue lors du recalcul de l\'itinéraire'});
                 }
             }
         };
@@ -241,11 +237,11 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                     <p>Jour {index + 1} :</p>
                 </div>
                 <div
-                    aria-label="Bouton rajouter une ville"
+                    aria-label={ isOpenAdd ? "Bouton annuler l'action" : "Bouton rajouter une ville"}
                     role="button"
                     className={createRoadtripStyles.button}
-                    onClick={() => setIsOpenAdd(true)}>
-                    Rajouter une ville
+                    onClick={() => setIsOpenAdd(!isOpenAdd)}>
+                    { isOpenAdd ? "Annuler l'action" : "Rajouter une ville"}
                 </div>
                 <div
                     aria-label="Bouton supprimer la journée"
@@ -284,6 +280,7 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
                                     <div role="button" onClick={handleSearchPlace} className={styles.searchButton}>Chercher</div>
                                 </div>
                             </div>
+                            {day.length > 0 && <small>Les calculs d'itinéraires ne se feront que sur des distances allant jusqu'à 10,000 km en voiture.</small>}
                             {errors.name_place && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={createRoadtripStyles.errorIcon}></div>{errors.name_place}</small>}
                             {(Object.keys(currentSearchDraw).length > 0 && newQueryLocation.length > 0) && (
                                 <ul className={styles.locationList}>
