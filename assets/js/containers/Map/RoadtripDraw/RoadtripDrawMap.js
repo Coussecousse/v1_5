@@ -119,34 +119,35 @@ export default function RoadtripDrawMap({country, roads, firstPlace}) {
                 let marker;
                 const popup = new maplibregl.Popup({ offset: 25 });
                 
-                if ((roadIndex === 0 && waypointIndex === 0) && index == 1) {
-                    // Create marker element
-                    element = createBasicMarker(25);
+                // if ((roadIndex === 0 && waypointIndex === 0)) {
+                //     // Create marker element
+                //     element = createBasicMarker(25);
                     
-                    // Set the text of the popup
-                    popup.setText(`Jour ${index}`);
-                } else if ((roadIndex === 0 && waypointIndex === 1) && index > 0) {
+                //     // Set the text of the popup
+                //     popup.setText(`Jour ${index}`);
+                // } else 
+                if ((roadIndex === 0 && waypointIndex === 1 && index > 0) || (roadIndex === 0 && waypointIndex === 0 && index == 0)) {
                     // Create marker element
                     element = createBasicMarker(25);
                     
                     // Set the text of the popup
                     popup.setText(`Jour ${index + 1}`);
-                } else if (roadIndex > 0 && waypointIndex > 0) {
-                    element = createBasicMarker(15)
-
-                    // Set the text of the popup
-                    popup.setText(`Jour ${index + 1} - Etape ${roadIndex + 1}`);
-                } else {
-                    return;
+                } else if (waypointIndex > 0) {
+                        element = createBasicMarker(15)
+                        // Set the text of the popup
+                        popup.setText(`Jour ${index + 1} - Etape ${index == 0 ? roadIndex + 1 : roadIndex}`);
+                    
                 }
-                // Attach the marker and popup to the map
-                marker = new maplibregl.Marker({ element })
-                .setLngLat([waypoint.location[0], waypoint.location[1]])
-                .setPopup(popup)
-                .addTo(map);
-
-                // Add marker to the state
-                setMarkers([...markers, marker]);
+                if (element) {
+                    // Attach the marker and popup to the map
+                    marker = new maplibregl.Marker({ element })
+                    .setLngLat([waypoint.location[0], waypoint.location[1]])
+                    .setPopup(popup)
+                    .addTo(map);
+    
+                    // Add marker to the state
+                    setMarkers([...markers, marker]);
+                }
             });
             const decodedPath = polyline.decode(road.routes[0].geometry);
 
