@@ -8,9 +8,9 @@ import RoadtripDrawMap from "../../../containers/Map/RoadtripDraw/RoadtripDrawMa
 import axios from "axios";
 import Day from "../../../containers/Day/Day";
 
-
 export default function CreateRoadtrip() {
     const [loading, setLoading] = useState(false);
+    const [flasMessage, setFlashMessage] = useState(null);
     const [countrySuggestions, setCountrySuggestions] = useState({});
     const [countryMap, setCountryMap] = useState({});
     const [countryQuery, setCountryQuery] = useState('');
@@ -21,8 +21,11 @@ export default function CreateRoadtrip() {
     const [elementOpen, setElementOpen] = useState({
         days: true,
         informations: false
-    })
+    });
     const [days, setDays] = useState([]);
+    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState('');
+    const [budget, setBudget] = useState(1);
     const debounceTimeout = useRef(null);
     const refDays = useRef(null);
     const refDaysButton = useRef(null);
@@ -85,9 +88,9 @@ export default function CreateRoadtrip() {
     }
 
     // -- Pics --
-    handleFileChange = e => {
+    const handleFileChange = e => {
         const newFiles = Array.from(e.target.files);
-        setPics((pivPics) => [...pivPics, ...newFiles]);
+        setPics((prevPics) => [...prevPics, ...newFiles]);
     }
 
     useEffect(() => {
@@ -99,6 +102,39 @@ export default function CreateRoadtrip() {
             setErrors(prevErrors => ({...prevErrors, pics: ''}));
         }
     }, [pics])
+
+
+
+    // -- Submit --
+    const handleSubmit = async e => {
+        e.preventDefault();
+
+        setLoading(true);
+        setFlashMessage(null);   
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('country', countryQuery);
+        formData.append('description', description);
+        formData.append('days', JSON.stringify(days));
+        formData.append('roads', JSON.stringify(roads));
+        formData.append('budget', budget);
+
+        // Add files
+        for (let i = 0; i < e.target.pics.files.length; i++) {
+            formData.append('pics[]', e.target.pics.files[i]);
+        }
+    
+        try {
+            const response = await axios.post('/api/roadtrip/create', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <section className="first-section">
@@ -117,7 +153,7 @@ export default function CreateRoadtrip() {
                             roads={roads} 
                             firstPlace={firstPlace}
                         />
-                        <form className={styles.form}>
+                        <form className={styles.form} onSubmit={handleSubmit}>
                             {/* Standard Information */}
                             <div className={styles.standartInformations}>
                                 {/* Title Input */}
@@ -129,6 +165,8 @@ export default function CreateRoadtrip() {
                                             id="title"
                                             name="title"
                                             placeholder="Titre"
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -217,6 +255,8 @@ export default function CreateRoadtrip() {
                                         id="description"
                                         name="description"
                                         placeholder="Description de votre roadrip"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
                                     /> 
                                 </div>
                             </div>
@@ -226,22 +266,34 @@ export default function CreateRoadtrip() {
                                     {errors.description}
                                 </small>
                             )}
-                            <div className={`${styles.input} input2_elementsContainer`}>
-                                <label htmlFor="pics">Photos :</label>
-                                <div className={`input2_container`}>
-                                    <input 
-                                    type="file" 
-                                    id="pics" 
-                                    name="pics" 
-                                    accept="image/png, image/jpeg, image/jpg" 
-                                    onChange={handleFileChange}
-                                    multiple="multiple" 
-                                    ref={inputPicFile}/>
+                            <div className={styles.picsBudget}>
+                                <div className={`${styles.input} input2_elementsContainer`}>
+                                    <label htmlFor="pics">Photos :</label>
+                                    <div className={`input2_container`}>
+                                        <input
+                                        type="file"
+                                        id="pics"
+                                        name="pics"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onChange={handleFileChange}
+                                        multiple="multiple"
+                                        ref={inputPicFile}/>
+                                    </div>
+                                    <small className={styles.picsInformation}>Vous ne pouvez partager que 6 photos maximum.</small>
                                 </div>
-                                <small className={styles.picsInformation}>Vous ne pouvez partager que 6 photos maximum.</small>
+                                {errors.pics && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={styles.errorIcon}></div>{errors.pics}</small>}
+                                <div className={`${styles.input} input2_elementsContainer`}>
+                                    <label htmlFor="budget">Budget :</label>
+                                    <div className={`input2_container`}>
+                                        <select id="budget" name="budget" value={budget} onChange={(e) => setBudget(e.target.value)}>
+                                            <option value="1">€</option>
+                                            <option value="2">€€</option>
+                                            <option value="3">€€€</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                {errors.bidget && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={styles.errorIcon}></div>{errors.bidget}</small>}
                             </div>
-                            {errors.pics && <small className={`smallFormError ${formStyles.errorGreen}`}><div className={activitiesStyle.errorIcon}></div>{errors.pics}</small>}
-
                             <input className={`form-button ${styles.submitButton}`} type="submit" value="Enregistrer le roadtrip" />            
                         </form>
                     </>

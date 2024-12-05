@@ -24,9 +24,16 @@ class Country
     #[ORM\OneToMany(targetEntity: Activity::class, mappedBy: 'country')]
     private Collection $activity;
 
+    /**
+     * @var Collection<int, Roadtrip>
+     */
+    #[ORM\OneToMany(targetEntity: Roadtrip::class, mappedBy: 'country')]
+    private Collection $roadtrip;
+
     public function __construct()
     {
         $this->activity = new ArrayCollection();
+        $this->roadtrip = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,6 +77,36 @@ class Country
             // set the owning side to null (unless already changed)
             if ($activity->getCountry() === $this) {
                 $activity->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Roadtrip>
+     */
+    public function getRoadtrip(): Collection
+    {
+        return $this->roadtrip;
+    }
+
+    public function addRoadtrip(Roadtrip $roadtrip): static
+    {
+        if (!$this->roadtrip->contains($roadtrip)) {
+            $this->roadtrip->add($roadtrip);
+            $roadtrip->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoadtrip(Roadtrip $roadtrip): static
+    {
+        if ($this->roadtrip->removeElement($roadtrip)) {
+            // set the owning side to null (unless already changed)
+            if ($roadtrip->getCountry() === $this) {
+                $roadtrip->setCountry(null);
             }
         }
 

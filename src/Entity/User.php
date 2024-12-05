@@ -65,11 +65,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $uid = null;
 
+    /**
+     * @var Collection<int, Roadtrip>
+     */
+    #[ORM\OneToMany(targetEntity: Roadtrip::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $roadtrips;
+
     public function __construct()
     {
         $this->uid = uniqid();
         $this->activities = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
+        $this->roadtrips = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -296,6 +303,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUid(string $uid): static
     {
         $this->uid = $uid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Roadtrip>
+     */
+    public function getRoadtrips(): Collection
+    {
+        return $this->roadtrips;
+    }
+
+    public function addRoadtrip(Roadtrip $roadtrip): static
+    {
+        if (!$this->roadtrips->contains($roadtrip)) {
+            $this->roadtrips->add($roadtrip);
+            $roadtrip->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoadtrip(Roadtrip $roadtrip): static
+    {
+        if ($this->roadtrips->removeElement($roadtrip)) {
+            // set the owning side to null (unless already changed)
+            if ($roadtrip->getUser() === $this) {
+                $roadtrip->setUser(null);
+            }
+        }
 
         return $this;
     }

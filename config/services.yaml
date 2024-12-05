@@ -6,6 +6,8 @@
 parameters:
     profile_pics_directory: '%kernel.project_dir%/public/uploads/profile_pics'
     activity_pics_directory: '%kernel.project_dir%/public/uploads/activity_pics'
+    roadtrip_pics_directory: '%kernel.project_dir%/public/uploads/roadtrip_pics'
+    iqlocation_key: '%env(IQLOCATION_KEY)%'
 
 services:
     # default configuration for services in *this* file

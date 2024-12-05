@@ -22,6 +22,9 @@ class Pic
     #[ORM\ManyToOne(inversedBy: 'pics')]
     private ?Activity $activity = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pics')]
+    private ?Roadtrip $roadtrip = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Pic
     public function setActivity(?Activity $activity): static
     {
         $this->activity = $activity;
+
+        return $this;
+    }
+
+    public function getRoadtrip(): ?Roadtrip
+    {
+        return $this->roadtrip;
+    }
+
+    public function setRoadtrip(?Roadtrip $roadtrip): static
+    {
+        $this->roadtrip = $roadtrip;
 
         return $this;
     }

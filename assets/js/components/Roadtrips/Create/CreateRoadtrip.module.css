@@ -25,9 +25,15 @@
     gap: 2rem;
     padding-top: 1rem;
 }
-.input input, .input textarea {
+.input {
+    min-width: 150px
+}
+.input input, .input textarea, .input select {
     color: var(--color-500) !important;
     font-weight: 400;
+}
+.input select option {
+    color: var(--color-900)
 }
 
 .input input::placeholder, .input textarea::placeholder {
@@ -35,14 +41,17 @@
     font-weight: 400;
 }
 .input input:focus-visible, .input textarea:focus-visible  {
-   border-color: var(--color-500) !important;
+    border-color: var(--color-500) !important;
 }
-.standartInformations {
+.standartInformations, .picsBudget {
     display: flex;
     gap: 1rem;  
 }
 .standartInformations > div:first-child {
     flex: 1;
+}
+.picsBudget {
+    margin-bottom: 2rem;
 }
 
 /* Days container */
