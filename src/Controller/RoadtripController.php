@@ -63,7 +63,6 @@ class RoadtripController extends AbstractController
 
                 // Create and add pics
                 $pics = $form->get('pics')->getData();
-                dump($pics);
                 if ($pics) {
                     foreach ($pics as $pic) {
                         $roadtripPicsDir = $this->getParameter('roadtrip_pics_directory');

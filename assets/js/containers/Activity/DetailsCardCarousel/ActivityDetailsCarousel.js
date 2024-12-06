@@ -26,11 +26,24 @@ export default function ActivityDetailsCarousel({activity, opinion}) {
                     <div className={styles.picsContainer}>
                         <div className={styles.carouselImgWrapper} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                             {opinion.pics.map((pic, index) => (
-                                <img 
-                                    key={index} 
-                                    src={`/uploads/activity_pics/${pic}`} 
-                                    alt={`Picture ${index + 1}`}
-                                    className={styles.bigImg}/>
+                                <picture className={styles.bigImg} key={index}>
+                                    <source 
+                                        srcSet={`/uploads/activity_pics/small/${pic}`} 
+                                        media="(min-width: 1200px)" 
+                                    />
+                                    <source 
+                                        srcSet={`/uploads/activity_pics/medium/${pic}`} 
+                                        media="(min-width: 990px)" 
+                                    />
+                                    <source 
+                                        srcSet={`/uploads/activity_pics/large/${pic}`} 
+                                        media="(min-width: 768px)" 
+                                    />
+                                    <img 
+                                        src={`/uploads/activity_pics/extraLarge/${pic}`} 
+                                        alt="Image de l'activité" 
+                                    />
+                                </picture>
                             ))}
                         </div>
                         <div className={styles.smallContainer}>
@@ -39,11 +52,26 @@ export default function ActivityDetailsCarousel({activity, opinion}) {
                             )}
                             <div className={styles.smallPicContainer}>
                                 {opinion.pics.map((pic, index) => (
-                                    <img key={index} 
-                                        src={`/uploads/activity_pics/${pic}`} 
-                                        alt={`Picture ${index + 1}`} 
-                                        className={`${currentIndex === index ? styles.active : '' } ${styles.minPic}`} 
-                                        onClick={() => setCurrentIndex(index)}/>
+                                    <picture className={styles.minPic} key={index}>
+                                        <source 
+                                            srcSet={`/uploads/activity_pics/small/${pic}`} 
+                                            media="(min-width: 1200px)"
+                                        />
+                                        <source
+                                            srcSet={`/uploads/activity_pics/medium/${pic}`}
+                                            media="(min-width: 990px)"
+                                        />
+                                        <source
+                                            srcSet={`/uploads/activity_pics/large/${pic}`}
+                                            media="(min-width: 768px)"
+                                        /> 
+                                        <img
+                                            src={`/uploads/activity_pics/extraLarge/${pic}`}
+                                            alt={`Image ${index + 1}`}
+                                            className={`${currentIndex === index ? styles.active : '' } ${styles.minPic}`}
+                                            onClick={() => setCurrentIndex(index)}
+                                        />
+                                    </picture>
                                 ))}
                             </div>
                             {opinion.pics.length > 1 && (

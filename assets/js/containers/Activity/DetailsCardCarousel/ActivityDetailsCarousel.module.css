@@ -21,6 +21,13 @@
 /* Images */
 .bigImg, .minPic {
     height: 100%;
+}
+.bigImg {
+    min-width: 100%;
+}
+.bigImg > img, .minPic > img {
+    width: 100%;
+    min-height: 100%;
     object-fit: cover;
     object-position: center;
 }
@@ -69,7 +76,7 @@
     transform: scale(1.1);
     opacity: 1;
 }
-.minPic.active {
+.minPic img.active {
     opacity: 1;
 }
 

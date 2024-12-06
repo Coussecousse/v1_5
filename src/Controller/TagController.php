@@ -20,7 +20,7 @@ class TagController extends AbstractController
         $suggestions = [];
         foreach ($tags as $tag) {
             $translatedName = $translator->trans($tag->getName());
-            $suggestions[] = ['id' => $tag->getId(), 'name' => $translatedName];
+            $suggestions[] = ['id' => $tag->getId(), 'name' => $translatedName, 'value' => $tag->getName()];
         }
         
         if (empty($suggestions)) {

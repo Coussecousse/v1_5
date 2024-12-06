@@ -95,12 +95,24 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
                     <div className={styles.carouselImgWrapper}
                     style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                         {limitedPics.map((pic, index) => (
-                            <img
-                                key={index}
-                                src={`/uploads/activity_pics/${pic}`}
-                                alt={`Picture ${index + 1}`}
-                                className={`${styles.img}`}
-                            />
+                            <picture className={styles.img} key={index}>
+                                <source 
+                                    srcSet={`/uploads/activity_pics/small/${pic}`} 
+                                    media="(min-width: 1200px)" 
+                                />
+                                <source 
+                                    srcSet={`/uploads/activity_pics/medium/${pic}`} 
+                                    media="(min-width: 990px)" 
+                                />
+                                <source 
+                                    srcSet={`/uploads/activity_pics/large/${pic}`} 
+                                    media="(min-width: 768px)" 
+                                />
+                                <img 
+                                    src={`/uploads/activity_pics/extraLarge/${pic}`} 
+                                    alt="Image de l'activité" 
+                                />
+                            </picture>
                         ))}
                     </div>
                     {limitedPics.length > 1 && (

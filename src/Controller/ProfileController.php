@@ -83,7 +83,6 @@ class ProfileController extends AbstractController
                 
                 $profilePicsDir = $this->getParameter('profile_pics_directory');
                 if ($oldProfilePic) {
-                    dump($oldProfilePic);
                     $profilePicName = '/' . $oldProfilePic->getPath();
                     $folders = ['small', 'medium', 'large', 'extraLarge'];
                     foreach($folders as $f) {

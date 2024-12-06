@@ -108,7 +108,7 @@ export default function CreateActivity() {
     };
 
     const handleSuggestionClick = (suggestion) => {
-        setQuery(suggestion.name);
+        setQuery(suggestion);
         setSuggestions([]); 
     };
 
@@ -125,7 +125,7 @@ export default function CreateActivity() {
         formData.append('display_name', selectionnedLocation.display_name);
         formData.append('lat', selectionnedLocation.lat);
         formData.append('lng', selectionnedLocation.lon);
-        formData.append('type', query);
+        formData.append('type', query.value);
         formData.append('description', form.description.value);
         for (let i = 0; i < form.activity_pics.files.length; i++) {
             formData.append('activity_pics[]', form.activity_pics.files[i]);
@@ -221,7 +221,7 @@ export default function CreateActivity() {
                                     <div className={`input2_container`}>
                                         <input
                                             type="text"
-                                            value={query}
+                                            value={query.name}
                                             onChange={handleTypeChange}
                                             placeholder="Indiquer le type"
                                             id="map_type"
@@ -229,8 +229,8 @@ export default function CreateActivity() {
                                         />
                                         {suggestions.length > 0 && (
                                             <ul className={formStyles.suggestionsList}>
-                                                {suggestions.map((suggestion) => (
-                                                    <li key={suggestion.id} onClick={() => handleSuggestionClick(suggestion)}>
+                                                {suggestions.map((suggestion, index) => (
+                                                    <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
                                                         {suggestion.name}
                                                     </li>
                                                 ))}

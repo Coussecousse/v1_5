@@ -1,9 +1,11 @@
 .form {
     margin-top: 2rem;
+    gap: 2rem;;
 }
 
 /* User pic container */
 .userPicActivity {
+    margin-top: 1rem;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -21,6 +23,12 @@
     width: 100%;
     height: 300px;
     object-fit: cover;
+}
+.img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 

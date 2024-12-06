@@ -58,8 +58,7 @@ export default function Profile() {
                                 />
                                 <img 
                                     src={`/uploads/profile_pics/extraLarge/${userPic}`} 
-                                    alt="User Profile" 
-                                    className="w-11/12 drop-shadow-lg lg:w-auto max-w-[380px] max-h-[480px] mx-auto pb-4 object-contain" 
+                                    alt="Image de profil" 
                                 />
                             </picture>
                         <span className={`${styles.spanDiviser}`}></span>

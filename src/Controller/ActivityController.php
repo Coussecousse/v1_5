@@ -14,17 +14,27 @@ use App\Repository\ActivityRepository;
 use App\Repository\DescriptionRepository;
 use App\Repository\PicRepository;
 use App\Repository\TagRepository;
+use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorBag;
 
 #[Route('/api/activities')]
 class ActivityController extends AbstractController 
 {
+    private ImageOptimizer $imageOptimizer;
+
+    public function __construct(ImageOptimizer $imageOptimizer)
+    {
+        $this->imageOptimizer = $imageOptimizer;
+    }
+
     #[Route('/', name: 'app_activity_all', methods: ['GET'])]
     public function index(ActivityRepository $activityRepository): JsonResponse
     {
@@ -49,7 +59,10 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/create', name: 'app_activity_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, TagRepository $tagRepository, ActivityRepository $activityRepository): JsonResponse
+    public function create(Request $request, 
+        EntityManagerInterface $em, 
+        TagRepository $tagRepository, 
+        ActivityRepository $activityRepository): JsonResponse
     {
         $form = $this->createForm(ActivityFormType::class);
         $data = array_merge($request->request->all(), $request->files->all());
@@ -87,12 +100,12 @@ class ActivityController extends AbstractController
                     $country->addActivity($activity);
                     $em->persist($country);
                 }
+
                 $description = new Description();
                 $description->setDescription($form->get('description')->getData());
                 $description->setActivity($activity);
                 $description->setUser($this->getUser());
                 $em->persist($description);
-
                 $activity
                     ->setDisplayName($form->get('display_name')->getData())
                     ->setLat($form->get('lat')->getData())
@@ -107,15 +120,10 @@ class ActivityController extends AbstractController
                     foreach ($activity_pics as $activity_pic) {
                         // Create a new pic
                         $activityPicsDir = $this->getParameter('activity_pics_directory');
-    
-                        $newFilename = uniqid() . '.' . $activity_pic->guessExtension();
-                        $activity_pic->move(
-                            $activityPicsDir,
-                            $newFilename
-                        );
+                        $fileName = $this->imageOptimizer->processAndResizeFile($activity_pic, $activityPicsDir);
     
                         $activityPic = new Pic();
-                        $activityPic->setPath($newFilename);
+                        $activityPic->setPath($fileName);
                         $activityPic->setActivity($activity);
                         $activityPic->setUser($this->getUser());    
     
@@ -329,14 +337,19 @@ class ActivityController extends AbstractController
                 foreach($pics as $pic) {
                     $namePath = $pic->getPath();
                     if (!in_array($namePath, array_map(function ($file) { return $file instanceof File ? null : $file; }, $data['activity_pics']))) {
+                        $filesystem = new Filesystem();
+
                         $user = $this->getUser();
                         $userEntity = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
                         $userEntity->removePic($pic);
                         $em->remove($pic);
                         
-                        $fullFilePath = $activityPicsDir .'/'. $namePath;
-                        if (file_exists($fullFilePath)) {
-                            unlink($fullFilePath);  
+                        $folders = ['small', 'medium', 'large', 'extraLarge'];
+                        foreach($folders as $f) {
+                            $pic = $activityPicsDir . '/' . $f . '/' . $namePath;
+                            if (!$filesystem->exists($pic)) {
+                                $filesystem->remove($pic);
+                            }
                         }
                     }
                 }
@@ -345,12 +358,7 @@ class ActivityController extends AbstractController
                 foreach($submitedPics as $pic) {
                     if (in_array($pic->getClientOriginalName(), $pics)) continue;
 
-                    $newFilename = uniqid() . '.' . $pic->guessExtension();
-                    try {
-                        $pic->move($activityPicsDir, $newFilename);
-                    } catch (\Exception $e) {
-                        return new JsonResponse(['error' => 'Error uploading file.'], Response::HTTP_BAD_REQUEST);
-                    }
+                    $newFilename = $this->imageOptimizer->processAndResizeFile($pic, $activityPicsDir);
 
                     // Create a new pic
                     $newPic = new Pic();
