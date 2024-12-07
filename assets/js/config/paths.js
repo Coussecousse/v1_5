@@ -18,6 +18,8 @@ const paths = {
     CREATE_ACTIVITY : '/activities/create',
     ROADTRIPS : '/roadtrips',
     CREATE_ROADTRIP : '/roadtrips/create',
+    DETAILS_ROADTRIP : '/roadtrips/:uid',
+    UPDATE_ROADTRIP : '/roadtrips/update/:uid',
 }
 
 export default paths;

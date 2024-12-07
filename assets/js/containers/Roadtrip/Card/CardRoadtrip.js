@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from './CardRoadtrip.module.css';
 import RoadtripDrawMap from "../../Map/RoadtripDraw/RoadtripDrawMap";
 import { Link } from "react-router-dom";
+import paths from "../../../config/paths";
 
 export default function CardRoadtrip({roadtrip, index}) {
 
@@ -47,7 +48,7 @@ export default function CardRoadtrip({roadtrip, index}) {
                 </div>
                 <p className={styles.description}>{truncateDescription(roadtrip.description, 255)}</p>
                 <small>
-                    <Link className={`link ${styles.link}`}>Plus de détails...</Link>
+                    <Link className={`link ${styles.link}`} to={paths.DETAILS_ROADTRIP.replace(':uid', roadtrip.uid)}>Plus de détails...</Link>
                 </small>
             </div>
         </div>

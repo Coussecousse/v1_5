@@ -22,6 +22,7 @@ class PicRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->andWhere('p.user = :user')
             ->andWhere('p.activity IS NULL')
+            ->andWhere('p.roadtrip IS NULL')
             ->setParameter('user', $user)
             ->getQuery()
             ->getOneOrNullResult();

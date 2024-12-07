@@ -7,6 +7,7 @@ use App\Entity\Pic;
 use App\Entity\Roadtrip;
 use App\Entity\User;
 use App\Repository\CountryRepository;
+use App\Repository\PicRepository;
 use App\Repository\RoadtripRepository;
 use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +33,6 @@ class RoadtripController extends AbstractController
     public function index(RoadtripRepository $roadtripRepository):JsonResponse
     {
         $roadtrips = $roadtripRepository->findAll();
-        dump($roadtrips);
         $jsonRoadtrips = [];    
         foreach($roadtrips as $roadtrip) {
             $jsonRoadtrips[] = [
@@ -50,6 +50,49 @@ class RoadtripController extends AbstractController
         }
 
         return new JsonResponse($jsonRoadtrips, Response::HTTP_OK);
+    }
+
+    #[Route('/search/{uid}', name: 'app_roadtrip_search_uid', methods: ['GET'])]
+    public function searchUid(
+        Request $request, 
+        RoadtripRepository $roadtripRepository,
+        PicRepository $picRepository): JsonResponse
+    {
+        $uid = $request->get('uid');
+        try {
+            $roadtrip = $roadtripRepository->findOneBy(['uid' => $uid]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        
+        if (!$roadtrip) {
+            return new JsonResponse(['error' => 'Roadtrip not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $jsonRoadtrip = [
+                'title' => $roadtrip->getTitle(),
+                'country' => $roadtrip->getCountry()->getName(),
+                'description' => $roadtrip->getDescription(),
+                'budget' => $roadtrip->getBudget(),
+                'days' => $roadtrip->getDays(),
+                'roads' => $roadtrip->getRoads(),
+                'uid' => $roadtrip->getUid(),
+                'pics' => array_map(function(Pic $pic) {
+                    return $pic->getPath();
+                }, $roadtrip->getPics()->toArray()),
+                'user' => [
+                    'username' => $roadtrip->getUser()->getUsername(),
+                    'uid' => $roadtrip->getUser()->getUid(),
+                    'profile_pic' => $picRepository->getProfilePic($roadtrip->getUser())->getPath()
+                ]
+            ];        
+            return new JsonResponse($jsonRoadtrip, Response::HTTP_OK);
+        } 
+        catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     #[Route('/create', name: 'app_roadtrip_create', methods: ['POST'])]
@@ -127,5 +170,5 @@ class RoadtripController extends AbstractController
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }   
 
-
+    
 }

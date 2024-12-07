@@ -82,7 +82,7 @@ export default function ActivityDetailsCarousel({activity, opinion}) {
                 )}
                 <div className={styles.textContainer}>
                     <div className={styles.descriptionContainer}>
-                        <Link className={styles.profilePic} style={{ backgroundImage: `url(/uploads/profile_pics/${opinion.user.profile_pic})` }}
+                        <Link className={styles.profilePic} style={{ backgroundImage: `url(/uploads/profile_pics/small/${opinion.user.profile_pic})` }}
                         ></Link>
                         <p className={styles.text}>{opinion.description}</p>
                     </div>

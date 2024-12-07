@@ -1,0 +1,168 @@
+.section {
+    color: var(--color-500);
+    padding: 2rem;
+}
+/* Title */
+.title {
+    color: var(--color-900);
+    text-align: center;
+}
+/* Container */
+.container {
+    margin: 0 auto;
+    width: 90%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-500);
+    box-shadow: var(--shadow);
+    padding: 2rem 1rem;
+}
+
+.description, .smallInformations {
+    font-family: var(--ff-secondary);
+}
+
+/* Title container */
+.titleContainer {
+    margin: 0 auto;
+    width: fit-content;
+    margin-bottom: 2rem;
+}
+
+.secondTitle {
+    font-size: var(--fs-800);
+    font-weight: 900;
+    text-align: center;
+}
+
+.smallInformations {
+    display: flex;
+    gap: 1rem;
+    margin-top: .5rem;
+}
+.smallInformations > p {
+    font-size: .875rem;
+    display: inline-flex;
+    gap: .25rem;
+}
+.spanInformations {
+    display: flex;
+    gap: .25rem;
+}
+.worldIcon, .moneyIcon {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(228deg) brightness(108%) contrast(108%);
+    width: 18px;
+    height: 18px;
+}
+.worldIcon {
+    background: url('/assets/images/icon/world.svg') no-repeat center / contain;
+}
+.moneyIcon {
+    background: url('/assets/images/icon/money.svg') no-repeat center / contain;
+}
+
+/* -- Carousel -- */
+.carouselContainer {
+    position: relative;
+    height: 400px;
+    overflow-x: hidden;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.carouselWrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.img {
+    min-width: 100%;
+    height: auto;
+}
+.img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.next {
+    right: 0;
+}
+
+.button {
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    padding: 0 .5rem ;
+    cursor: pointer;
+    background-color: var(--color-700);
+    color: var(--color-500);
+    border: none;
+}
+
+.button:disabled {
+    opacity: .5;
+}
+
+/* Informations */
+.informationsContainer {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+/* Map */
+.map {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Informations */
+.informations {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* profilePic*/
+.profilePic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1rem auto;
+}
+.profilePic > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Description */
+.description {
+    margin: auto 0;
+}
+
+/* Button */
+.contribButton {
+    margin-top: 2rem;
+    display: block;
+    width: fit-content;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: var(--radius-500);
+    border: 1px solid var(--color-700);
+    background-color: var(--color-700);
+    color: var(--color-500);
+    transition: .2s;
+    padding: .372rem 1rem;
+}
+.contribButton:hover {
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-500);
+}

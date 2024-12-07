@@ -161,7 +161,12 @@ export default function CreateRoadtrip() {
                         <span className={`loader-text ${formStyles.loaderTextGreen}`}>Chargement...</span>
                     </div>
                 ) : (
-                    <>
+                    <>  
+                        {flashMessage && (
+                                <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
+                                    {flashMessage.message}
+                                </div>
+                        )}
                         {/* Map section */}
                         <div className={styles.map}>
                             <RoadtripDrawMap
@@ -171,11 +176,6 @@ export default function CreateRoadtrip() {
                             />
                         </div>
                         <form className={styles.form} onSubmit={handleSubmit}>
-                            {flashMessage && (
-                                <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
-                                    {flashMessage.message}
-                                </div>
-                            )}
                             {/* Standard Information */}
                             <div className={styles.standartInformations}>
                                 {/* Title Input */}
