@@ -10,7 +10,7 @@ import Day from "../../../containers/Day/Day";
 
 export default function CreateRoadtrip() {
     const [loading, setLoading] = useState(false);
-    const [flasMessage, setFlashMessage] = useState(null);
+    const [flashMessage, setFlashMessage] = useState(null);
     const [countrySuggestions, setCountrySuggestions] = useState({});
     const [countryMap, setCountryMap] = useState({});
     const [countryQuery, setCountryQuery] = useState('');
@@ -129,8 +129,23 @@ export default function CreateRoadtrip() {
             const response = await axios.post('/api/roadtrip/create', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
+            if (response.status === 201) {
+                setFlashMessage({ type: "success", message: "Votre roadtrip a bien été créé !" });
+                setCountryQuery('');
+                setCountryMap({});
+                setRoads([]);
+                setDays([]);
+                setDescription('');
+                setTitle('');
+                setBudget(1);
+                setPics([]);
+            } else {
+                setErrors(response.data.errors);
+                setFlashMessage({ type: "error", message: "Une erreur est survenue lors de la création de votre roadtrip." });
+            }
         } catch (error) {
             console.error(error);
+            setFlashMessage({type: 'error', message: 'Une erreur est survenue lors de la création de votre roadtrip.'});
         } finally {
             setLoading(false);
         }
@@ -156,6 +171,11 @@ export default function CreateRoadtrip() {
                             />
                         </div>
                         <form className={styles.form} onSubmit={handleSubmit}>
+                            {flashMessage && (
+                                <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
+                                    {flashMessage.message}
+                                </div>
+                            )}
                             {/* Standard Information */}
                             <div className={styles.standartInformations}>
                                 {/* Title Input */}

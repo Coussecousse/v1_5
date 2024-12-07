@@ -15,6 +15,7 @@ export default function Roadtrips() {
     const [roadtrips, setRoadtrips] = useState([]);
     const [currentRoadtrips, setCurrentRoadtrips] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [flashMessage, setFlashMessage] = useState(null);
     const roadtripsPerPage = 10; 
     const debounceTimeout = useRef(null);
     // check if usefull
@@ -65,12 +66,15 @@ export default function Roadtrips() {
         axios.get('/api/roadtrip')
             .then(response => {
                 setRoadtrips(response.data);
-                setLoading(false);
+                setFlashMessage(null);
             })
             .catch(error => {
-                console.error('Error fetching countries', error);
+                console.error('Error fetching roadtrips', error);
+                setFlashMessage({ type: 'error', message: 'Une erreur est survenue lors de la récupération des roadtrips.'});
+            })
+            .finally(() => { 
                 setLoading(false);
-            });
+            });  
     }, []);
 
 
@@ -126,7 +130,7 @@ export default function Roadtrips() {
                         </div>
                         <div className={styles.options}>
                             <fieldset>
-                                <legend className={styles.legend}>Prix :</legend>
+                                <legend className={styles.legend}>Budget :</legend>
                                 <ul className={styles.optionsList}>
                                     <li>
                                         <input type="radio" id="price_1" name="price" value="price_1" />
@@ -167,15 +171,22 @@ export default function Roadtrips() {
                             <span className={`loader-text ${formStyles.loaderTextGreen}`}>Chargement...</span>
                         </div>
                     ) : (
-                        <div className={styles.roadtrips}>
-                            {currentRoadtrips.length > 0 ? (
-                                currentRoadtrips.map((roadtrip, index) => (
-                                    <CardRoadtrip key={index} roadtrip={roadtrip} />
-                                ))
-                            ) : (
-                                <p>Aucun roadtrip trouvé</p>
-                            )} 
-                        </div>
+                        <>
+                            {flashMessage && ( 
+                                <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
+                                    {flashMessage.message}
+                                </div>
+                            )}
+                            <div className={styles.roadtrips}>
+                                {currentRoadtrips.length > 0 ? (
+                                    currentRoadtrips.map((roadtrip, index) => (
+                                        <CardRoadtrip key={index} roadtrip={roadtrip} />
+                                    ))
+                                ) : (
+                                    <p>Aucun roadtrip trouvé</p>
+                                )} 
+                            </div>
+                        </>
                     )}
                     <div className={styles.pagination}>
                         <button onClick={handlePrevPage} disabled={currentPage === 1} aria-label="Precedent">❮</button>

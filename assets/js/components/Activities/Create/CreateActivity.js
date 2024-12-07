@@ -8,7 +8,7 @@ import axios from 'axios';
 
 export default function CreateActivity() {
     const [errors, setErrors] = useState({});
-    const [flashMessage, setFlashMessage] = useState(null);
+    const [flashMessage , setFlashMessage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [query, setQuery] = useState('')
     const [suggestions, setSuggestions] = useState([]);
