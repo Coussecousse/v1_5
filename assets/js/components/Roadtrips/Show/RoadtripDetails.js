@@ -210,12 +210,15 @@ export default function RoadtripDetails() {
                                 )}
                                 {roadtrip.user.uid == currentUser.uid ? 
                                     (
-                                        <Link to={paths.UPDATE_ROADTRIP.replace(':uid', roadtrip.uid)} className={styles.contribButton}>Modifier votre roadtrip</Link>
+                                        <div className={styles.buttonsContainer}>
+                                            <Link to={paths.UPDATE_ROADTRIP.replace(':uid', roadtrip.uid)} className={styles.contribButton}>Modifier votre roadtrip</Link>
+                                            <Link className={styles.contribButton}>Supprimer ce roadtrip</Link>
+                                        </div>
                                     ): (
-                                        <>
+                                        <div className={styles.buttonsContainer}>
                                             <button onClick={handleReport}>Signaler ce roadtrip</button>
                                             <button onClick={handleAddFavorite}>Ajouter à vos favoris</button>
-                                        </>
+                                        </div>
                                     )}
                             </>
                         )}

@@ -1,0 +1,8 @@
+.container {
+    margin: 0 auto;
+    width: 90%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-500);
+    box-shadow: var(--shadow);
+    padding: 2rem 1rem;
+}

@@ -148,13 +148,16 @@
 }
 
 /* Button */
+.buttonsContainer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
 .contribButton {
     margin-top: 2rem;
     display: block;
     width: fit-content;
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
     border-radius: var(--radius-500);
     border: 1px solid var(--color-700);
     background-color: var(--color-700);
