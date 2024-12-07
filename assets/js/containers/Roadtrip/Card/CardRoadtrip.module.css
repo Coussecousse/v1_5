@@ -1,0 +1,74 @@
+.container {
+    display: flex;
+    gap: 1rem;
+    height: 400px;
+}
+
+.map {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.informations {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.title::first-letter, 
+.description::first-letter {
+    text-transform: uppercase;
+}
+
+.description, .smallInformations {
+    font-family: var(--ff-secondary);
+}
+
+/* Little informations */
+.smallInformations {
+    display: flex;
+    gap: 1rem;
+    font-size: smaller;
+    font-weight: 300;
+}
+
+.smallInformations > p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .25rem;
+}
+
+/* Description */
+.description {
+    margin: auto 0;
+    padding: 1rem 0;
+    overflow-y: auto;
+}
+
+/* Icons */
+.spanInformations {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+}
+.worldIcon, .moneyIcon {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(228deg) brightness(108%) contrast(108%);
+    width: 15px;
+    height: 15px;
+}
+.worldIcon {
+    background: url('/assets/images/icon/world.svg') no-repeat center / contain;
+}
+.moneyIcon {
+    background: url('/assets/images/icon/money.svg') no-repeat center / contain;
+}
+
+/* Link */
+.link::after {
+    height: 1px !important;
+    background-color: var(--color-500);
+}

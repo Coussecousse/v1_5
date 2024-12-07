@@ -20,10 +20,10 @@
 .endMarker {}
 
 .roadtripDrawMapContainer {
-    height: 500px;
+    flex-direction: column;
+    flex: 1;
 }
 
 .informations {
-    margin-bottom: 1rem;
     font-size: .875rem;
 }

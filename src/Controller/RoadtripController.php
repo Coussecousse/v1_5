@@ -7,6 +7,7 @@ use App\Entity\Pic;
 use App\Entity\Roadtrip;
 use App\Entity\User;
 use App\Repository\CountryRepository;
+use App\Repository\RoadtripRepository;
 use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -25,6 +26,30 @@ class RoadtripController extends AbstractController
     public function __construct(ImageOptimizer $imageOptimizer)
     {
         $this->imageOptimizer = $imageOptimizer;
+    }
+
+    #[Route('/', name: 'app_roadtrip_all', methods: ['GET'])]
+    public function index(RoadtripRepository $roadtripRepository):JsonResponse
+    {
+        $roadtrips = $roadtripRepository->findAll();
+        dump($roadtrips);
+        $jsonRoadtrips = [];    
+        foreach($roadtrips as $roadtrip) {
+            $jsonRoadtrips[] = [
+                'title' => $roadtrip->getTitle(),
+                'country' => $roadtrip->getCountry()->getName(),
+                'description' => $roadtrip->getDescription(),
+                'budget' => $roadtrip->getBudget(),
+                'days' => $roadtrip->getDays(),
+                'roads' => $roadtrip->getRoads(),
+                'pics' => array_map(function(Pic $pic) {
+                    return $pic->getPath();
+                }, $roadtrip->getPics()->toArray()),
+                'uid' => $roadtrip->getUid()
+            ];
+        }
+
+        return new JsonResponse($jsonRoadtrips, Response::HTTP_OK);
     }
 
     #[Route('/create', name: 'app_roadtrip_create', methods: ['POST'])]
@@ -101,4 +126,6 @@ class RoadtripController extends AbstractController
 
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }   
+
+
 }

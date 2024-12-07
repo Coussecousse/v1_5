@@ -4,12 +4,13 @@ import styles from "./Roadtrips.module.css";
 import formStyles from '../../containers/Form/Form.module.css'
 import paths from "../../config/paths";
 import axios from "axios";
+import CardRoadtrip from "../../containers/Roadtrip/Card/CardRoadtrip"
 
 export default function Roadtrips() {
     const [query, setQuery] = useState("");
     const [countries, setCountries] = useState([]);
     const [countrySuggestions, setCountrySuggestions] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({});
     const [roadtrips, setRoadtrips] = useState([]);
     const [currentRoadtrips, setCurrentRoadtrips] = useState([]);
@@ -60,12 +61,25 @@ export default function Roadtrips() {
         setCountrySuggestions([]); 
     };
 
+    useEffect(() => {
+        axios.get('/api/roadtrip')
+            .then(response => {
+                setRoadtrips(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching countries', error);
+                setLoading(false);
+            });
+    }, []);
+
+
     return (
         <section className={`first-section ${styles.section}`}>
             <h1 className={`typical-title ${styles.title}`}>Roadtrips</h1>
             <div className={styles.container}>
                 <div className={`${styles.roadtripsContainer}`}>
-                    <h2 className={styles.secondTitle}>Chercher un roadtrip dans la communauté</h2>
+                    <h2 className={styles.secondTitle}>Chercher un roadtrip</h2>
                     <div className={styles.linkContainer}>
                         <p>Ou vous préférez peut être...</p>
                         <Link to={paths.CREATE_ROADTRIP} className={`${styles.createLink} link`}>Créer un roadtrip</Link>
@@ -156,11 +170,11 @@ export default function Roadtrips() {
                         <div className={styles.roadtrips}>
                             {currentRoadtrips.length > 0 ? (
                                 currentRoadtrips.map((roadtrip, index) => (
-                                    <div key={index}>Roadtrip</div>
+                                    <CardRoadtrip key={index} roadtrip={roadtrip} />
                                 ))
                             ) : (
                                 <p>Aucun roadtrip trouvé</p>
-                            )}
+                            )} 
                         </div>
                     )}
                     <div className={styles.pagination}>

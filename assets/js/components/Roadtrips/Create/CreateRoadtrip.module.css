@@ -2,6 +2,8 @@
     height: 500px;
     width: 100%;
     margin-bottom: 2rem;
+    display: flex;
+    margin-bottom: 1rem;
 }
 .littleMap {
     height: 300px;
@@ -190,3 +192,4 @@
 .stageContainer {
     min-height: 100px;
 }
+
