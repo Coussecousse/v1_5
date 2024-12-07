@@ -20,9 +20,7 @@ export default function Profile() {
                 const userPic = response.data.user.profile_pic;
                 if (userPic) {
                     setUserPic(userPic);
-                } else {
-                    setUserPic(neutralPic);
-                }
+                } 
                 setLoading(false);
             })
             .catch(error => {
@@ -43,7 +41,9 @@ export default function Profile() {
                     </div>)
                 : (
                     <div className={`${styles.informationsContainer}`}>
-                        <picture className={styles.profilePick}>
+                        {userPic ? 
+                        (
+                            <picture className={styles.profilePick}>
                                 <source 
                                     srcSet={`/uploads/profile_pics/small/${userPic}`} 
                                     media="(min-width: 1200px)" 
@@ -61,6 +61,12 @@ export default function Profile() {
                                     alt="Image de profil" 
                                 />
                             </picture>
+                        ) : 
+                        (
+                            <div className={styles.profilPic} 
+                                style={{ backgroundImage: `url(${neutralPic})` }}
+                            ></div>
+                        )}
                         <span className={`${styles.spanDiviser}`}></span>
                         <div className={`${styles.textContainer}`}>
                             <p><span>Nom d'utilisateur :</span> {user.username}</p>
