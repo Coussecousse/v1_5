@@ -8,7 +8,7 @@ import axios from "axios";
 import DrawMap from "../../Map/DrawMap/DrawMap";
 import Map from "../../Map/Map";
 
-export default function CardActivity({ activity, index, selectionnedLocation }) {
+export default function CardActivity({ activity, index, selectionnedLocation, currentUser, setCurrentUser }) {
     const maxPics = 5;
     const [limitedPics, setLimitedPics] = useState([]);
     const [showMap, setShowMap] = useState(false);
@@ -83,6 +83,18 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
         setLimitedPics(activity.pics.length > maxPics ? activity.pics.slice(0, maxPics) : activity.pics);
     }, [activity]);
 
+    // -- Favorites --
+    const handleFavorite = () => {
+        axios.post(`/api/activities/favorite/${activity.uid}`)
+            .then(response => {
+                const updatedUser = response.data.user;
+                setCurrentUser(updatedUser);
+            })
+            .catch(error => {
+                console.error('Error adding favorite:', error);
+            });
+    }
+
     return (
         <div key={index} className={styles.allContainer}>
             <div className={`${styles.card} ${activityStyles.container}`}>
@@ -122,7 +134,16 @@ export default function CardActivity({ activity, index, selectionnedLocation }) 
                 )}
                 </div>
                 <div className={`${activityStyles.content} ${styles.content}`}>
-                    <h4 className={styles.activityTitle}>{activity.display_name}</h4>
+                    <div className={styles.titleContainer}>
+                        <h4 className={styles.activityTitle}>{activity.display_name}</h4>
+                        {!activity.users.find(user => user.uid == currentUser.uid) && (
+                            currentUser.favorites.activities.find(favorite => favorite.uid === activity.uid) ? (
+                                <button aria-label="retirer le favoris" onClick={handleFavorite} className={styles.fullHeart}></button>
+                            ) : (
+                                <button aria-label="Ajouter au favoris" onClick={handleFavorite} className={styles.emptyHeart}></button>
+                            )
+                        )}
+                    </div>
                     <p className={styles.activityDescription}>
                         {truncateDescription(activity.description, 255)}
                     </p>                

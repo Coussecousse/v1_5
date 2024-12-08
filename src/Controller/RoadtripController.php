@@ -10,6 +10,7 @@ use App\Form\RoadtripSearchFormType;
 use App\Repository\CountryRepository;
 use App\Repository\PicRepository;
 use App\Repository\RoadtripRepository;
+use App\Repository\UserRepository;
 use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -49,7 +50,10 @@ class RoadtripController extends AbstractController
                 'pics' => array_map(function(Pic $pic) {
                     return $pic->getPath();
                 }, $roadtrip->getPics()->toArray()),
-                'uid' => $roadtrip->getUid()
+                'uid' => $roadtrip->getUid(),
+                'user' => [
+                    'uid' => $roadtrip->getUser()->getUid()
+                ]
             ];
         }
 
@@ -404,5 +408,48 @@ class RoadtripController extends AbstractController
         }
 
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Route('/favorite/{uid}', name: 'app_roadtrip_favorite', methods: ['POST'])]   
+    public function handleFavorite(Request $request, 
+        UserRepository $userRepository, 
+        RoadtripRepository $roadtripRepository,
+        EntityManagerInterface $em): JsonResponse
+    {
+        $user = $this->getUser();
+        $uid = $request->get('uid');
+        try {
+            $roadtrip = $roadtripRepository->findOneBy(['uid' => $uid]);
+            $userEntity = $userRepository->findOneBy(['email' => $user->getUserIdentifier()]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);    
+        }
+
+        if ($userEntity->getFavoriteRoadtrips()->contains($roadtrip)) {
+            $userEntity->removeFavoriteRoadtrip($roadtrip);
+        } else {
+            $userEntity->addFavoriteRoadtrip($roadtrip);
+        }
+
+        $em->persist($userEntity);
+        $em->flush();
+
+        $user = [
+            'username' => $userEntity->getUsername(),
+            'email' => $userEntity->getEmail(),
+            'uid' => $userEntity->getUid(),
+            'favorites' => [
+                'roadtrips' => array_map(
+                    fn($roadtrip) => ['uid' => $roadtrip->getUid()],
+                    $userEntity->getFavoriteRoadtrips()->toArray()
+                ),
+                'activities' => array_map(
+        fn($activity) => ['uid' => $activity->getUid()],
+                    $userEntity->getFavoriteActivities()->toArray()
+                )
+            ]
+        ];
+
+        return new JsonResponse(['status' => 'Favorite updated', 'user' => $user], Response::HTTP_OK);
     }
 }

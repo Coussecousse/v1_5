@@ -19,25 +19,13 @@ export default function Activities() {
     const [localisationInput, setLocalisationInput] = useState('');
     const [choseLocalisation, setChoseLocalisation] = useState(false);
     const [activities, setActivities] = useState([]);   
+    const [currentUser, setCurrentUser] = useState();
     const formRef = useRef();
 
     // -- Pagination --
     const [currentPage, setCurrentPage] = useState(1);
     const activitiesPerPage = 10; 
     const [currentActivities, setCurrentActivities] = useState([]);
-
-    // Fetch activities when component mount
-    useEffect(() => {
-        axios.get('/api/activities')
-        .then(response => {
-            setActivities(response.data);
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error('Error fetching activities', error);
-            setLoading(false);
-        });
-    }, []);
 
     // Update currentActivities based on currentPage and activities array
     useEffect(() => {
@@ -170,15 +158,27 @@ export default function Activities() {
 
     // -- Search all activities --
     useEffect(() => {
-        axios.get('/api/activities')
+        const activitiesPromise = axios.get('/api/activities')
         .then(response => {
             setActivities(response.data);
-            setLoading(false);
         })
         .catch(error => {
             console.error('Error fetching activities', error);
-            setLoading(false);
         });
+
+        const profilePromise = axios.get('/api/profile')
+        .then(response => {
+            setCurrentUser(response.data.user);
+        })
+        .catch(error => {
+            console.error('Error fetching user profile:', error);
+            flashMessage({ error: 'Une erreur est survenue lors de la recherche de profil' });
+        })
+
+        Promise.all([activitiesPromise, profilePromise])
+        .finally(() => {
+            setLoading(false);
+        })
     }, []);
 
     return (
@@ -265,7 +265,7 @@ export default function Activities() {
                                 {!selectionnedLocation && <h3>Toutes les activités :</h3>}
                                 {selectionnedLocation && <h3>Recherche :</h3>}
                                 {currentActivities.map((activity, index) => (
-                                    <CardActivity key={index} activity={activity} selectionnedLocation={selectionnedLocation} />
+                                    <CardActivity key={index} activity={activity} selectionnedLocation={selectionnedLocation} currentUser={currentUser} setCurrentUser={setCurrentUser} />
                                 ))}
                             </>
                         ) : (

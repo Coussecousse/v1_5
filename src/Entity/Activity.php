@@ -51,12 +51,20 @@ class Activity
     #[ORM\OneToMany(targetEntity: Description::class, mappedBy: 'activity', orphanRemoval: true)]
     private Collection $descriptions;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoriteActivities')]
+    #[ORM\JoinTable(name: "activity_favorite_user")]
+    private Collection $favorite;
+
     public function __construct()
     {
         $this->uid = uniqid();
         $this->pics = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->favorite = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -213,6 +221,30 @@ class Activity
                 $description->setActivity(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavorite(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(User $favorite): static
+    {
+        if (!$this->favorite->contains($favorite)) {
+            $this->favorite->add($favorite);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): static
+    {
+        $this->favorite->removeElement($favorite);
 
         return $this;
     }

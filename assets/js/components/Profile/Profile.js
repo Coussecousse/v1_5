@@ -45,7 +45,7 @@ export default function Profile() {
                         (
                             <picture className={styles.profilePick}>
                                 <source 
-                                    srcSet={`/uploads/profile_pics/extreaLarge/${userPic}`} 
+                                    srcSet={`/uploads/profile_pics/extraLarge/${userPic}`} 
                                     media="(min-width: 1200px)" 
                                 />
                                 <source 

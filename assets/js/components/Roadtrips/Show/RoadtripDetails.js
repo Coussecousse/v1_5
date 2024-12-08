@@ -34,7 +34,7 @@ export default function RoadtripDetails() {
     useEffect(() => {
         const uid = window.location.pathname.split("/").pop();
 
-        const profilePromide = axios.get('/api/profile')
+        const profilePromise = axios.get('/api/profile')
             .then(response => {
                 setCurrentUser(response.data.user);
             })
@@ -57,7 +57,7 @@ export default function RoadtripDetails() {
                 setFlashMessage({ error: 'Une erreur est survenue lors de l\'affichage du roadtrip' });
             })
             
-        Promise.all([profilePromide, roadtripPromise])	
+        Promise.all([profilePromise, roadtripPromise])	
             .finally(() => {
                 setLoading(false);
             });

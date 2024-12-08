@@ -71,12 +71,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Roadtrip::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $roadtrips;
 
+    /**
+     * @var Collection<int, Roadtrip>
+     */
+    #[ORM\ManyToMany(targetEntity: Roadtrip::class, mappedBy: 'favorite')]
+    private Collection $favoriteRoadtrips;
+
+    /**
+     * @var Collection<int, Activity>
+     */
+    #[ORM\ManyToMany(targetEntity: Activity::class, mappedBy: 'favorite')]
+    private Collection $favoriteActivities;
+
     public function __construct()
     {
         $this->uid = uniqid();
         $this->activities = new ArrayCollection();
         $this->descriptions = new ArrayCollection();
         $this->roadtrips = new ArrayCollection();
+        $this->favoriteRoadtrips = new ArrayCollection();
+        $this->favoriteActivities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -332,6 +346,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($roadtrip->getUser() === $this) {
                 $roadtrip->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Roadtrip>
+     */
+    public function getFavoriteRoadtrips(): Collection
+    {
+        return $this->favoriteRoadtrips;
+    }
+
+    public function addFavoriteRoadtrip(Roadtrip $favoriteRoadtrip): static
+    {
+        if (!$this->favoriteRoadtrips->contains($favoriteRoadtrip)) {
+            $this->favoriteRoadtrips->add($favoriteRoadtrip);
+            $favoriteRoadtrip->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteRoadtrip(Roadtrip $favoriteRoadtrip): static
+    {
+        if ($this->favoriteRoadtrips->removeElement($favoriteRoadtrip)) {
+            $favoriteRoadtrip->removeFavorite($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Activity>
+     */
+    public function getFavoriteActivities(): Collection
+    {
+        return $this->favoriteActivities;
+    }
+
+    public function addFavoriteActivity(Activity $favoriteActivity): static
+    {
+        if (!$this->favoriteActivities->contains($favoriteActivity)) {
+            $this->favoriteActivities->add($favoriteActivity);
+            $favoriteActivity->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteActivity(Activity $favoriteActivity): static
+    {
+        if ($this->favoriteActivities->removeElement($favoriteActivity)) {
+            $favoriteActivity->removeFavorite($this);
         }
 
         return $this;

@@ -165,3 +165,26 @@
         transform: translateY(0);
     }
 }
+
+/* Title container */
+.titleContainer {
+    display: flex;
+}
+.titleContainer h4 {
+    flex: 1;
+}
+/* Icons */
+.fullHeart, .emptyHeart {
+    width: 24px;
+    height: 24px;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(228deg) brightness(108%) contrast(108%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+.fullHeart {
+    background: url('/assets/images/icon/full-heart.svg') no-repeat center / contain;
+}
+.emptyHeart {
+    background: url('/assets/images/icon/heart.svg') no-repeat center / contain;
+}

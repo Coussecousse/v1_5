@@ -51,11 +51,18 @@ class Roadtrip
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoriteRoadtrips')]
+    private Collection $favorite;
+
     public function __construct()
     {
         $this->uid = uniqid();
         $this->pics = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
+        $this->favorite = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +204,30 @@ class Roadtrip
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavorite(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(User $favorite): static
+    {
+        if (!$this->favorite->contains($favorite)) {
+            $this->favorite->add($favorite);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): static
+    {
+        $this->favorite->removeElement($favorite);
 
         return $this;
     }

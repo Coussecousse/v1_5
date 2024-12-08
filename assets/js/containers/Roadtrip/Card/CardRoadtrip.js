@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from './CardRoadtrip.module.css';
 import RoadtripDrawMap from "../../Map/RoadtripDraw/RoadtripDrawMap";
 import { Link } from "react-router-dom";
 import paths from "../../../config/paths";
+import axios from "axios";
 
-export default function CardRoadtrip({roadtrip, index}) {
-
+export default function CardRoadtrip({roadtrip, index, currentUser, setCurrentUser}) {
     // -- Budget -- 
     const displayBudget = () => {
         switch(roadtrip.budget) {
@@ -28,6 +28,17 @@ export default function CardRoadtrip({roadtrip, index}) {
             : description;
     };
     
+    // -- Favorites --
+    const handleFavorite = () => {
+        axios.post(`/api/roadtrip/favorite/${roadtrip.uid}`)
+            .then(response => {
+                const updatedUser = response.data.user;
+                setCurrentUser(updatedUser);
+            })
+            .catch(error => {
+                console.error('Error adding favorite:', error);
+            });
+    }
 
     return (
         <div key={index} className={styles.container}>
@@ -39,12 +50,21 @@ export default function CardRoadtrip({roadtrip, index}) {
                 />
             </div>
             <div className={styles.informations}>
-                <div>
-                    <h2 className={styles.title}>{roadtrip.title}</h2>
-                    <div className={styles.smallInformations}>
-                        <p><span className={styles.spanInformations}><span className={styles.worldIcon}></span>Pays :</span>{roadtrip.country}</p>
-                        <p><span className={styles.spanInformations}><span className={styles.moneyIcon}></span>Budget :</span>{displayBudget()}</p>
+                <div className={styles.topContainer}>
+                    <div className={styles.titleContainer}>
+                        <h3 className={styles.title}>{roadtrip.title}</h3>
+                        <div className={styles.smallInformations}>
+                            <p><span className={styles.spanInformations}><span className={styles.worldIcon}></span>Pays :</span>{roadtrip.country}</p>
+                            <p><span className={styles.spanInformations}><span className={styles.moneyIcon}></span>Budget :</span>{displayBudget()}</p>
+                        </div>
                     </div>
+                    {currentUser.uid !== roadtrip.user.uid && (
+                        currentUser.favorites.roadtrips.find(favorite => favorite.uid === roadtrip.uid) ? (
+                            <button aria-label="retirer le favoris" onClick={handleFavorite} className={styles.fullHeart}></button>
+                        ) : (
+                            <button aria-label="Ajouter au favoris" onClick={handleFavorite} className={styles.emptyHeart}></button>
+                        )
+                    )}
                 </div>
                 <p className={styles.description}>{truncateDescription(roadtrip.description, 255)}</p>
                 <small>

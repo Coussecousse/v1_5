@@ -7,8 +7,8 @@ import axios from "axios";
 import CardRoadtrip from "../../containers/Roadtrip/Card/CardRoadtrip"
 
 export default function Roadtrips() {
+    const [currentUser, setCurrentUser] = useState(null);
     const [query, setQuery] = useState("");
-    const [countries, setCountries] = useState([]);
     const [countrySuggestions, setCountrySuggestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({});
@@ -20,7 +20,7 @@ export default function Roadtrips() {
     const debounceTimeout = useRef(null);
     const [selectedPrice, setSelectedPrice] = useState('price_1');
     const [selectedDuration, setSelectedDuration] = useState('duration_1');
-    // check if usefull
+
     const formRef = useRef();
 
     // -- Pagination --
@@ -72,7 +72,7 @@ export default function Roadtrips() {
             setFlashMessage({ type: 'success', message: 'Le roadtrip a bien été supprimé.'});
         }
 
-        axios.get('/api/roadtrip')
+        const roadtripPromise = axios.get('/api/roadtrip')
             .then(response => {
                 setRoadtrips(response.data);
                 setFlashMessage(prevFlash => {
@@ -84,10 +84,20 @@ export default function Roadtrips() {
                 console.error('Error fetching roadtrips', error);
                 setFlashMessage({ type: 'error', message: 'Une erreur est survenue lors de la récupération des roadtrips.'});
             })
-            .finally(() => { 
-                setLoading(false);
-            });  
 
+        const profilePromise = axios.get('/api/profile')
+            .then(response => {
+                setCurrentUser(response.data.user);
+            })
+            .catch(error => {
+                console.error('Error fetching user profile:', error);
+                flashMessage({ error: 'Une erreur est survenue lors de la recherche de profil' });
+            })
+
+        Promise.all([roadtripPromise, profilePromise])
+        .finally(() => {
+            setLoading(false);
+        })
     }, []);
 
 
@@ -291,7 +301,7 @@ export default function Roadtrips() {
                             <div className={styles.roadtrips}>
                                 {currentRoadtrips.length > 0 ? (
                                     currentRoadtrips.map((roadtrip, index) => (
-                                        <CardRoadtrip key={index} roadtrip={roadtrip} />
+                                        <CardRoadtrip key={index} roadtrip={roadtrip} currentUser={currentUser} setCurrentUser={setCurrentUser}/>
                                     ))
                                 ) : (
                                     <p>Aucun roadtrip trouvé</p>

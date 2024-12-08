@@ -41,10 +41,18 @@ class ProfileController extends AbstractController
             'user' => [
                 'username' => $userEntity->getUsername(),
                 'email' => $userEntity->getEmail(),
-                'profile_pic' => $userPic ?
-                    $userPic->getPath()
-                    : null,
+                'profile_pic' => $userPic ? $userPic->getPath() : null,
                 'uid' => $userEntity->getUid(),
+                'favorites' => [
+                    'roadtrips' => array_map(
+                        fn($roadtrip) => ['uid' => $roadtrip->getUid()],
+                        $userEntity->getFavoriteRoadtrips()->toArray()
+                    ),
+                    'activities' => array_map(
+            fn($activity) => ['uid' => $activity->getUid()],
+                        $userEntity->getFavoriteActivities()->toArray()
+                    )
+                ]
             ],
         ]);
     }

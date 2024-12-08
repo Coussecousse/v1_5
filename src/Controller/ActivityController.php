@@ -14,8 +14,10 @@ use App\Repository\ActivityRepository;
 use App\Repository\DescriptionRepository;
 use App\Repository\PicRepository;
 use App\Repository\TagRepository;
+use App\Repository\UserRepository;
 use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -48,10 +50,15 @@ class ActivityController extends AbstractController
                 'description' => $activityRepository->getFirstDescription($activity),
                 'type' => $activity->getType()->getName(),
                 'country' => $activity->getCountry()->getName(),
-                'pics' => array_map(function(Pic $pic) {
-                    return $pic->getPath();
-                }, $activity->getPics()->toArray()),
-                'uid' => $activity->getUid()
+                'pics' => array_map(
+                    fn(Pic $pic) => $pic->getPath(),
+                    $activity->getPics()->toArray()
+                ),
+                'uid' => $activity->getUid(),
+                'users' => array_map(
+                    fn($user) => ['uid' => $user->getUid()],
+                    $activity->getUsers()->toArray()
+                )
             ];
         }
 
@@ -387,5 +394,48 @@ class ActivityController extends AbstractController
         }
 
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Route('/favorite/{uid}', name: 'app_activity_favorite_uid', methods: ['POST'])]
+    public function handleFavorite(Request $request, 
+        UserRepository $userRepository,
+        ActivityRepository $activityRepository, 
+        EntityManagerInterface $em): JsonResponse
+    {
+        $user = $this->getUser();
+        $uid = $request->get('uid');
+        try {
+            $activity = $activityRepository->findOneBy(['uid' => $uid]);    
+            $userEntity = $userRepository->findOneBy(['email' => $user->getUserIdentifier()]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if ($userEntity->getFavoriteActivities()->contains($activity)) {
+            $userEntity->removeFavoriteActivity($activity);
+        } else {
+            $userEntity->addFavoriteActivity($activity);
+        }
+
+        $em->persist($userEntity);
+        $em->flush();
+
+        $user = [
+            'username' => $userEntity->getUsername(),
+            'email' => $userEntity->getEmail(),
+            'uid' => $userEntity->getUid(),
+            'favorites' => [
+                'roadtrips' => array_map(
+                    fn($roadtrip) => ['uid' => $roadtrip->getUid()],
+                    $userEntity->getFavoriteRoadtrips()->toArray()
+                ),
+                'activities' => array_map(
+        fn($activity) => ['uid' => $activity->getUid()],
+                    $userEntity->getFavoriteActivities()->toArray()
+                )
+            ]
+        ];
+
+        return new JsonResponse(['status' => 'Favorite updated', 'user' => $user], Response::HTTP_OK);
     }
 }
