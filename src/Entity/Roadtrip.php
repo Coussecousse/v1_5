@@ -48,10 +48,14 @@ class Roadtrip
     #[ORM\Column(length: 255)]
     private ?string $uid = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     public function __construct()
     {
         $this->uid = uniqid();
         $this->pics = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -181,6 +185,18 @@ class Roadtrip
     public function setUid(string $uid): static
     {
         $this->uid = $uid;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

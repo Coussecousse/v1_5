@@ -70,8 +70,28 @@
     display: flex;
     flex-direction: column;
 }
+.countryInput {
+    flex: 1;
+}
+.countryInput input {
+    width: 100%;
+}
 .countryInputContainer {
     flex: 1;
+}
+.countriesList {
+    position: absolute;
+    background: var(--color-500);
+    width: 100%;
+    color: var(--color-900);
+    font-family: var(--ff-secondary);
+    padding: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.countriesList li {
+    cursor: pointer;
 }
 .countryInputContainer input, 
 .filter option,

@@ -6,6 +6,7 @@ use App\Entity\Country;
 use App\Entity\Pic;
 use App\Entity\Roadtrip;
 use App\Entity\User;
+use App\Form\RoadtripSearchFormType;
 use App\Repository\CountryRepository;
 use App\Repository\PicRepository;
 use App\Repository\RoadtripRepository;
@@ -34,7 +35,8 @@ class RoadtripController extends AbstractController
     #[Route('/', name: 'app_roadtrip_all', methods: ['GET'])]
     public function index(RoadtripRepository $roadtripRepository):JsonResponse
     {
-        $roadtrips = $roadtripRepository->findAll();
+        // Find all from most recent to oldest
+        $roadtrips = $roadtripRepository->findBy([], ['createdAt' => 'DESC']);
         $jsonRoadtrips = [];    
         foreach($roadtrips as $roadtrip) {
             $jsonRoadtrips[] = [
@@ -344,5 +346,63 @@ class RoadtripController extends AbstractController
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }   
 
- 
+    #[Route('/search', name: 'app_roadtrip_search', methods: ['GET'])]
+    public function search(Request $request, 
+        RoadtripRepository $roadtripRepository, 
+        CountryRepository $countryRepository): JsonResponse
+    {
+        $form = $this->createForm(RoadtripSearchFormType::class);
+        $data = $request->query->all();
+        $form->submit($data);
+
+        $errors = [];
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $country = null;
+            //Check if the country is correct
+            if ($form->get('country')->getData()) {
+                try {
+                    $country = $countryRepository->findOneBy(['name' => $form->get('country')->getData()]);
+                } catch (Exception $e) {
+                    $errors['country'] = 'Aucun roadtrip ne correspond à ce pays.';
+                }
+            }
+
+            // Get the filter
+            $filter = $form->get('filter')->getData() ?? null;
+
+            // Get the budget
+            $budget = $form->get('price')->getData() ?? null; 
+
+            // Get the duration
+            $duration = $form->get('duration')->getData() ?? null;
+
+            $results = $roadtripRepository->findRoadtripByFilters($country, $filter, $budget, $duration);
+            return new JsonResponse(
+                array_map(
+                    fn($roadtrip) => [
+                        'title' => $roadtrip->getTitle(),
+                        'country' => $roadtrip->getCountry()->getName(),
+                        'description' => $roadtrip->getDescription(),
+                        'budget' => $roadtrip->getBudget(),
+                        'days' => $roadtrip->getDays(),
+                        'roads' => $roadtrip->getRoads(),   
+                        'pics' => array_map(function(Pic $pic) {
+                            return $pic->getPath();
+                        }, $roadtrip->getPics()->toArray()),
+                        'uid' => $roadtrip->getUid(),
+                    ],
+                    $results
+                ),
+                200
+            );
+
+        }
+
+        foreach ($form->getErrors(true) as $error) {
+            $errors[$error->getOrigin()->getName()] = $error->getMessage();
+        }
+
+        return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
+    }
 }

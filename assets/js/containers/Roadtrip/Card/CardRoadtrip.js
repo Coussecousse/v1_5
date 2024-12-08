@@ -9,11 +9,11 @@ export default function CardRoadtrip({roadtrip, index}) {
     // -- Budget -- 
     const displayBudget = () => {
         switch(roadtrip.budget) {
-            case 1:
+            case 1 || '1':
                 return "€";
-            case 2:
+            case 2 || '2':
                 return "€€";
-            case 3:
+            case 3 || '3':
                 return "€€€";
             default:
                 return "€";

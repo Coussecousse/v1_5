@@ -18,6 +18,8 @@ export default function Roadtrips() {
     const [flashMessage, setFlashMessage] = useState(null);
     const roadtripsPerPage = 10; 
     const debounceTimeout = useRef(null);
+    const [selectedPrice, setSelectedPrice] = useState('price_1');
+    const [selectedDuration, setSelectedDuration] = useState('duration_1');
     // check if usefull
     const formRef = useRef();
 
@@ -43,18 +45,18 @@ export default function Roadtrips() {
             clearTimeout(debounceTimeout.current);
         }
 
-        // debounceTimeout.current = setTimeout(async () => {
-        //     if (value.length > 1) {
-        //         try {
-        //             const response = await axios.get(`/api/tags/autocomplete?q=${value}`);
-        //             setSuggestions(response.data);
-        //         } catch (error) {
-        //             console.error('Error fetching autocomplete suggestions', error);
-        //         }
-        //     } else {
-        //         setSuggestions([]);
-        //     }
-        // }, 300);
+        debounceTimeout.current = setTimeout(async () => {
+            if (value.length > 1) {
+                try {
+                    const response = await axios.get(`/api/country/autocomplete?q=${value}`);
+                    setCountrySuggestions(response.data);
+                } catch (error) {
+                    console.error('Error fetching autocomplete suggestions', error);
+                }
+            } else {
+                setCountrySuggestions([]);
+            }
+        }, 300);
     }
 
     const handleCountrySelection = (suggestion) => {
@@ -89,6 +91,39 @@ export default function Roadtrips() {
     }, []);
 
 
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        setLoading(true);
+
+        const form = new FormData(formRef.current);
+        form.append('price', selectedPrice);
+        form.append('duration', selectedDuration);
+        
+        axios.get('/api/roadtrip/search?' + new URLSearchParams(form))
+            .then(response => {
+                setRoadtrips(response.data);
+                setErrors({});
+            })
+            .catch(error => {
+                console.error('Error fetching roadtrips', error);
+                setErrors({ form: 'Une erreur est survenue lors de la recherche des roadtrips.'});
+            })
+            .finally(() => { 
+                setLoading(false);
+            });
+        
+    }
+
+    // Handle price and duration filters
+    const handlePriceChange = (e) => {
+        setSelectedPrice(e.target.value);
+    };
+    
+    const handleDurationChange = (e) => {
+        setSelectedDuration(e.target.value);
+    };
+
     return (
         <section className={`first-section ${styles.section}`}>
             <h1 className={`typical-title ${styles.title}`}>Roadtrips</h1>
@@ -104,11 +139,11 @@ export default function Roadtrips() {
                             {flashMessage.message}
                         </div>
                     )}
-                    <form className={styles.searchRoadtrip} ref={formRef}>
+                    <form className={styles.searchRoadtrip} ref={formRef} onSubmit={handleSubmit}>
                         <div className={styles.formPrincipal}>
                             <div className={styles.countryInputContainer}>
                                 <label htmlFor="country">Pays disponibles :</label>
-                                <div>
+                                <div className={styles.countryInput}>
                                     <input
                                         type="text"
                                         value={query}
@@ -116,10 +151,10 @@ export default function Roadtrips() {
                                         id="country"
                                         name="country">
                                     </input>
-                                    {countries.length > 0 && (
-                                        <ul className={formStyles.countriesList}>
-                                            {countries.map((country, index) => (
-                                                <li key={index} onClick={() => handleCountrySelection(country)}>{country}</li>
+                                    {countrySuggestions.length > 0 && (
+                                        <ul className={styles.countriesList}>
+                                            {countrySuggestions.map((country, index) => (
+                                                <li key={index} onClick={() => handleCountrySelection(country)}>{country.name}</li>
                                             ))}
                                         </ul>
                                     )}
@@ -130,52 +165,117 @@ export default function Roadtrips() {
                                 <select name="filter" id="filter">
                                     <option value="all">Tous</option>
                                     <option value="mostRecent">Les plus récents</option>
-                                    <option value="mostPopular">Les plus populaires</option>
+                                    <option value="mostOlder">Les plus vieux</option>
                                 </select>
                             </div>
-                            {errors.form && (
-                                <div className={formStyles.errorsContainer}>
-                                    {Object.keys(errors).map((key) => (
-                                        <small key={key} className={`${formStyles.errorGreen} ${styles.error}`}>
-                                            <div className={styles.errorIcon}></div>{errors[key]}
-                                        </small>
-                                    ))}
-                                </div>
-                            )}
                             <input className={`${styles.submit}`} type="submit" value="Chercher" />
                         </div>
+                        {errors.form && (
+                            <div className={formStyles.errorsContainer}>
+                                {Object.keys(errors).map((key) => (
+                                    <small key={key} className={`${formStyles.errorGreen} ${styles.error}`}>
+                                        <div className={styles.errorIcon}></div>{errors[key]}
+                                    </small>
+                                ))}
+                            </div>
+                        )}
                         <div className={styles.options}>
                             <fieldset>
                                 <legend className={styles.legend}>Budget :</legend>
                                 <ul className={styles.optionsList}>
                                     <li>
-                                        <input type="radio" id="price_1" name="price" value="price_1" />
-                                        <label>€</label>
+                                        <input
+                                        type="radio"
+                                        id="price_1"
+                                        name="price"
+                                        value="price_1"
+                                        checked={selectedPrice === 'price_1'}
+                                        onChange={handlePriceChange}
+                                        />
+                                        <label htmlFor="price_1">Tout</label>
                                     </li>
                                     <li>
-                                        <input type="radio" id="price_2" name="price" value="price_2" />
-                                        <label>€ €</label>
+                                        <input
+                                        type="radio"
+                                        id="price_2"
+                                        name="price"
+                                        value="price_2"
+                                        checked={selectedPrice === 'price_2'}
+                                        onChange={handlePriceChange}
+                                        />
+                                        <label htmlFor="price_2">€</label>
                                     </li>
                                     <li>
-                                        <input type="radio" id="price_3" name="price" value="price_3" />
-                                        <label>€ € €</label>
+                                        <input
+                                        type="radio"
+                                        id="price_3"
+                                        name="price"
+                                        value="price_3"
+                                        checked={selectedPrice === 'price_3'}
+                                        onChange={handlePriceChange}
+                                        />
+                                        <label htmlFor="price_3">€ €</label>
+                                    </li>
+                                    <li>
+                                        <input
+                                        type="radio"
+                                        id="price_4"
+                                        name="price"
+                                        value="price_4"
+                                        checked={selectedPrice === 'price_4'}
+                                        onChange={handlePriceChange}
+                                        />
+                                        <label htmlFor="price_4">€ € €</label>
                                     </li>
                                 </ul>
                             </fieldset>
+
                             <fieldset>
                                 <legend className={styles.legend}>Durée :</legend>
                                 <ul className={styles.optionsList}>
                                     <li>
-                                        <input type="radio" id="duration_1" name="duration" value="duration_1" />
-                                        <label>1 à 7 jours</label>
+                                        <input
+                                        type="radio"
+                                        id="duration_1"
+                                        name="duration"
+                                        value="duration_1"
+                                        checked={selectedDuration === 'duration_1'}
+                                        onChange={handleDurationChange}
+                                        />
+                                        <label htmlFor="duration_1">Tout</label>
                                     </li>
                                     <li>
-                                        <input type="radio" id="duration_2" name="duration" value="duration_2" />
-                                        <label>8 à 15 jours</label>
+                                        <input
+                                        type="radio"
+                                        id="duration_2"
+                                        name="duration"
+                                        value="duration_2"
+                                        checked={selectedDuration === 'duration_2'}
+                                        onChange={handleDurationChange}
+                                        />
+                                        <label htmlFor="duration_2">1 à 7 jours</label>
                                     </li>
                                     <li>
-                                        <input type="radio" id="duration_3" name="duration" value="duration_3" />
-                                        <label>15 jours et plus</label>
+                                        <input
+                                        type="radio"
+                                        id="duration_3"
+                                        name="duration"
+                                        value="duration_3"
+                                        checked={selectedDuration === 'duration_3'}
+                                        onChange={handleDurationChange}
+                                        />
+                                        <label htmlFor="duration_3">8 à 15 jours</label>
+                                    </li>
+                                    <li>
+                                        <input
+                                        type="radio"
+                                        id="duration_4"
+                                        name="duration"
+                                        value="duration_4"
+                                        checked={selectedDuration === 'duration_4'}
+                                        onChange={handleDurationChange}
+                                        />
+                                        <label htmlFor="duration_4">15 jours et plus</label>
                                     </li>
                                 </ul>
                             </fieldset>
