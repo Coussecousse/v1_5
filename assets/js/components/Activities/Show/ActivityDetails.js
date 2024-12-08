@@ -113,6 +113,22 @@ export default function ActivityDetails() {
         }
     }
 
+    //  -- Report Activity --
+    const handleReport = () => {
+        setLoading(true);
+        window.scrollTo(0,0);
+
+        axios.post(`/api/activities/report/${activity.uid}`)
+            .then(response => {
+                setFlashMessage({ type: 'success', message: 'Activité signalée' });
+            })
+            .catch(error => {
+                console.error('Error reporting activity:', error);
+                setFlashMessage({ type: 'error', message: 'Erreur lors du signalement de l\'activité' });
+            })
+            .finally(() => { setLoading(false); });
+    }
+
     return (
         <section className={`first-section ${activitiesStyles.section}`}>
             <h1 className={`typical-title ${activitiesStyles.title}`}>Détails de l'activité</h1>
@@ -147,6 +163,7 @@ export default function ActivityDetails() {
                         <div className={styles.contribButtonsContainer}>
                             <Link to={paths.UPDATE_ACTIVITY.replace(':uid', activity.uid)} className={styles.contribButton}>{getUserContribution().length > 0 ? 'Modifier ma contribution' : 'Ajouter ma contribution'}</Link>
                             {getUserContribution().length > 0 && <button className={styles.contribButton} onClick={handleDeleteActivityContribution}>Supprimer ma contribution</button>}
+                            {getUserContribution().length === 0 && <button onClick={handleReport} className={styles.contribButton}>Signaler cette activité</button>}
                         </div>
                         <div className={styles.map}>
                             <Map jsonLocation={JSONLocation} zoom={10}/>

@@ -81,23 +81,24 @@ export default function RoadtripDetails() {
     // -- Report -- 
     const handleReport = () => {
         setLoading(true);
+        window.scrollTo(0,0);
 
-        axios.post('/api/roadtrip/report', { roadtripId: roadtrip.uid })
+        axios.post(`/api/roadtrip/report/${roadtrip.uid}`)
             .then(response => {
-                setFlashMessage({ type: 'success', message: 'Roadtrip signalé' });
+                setFlashMessage({ type: 'success', message: 'Roadtrip signalé.' });
             })
             .catch(error => {
                 console.error('Error reporting roadtrip:', error);
                 setFlashMessage({ type: 'error', message: 'Erreur lors du signalement du roadtrip' });
             })
-            .finally(() => {setLoading(false)});
+            .finally(() => { setLoading(false); });
     }
 
     // -- Add to favorite --
     const handleAddFavorite = () => {
         setLoading(true);
 
-        axios.post('/api/roadtrip/favorite', { roadtripId: roadtrip.uid })
+        axios.post(`/api/roadtrip/favorite/${roadtrip.uid}`)
             .then(response => {
                 setFlashMessage({ type: 'success', message: 'Roadtrip ajouté à vos favoris' });
             })
@@ -130,6 +131,9 @@ export default function RoadtripDetails() {
             setLoading(false);
         }
     };
+
+    // -- Report roadtrip --
+
 
     return (
         <section className={`first-section ${styles.section}`}>
@@ -241,8 +245,10 @@ export default function RoadtripDetails() {
                                         </div>
                                     ): (
                                         <div className={styles.buttonsContainer}>
-                                            <button onClick={handleReport}>Signaler ce roadtrip</button>
-                                            <button onClick={handleAddFavorite}>Ajouter à vos favoris</button>
+                                            <button onClick={handleReport} className={styles.contribButton}>Signaler ce roadtrip</button>
+                                            {!currentUser.favorites.roadtrips.find(favorite => favorite.uid === roadtrip.uid) && (
+                                                <button onClick={handleAddFavorite} className={styles.contribButton}>Ajouter à vos favoris</button>
+                                            )}
                                         </div>
                                     )}
                             </>

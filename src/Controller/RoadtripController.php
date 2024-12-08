@@ -452,4 +452,32 @@ class RoadtripController extends AbstractController
 
         return new JsonResponse(['status' => 'Favorite updated', 'user' => $user], Response::HTTP_OK);
     }
+
+    #[Route('/report/{uid}', name: 'app_activity_report', methods:['POST'])]
+    public function report(
+        Request $request,
+        RoadtripRepository $roadtripRepository,
+        EntityManagerInterface $em
+    ): JsonResponse
+    {
+        $uid = $request->get('uid');
+
+        try {
+            $roadtrip = $roadtripRepository->findOneBy(['uid' => $uid]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if (!$roadtrip) {
+            return new JsonResponse(['error' => 'Roadtrip not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $currentReports = $roadtrip->getReport();
+        $roadtrip->setReport($currentReports + 1);
+
+        $em->persist($roadtrip);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Roadtrip reported successfully'], Response::HTTP_OK);
+    }
 }

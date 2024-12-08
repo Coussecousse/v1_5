@@ -527,4 +527,32 @@ class ActivityController extends AbstractController
 
         return new JsonResponse(['status' => 'Favorite updated', 'user' => $user], Response::HTTP_OK);
     }
+
+    #[Route('/report/{uid}', name: 'app_activity_report', methods:['POST'])]
+    public function report(
+        Request $request,
+        ActivityRepository $activityRepository,
+        EntityManagerInterface $em
+    ): JsonResponse
+    {
+        $uid = $request->get('uid');
+
+        try {
+            $activity = $activityRepository->findOneBy(['uid' => $uid]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if (!$activity) {
+            return new JsonResponse(['error' => 'Activity not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $currentReports = $activity->getReport();
+        $activity->setReport($currentReports + 1);
+
+        $em->persist($activity);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Activity reported successfully'], Response::HTTP_OK);
+    }
 }
