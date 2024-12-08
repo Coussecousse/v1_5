@@ -246,7 +246,6 @@ class ActivityController extends AbstractController
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }
 
-
     #[route('/search/{uid}', name: 'app_activity_search_uid', methods: ['GET'])]
     public function searchUid(
         Request $request, 

@@ -51,7 +51,6 @@ export default function CreateRoadtrip({roadtrip = null}) {
             
             setPics(roadtrip.pics);
         }
-        console.log(roadtrip);
     }, [roadtrip])
 
     // -- Open button -- 
@@ -105,6 +104,7 @@ export default function CreateRoadtrip({roadtrip = null}) {
     // -- Pics --
     const handleFileChange = e => {
         const newFiles = Array.from(e.target.files);
+        
         setPics((prevPics) => [...prevPics, ...newFiles]);
     }
 
@@ -136,9 +136,9 @@ export default function CreateRoadtrip({roadtrip = null}) {
         formData.append('budget', budget);
 
         // Add files
-        for (let i = 0; i < e.target.pics.files.length; i++) {
-            formData.append('pics[]', e.target.pics.files[i]);
-        }
+        pics.forEach(pic => {
+            formData.append('pics[]', pic);
+        });
     
         try {
             let url;
@@ -150,7 +150,7 @@ export default function CreateRoadtrip({roadtrip = null}) {
             const response = await axios.post(url, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
-            if (response.status === 201) {
+            if (response.status === 201 || 200) {
                 let message;
                 if (roadtrip) {
                     message = "Votre roadtrip a bien été mis à jour !";
@@ -158,14 +158,21 @@ export default function CreateRoadtrip({roadtrip = null}) {
                     message = "Votre roadtrip a bien été créé !";
                 }
                 setFlashMessage({ type: "success", message: message });
-                setCountryQuery('');
-                setCountryMap({});
-                setRoads([]);
-                setDays([]);
-                setDescription('');
-                setTitle('');
-                setBudget(1);
-                setPics([]);
+                
+                if (!roadtrip) {
+                    setCountryQuery('');
+                    setCountryMap({});
+                    setRoads([]);
+                    setDays([]);
+                    setDescription('');
+                    setTitle('');
+                    setBudget(1);
+                    setPics([]);
+                }
+                setErrors({});
+
+                // Go back top of the page :
+                window.scrollTo(0, 0);
             } else {
                 setErrors(response.data.errors);
                 setFlashMessage({ type: "error", message: "Une erreur est survenue lors de la création de votre roadtrip." });
@@ -180,10 +187,10 @@ export default function CreateRoadtrip({roadtrip = null}) {
 
     // -- Delete image --
     const handleDeleteImage = (index) => {
-        setPics((prevActivityPics) => {
-            const newActivityPics = [...prevActivityPics];
-            newActivityPics.splice(index, 1);
-            return newActivityPics;
+        setPics((prevPiccs) => {
+            const newPics = [...prevPiccs];
+            newPics.splice(index, 1);
+            return newPics;
         });
     };
 
@@ -199,9 +206,9 @@ export default function CreateRoadtrip({roadtrip = null}) {
                 ) : (
                     <>  
                         {flashMessage && (
-                                <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
-                                    {flashMessage.message}
-                                </div>
+                            <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
+                                {flashMessage.message}
+                            </div>
                         )}
                         {/* Map section */}
                         <div className={styles.map}>
@@ -342,7 +349,21 @@ export default function CreateRoadtrip({roadtrip = null}) {
                                         {pics.length > 0 && (
                                             <ul className={styles.picList}>
                                                 {pics.map((pic, index) => (
-                                                    <li key={index} className={styles.picFile}><div className={styles.picName}>{pic}</div><small><button className={`${styles.button}`} onClick={() => handleDeleteImage(index)}>Supprimer</button></small></li>
+                                                    <li key={index} className={styles.picFile}>
+                                                        <div className={styles.picName}>
+                                                            {typeof pic === 'string' ? pic : pic.name}
+                                                        </div>
+                                                        <small className={styles.smallDeleteFileButton}>
+                                                            <div
+                                                                aria-label="Supprimer le fichier"
+                                                                type="button"
+                                                                className={styles.button}
+                                                                onClick={() => handleDeleteImage(index)}
+                                                            >
+                                                                Supprimer
+                                                            </div>
+                                                        </small>
+                                                    </li>
                                                 ))}
                                             </ul>
                                         )}

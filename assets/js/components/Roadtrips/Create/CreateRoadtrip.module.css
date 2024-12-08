@@ -96,7 +96,8 @@
     color: var(--color-500);
     padding: .375rem .5rem;
     background-color: var(--color-700);
-    transition: .2s
+    transition: .2s;
+    width: fit-content;
 }
 .button:hover {
     background-color: var(--color-750);
@@ -110,6 +111,9 @@
 }
 .openButton.open .openIcon {
     transform: rotate(90deg);
+}
+.smallDeleteFileButton {
+    display: inline-flex;
 }
 /* Stage Buttons container */
 .stageButtonsContainer {

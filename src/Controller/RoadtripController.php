@@ -11,9 +11,11 @@ use App\Repository\PicRepository;
 use App\Repository\RoadtripRepository;
 use App\Service\ImageOptimizer;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Exception;
 use RoadtripFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,6 +97,124 @@ class RoadtripController extends AbstractController
 
     }
 
+    #[Route('/update/{uid}', name: 'app_roadtrip_update', methods: ['POST'])]
+    public function update(Request $request, 
+        EntityManagerInterface $em,
+        RoadtripRepository $roadtripRepository,
+        PicRepository $picRepository): JsonResponse
+    {
+        $uid = $request->get('uid');
+        try {
+            $roadtrip = $roadtripRepository->findOneBy(['uid' => $uid]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        if (!$roadtrip) {
+            return new JsonResponse(['error' => 'Roadtrip not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->createForm(RoadtripFormType::class);
+        $data = array_merge($request->request->all(), $request->files->all());
+        $form->submit($data);
+        $errors = [];
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                // Update the roadtrip
+                $roadtrip->setTitle($form->get('title')->getData())
+                    ->setDescription($form->get('description')->getData())
+                    ->setBudget($form->get('budget')->getData())
+                    ->setDays(json_decode($data['days']))
+                    ->setRoads(json_decode($data['roads']));
+    
+                // Handle Pics
+                $roadtripPicDir = $this->getParameter('roadtrip_pics_directory');
+                $submittedFilePics = $form->get('pics')->getData();
+                if ($data['pics'] == null) $data['pics'] = [];
+                $submittedStringPics = array_filter($data['pics'], fn($pic) => is_string($pic));
+                $submittedPics = array_merge($submittedFilePics, $submittedStringPics);
+
+                // Limit to a maximum of 6 pictures
+                $submittedPics = array_slice($submittedPics, 0, 6);
+
+                // Get old pics and their paths
+                $oldPics = $roadtrip->getPics()->toArray();
+
+                // Map submitted pics to their paths
+                $submittedPicPaths = array_map(
+                    fn($pic) => $pic instanceof File ? $pic->getFilename() : $pic,
+                    $submittedPics
+                );
+
+                // Remove old pics not in the submitted pics
+                foreach ($oldPics as $oldPic) {
+                    $path = $oldPic->getPath();
+                    if (!in_array($path, $submittedPicPaths)) {
+                        // Remove pic from user and database
+                        $filesystem = new Filesystem();
+                        $user = $this->getUser();
+                        $userEntity = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+                        $userEntity->removePic($oldPic);
+                        $em->remove($oldPic);
+
+                        // Delete associated files
+                        $folders = ['small', 'medium', 'large', 'extraLarge'];
+                        foreach ($folders as $folder) {
+                            $filePath = $roadtripPicDir . '/' . $folder . '/' . $path;
+                            if ($filesystem->exists($filePath)) {
+                                $filesystem->remove($filePath);
+                            }
+                        }
+                    }
+                }
+
+                // Add new pics
+                foreach ($submittedPics as $submittedPic) {
+                    if ($submittedPic instanceof File) {
+                        // Process and save the new file
+                        $filename = $this->imageOptimizer->processAndResizeFile($submittedPic, $roadtripPicDir);
+
+                        // Create and persist the new Pic entity
+                        $newPic = new Pic();
+                        $newPic->setPath($filename);
+                        $newPic->setRoadtrip($roadtrip);
+                        $newPic->setUser($this->getUser());
+                        $em->persist($newPic);
+                        $roadtrip->addPic($newPic);
+                    } elseif (is_string($submittedPic)) {
+                        continue;
+                    }
+                }
+
+                // Handle country
+                $country = $roadtrip->getCountry();
+                if ($country->getName() !== $form->get('country')->getData()) {
+                    $newCountry = $em->getRepository(Country::class)->findOneBy(['name' => $form->get('country')->getData()]);
+                    if (!$newCountry) {
+                        $newCountry = new Country();
+                        $newCountry->setName($form->get('country')->getData());
+                        $em->persist($newCountry);
+                    }
+                    $roadtrip->setCountry($newCountry);
+                }
+    
+    
+                $em->persist($roadtrip);
+                $em->flush();
+    
+                return new JsonResponse(['status' => 'Roadtrip updated'], Response::HTTP_OK);
+            } catch (Exception $e) {
+                return new JsonResponse(['error' => 'An error occurred.', 'errors' => $errors], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } 
+
+        foreach ($form->getErrors(true) as $error) {
+            $errors[$error->getOrigin()->getName()] = $error->getMessage();
+        }
+
+        return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
+    }  
+
     #[Route('/create', name: 'app_roadtrip_create', methods: ['POST'])]
     public function create(Request $request,
         CountryRepository $countryRepository,
@@ -170,5 +290,5 @@ class RoadtripController extends AbstractController
         return new JsonResponse(['error' => 'Invalid data.', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
     }   
 
-    
+ 
 }
