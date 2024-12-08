@@ -57,12 +57,16 @@ class Roadtrip
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoriteRoadtrips')]
     private Collection $favorite;
 
+    #[ORM\Column]
+    private ?int $report = null;
+
     public function __construct()
     {
         $this->uid = uniqid();
         $this->pics = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->favorite = new ArrayCollection();
+        $this->report = 0;
     }
 
     public function getId(): ?int
@@ -228,6 +232,18 @@ class Roadtrip
     public function removeFavorite(User $favorite): static
     {
         $this->favorite->removeElement($favorite);
+
+        return $this;
+    }
+
+    public function getReport(): ?int
+    {
+        return $this->report;
+    }
+
+    public function setReport(?int $report): static
+    {
+        $this->report = $report;
 
         return $this;
     }

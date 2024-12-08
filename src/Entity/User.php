@@ -83,6 +83,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Activity::class, mappedBy: 'favorite')]
     private Collection $favoriteActivities;
 
+    #[ORM\Column]
+    private ?int $report = null;
+
     public function __construct()
     {
         $this->uid = uniqid();
@@ -91,6 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roadtrips = new ArrayCollection();
         $this->favoriteRoadtrips = new ArrayCollection();
         $this->favoriteActivities = new ArrayCollection();
+        $this->report = 0;
     }
 
     public function getId(): ?int
@@ -401,6 +405,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->favoriteActivities->removeElement($favoriteActivity)) {
             $favoriteActivity->removeFavorite($this);
         }
+
+        return $this;
+    }
+
+    public function getReport(): ?int
+    {
+        return $this->report;
+    }
+
+    public function setReport(int $report): static
+    {
+        $this->report = $report;
 
         return $this;
     }

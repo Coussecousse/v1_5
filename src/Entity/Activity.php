@@ -58,6 +58,9 @@ class Activity
     #[ORM\JoinTable(name: "activity_favorite_user")]
     private Collection $favorite;
 
+    #[ORM\Column]
+    private ?int $report = null;
+
     public function __construct()
     {
         $this->uid = uniqid();
@@ -65,6 +68,7 @@ class Activity
         $this->descriptions = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->favorite = new ArrayCollection();
+        $this->report = 0;
     }
     
     public function getId(): ?int
@@ -245,6 +249,18 @@ class Activity
     public function removeFavorite(User $favorite): static
     {
         $this->favorite->removeElement($favorite);
+
+        return $this;
+    }
+
+    public function getReport(): ?int
+    {
+        return $this->report;
+    }
+
+    public function setReport(?int $report): static
+    {
+        $this->report = $report;
 
         return $this;
     }
