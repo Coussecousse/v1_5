@@ -63,9 +63,10 @@
 /* -- Carousel -- */
 .carouselContainer {
     position: relative;
-    height: 400px;
+    height: 500px;
     overflow-x: hidden;
-    width: 80%;
+    width: 100%;
+    max-width: 500px;
     margin: 0 auto;
 }
 
