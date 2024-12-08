@@ -403,11 +403,21 @@ class ActivityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $description = new Description();
-                $description->setDescription($form->get('description')->getData())
-                            ->setActivity($activity)
-                            ->setUser($this->getUser());
-                $em->persist($description);
+                // If the user already contribued
+                if (in_array($this->getUser(), $activity->getUsers()->toArray())) {
+                    $description = $activity->getDescriptions()->filter(fn(Description $description) => $description->getUser() === $this->getUser())->first();
+                    $description->setDescription($form->get('description')->getData());
+                    $em->persist($description);
+                } else {
+                    $description = new Description();
+                    $description->setDescription($form->get('description')->getData())
+                                ->setActivity($activity)
+                                ->setUser($this->getUser());
+                    $em->persist($description);
+                    $activity->addDescription($description);
+                    $activity->addUser($this->getUser());
+                    $em->persist($description);
+                }
 
                 $pics = $picRepository->findBy(['activity' => $activity, 'user' => $this->getUser()]);
                 $submitedPics = $form->get('activity_pics')->getData();  
