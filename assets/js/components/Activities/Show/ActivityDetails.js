@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import activitiesStyles from '../Activities.module.css';
 import styles from './ActivityDetails.module.css';
 import formStyles from '../../../containers/Form/Form.module.css';
@@ -8,6 +8,7 @@ import Map from "../../../containers/Map/Map";
 import config from "../../../config/locationIQ";
 import paths from "../../../config/paths";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 export default function ActivityDetails() {
     const [activity, setActivity] = useState(null);
@@ -16,8 +17,15 @@ export default function ActivityDetails() {
     const [flashMessage, setFlashMessage] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        // Check if we return from a delete action
+        const urlParams = new URLSearchParams(window.location.search);
+        const deleted = urlParams.get('deleted');
+        if (deleted) {
+            setFlashMessage({ type: 'success', message: 'Le roadtrip a bien été supprimé.'});
+        }
         const uid = window.location.pathname.split("/").pop();
     
         // A promise for each request to the api
@@ -55,6 +63,7 @@ export default function ActivityDetails() {
             .finally(() => {
                 setLoading(false);
         });
+
     }, []);
 
     const getUserContribution = () => {
@@ -74,6 +83,36 @@ export default function ActivityDetails() {
         );
     };
 
+    // -- Delete Activity Contribution -- 
+    const handleDeleteActivityContribution = () => {
+        setLoading(true);
+        window.scrollTo(0,0);
+
+        if (window.confirm('Voulez-vous vraiment supprimer votre contribution à cette activité ?')) {
+            axios.delete(`/api/activities/${activity.uid}`)
+                .then(response => {
+                    setFlashMessage({ type: 'success', message: 'Activité supprimée' });
+                    if (response.data.lastActivity) {
+                        
+                        setTimeout(() => {
+                            navigate(`${paths.ACTIVITIES}?deleted=1`);
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);               
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting roadtrip:', error);
+                    setFlashMessage({ type: 'error', message: 'Erreur lors de la suppression du roadtrip' });
+                })
+                .finally(() => { setLoading(false); });
+        } else {
+            setLoading(false);
+        }
+    }
+
     return (
         <section className={`first-section ${activitiesStyles.section}`}>
             <h1 className={`typical-title ${activitiesStyles.title}`}>Détails de l'activité</h1>
@@ -86,6 +125,11 @@ export default function ActivityDetails() {
                 ) : 
                 (
                     <>
+                        {flashMessage && ( 
+                            <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
+                                {flashMessage.message}
+                            </div>
+                        )}  
                         <h2 className={activitiesStyles.secondTitle}>{activity.display_name}</h2>
                         <div className={styles.opinionsCarousel}>
                             <div className={styles.opinionsCarouselWrapper} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
@@ -100,7 +144,10 @@ export default function ActivityDetails() {
                                 </div>
                             )}
                         </div>
-                        <Link to={paths.UPDATE_ACTIVITY.replace(':uid', activity.uid)} className={styles.contribButton}>{getUserContribution().length > 0 ? 'Modifier ma contribution' : 'Ajouter ma contribution'}</Link>
+                        <div className={styles.contribButtonsContainer}>
+                            <Link to={paths.UPDATE_ACTIVITY.replace(':uid', activity.uid)} className={styles.contribButton}>{getUserContribution().length > 0 ? 'Modifier ma contribution' : 'Ajouter ma contribution'}</Link>
+                            {getUserContribution().length > 0 && <button className={styles.contribButton} onClick={handleDeleteActivityContribution}>Supprimer ma contribution</button>}
+                        </div>
                         <div className={styles.map}>
                             <Map jsonLocation={JSONLocation} zoom={10}/>
                         </div>

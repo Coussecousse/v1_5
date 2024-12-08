@@ -111,6 +111,7 @@ export default function RoadtripDetails() {
     // -- Delete roadtrip --
     const handleDeleteRoadtrip = () => {
         setLoading(true);
+        window.scrollTo(0,0);
     
         if (window.confirm('Voulez-vous vraiment supprimer ce roadtrip ?')) {
             axios.delete(`/api/roadtrip/${roadtrip.uid}`)

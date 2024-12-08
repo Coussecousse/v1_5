@@ -122,6 +122,7 @@ export default function CreateRoadtrip({roadtrip = null}) {
 
     // -- Submit --
     const handleSubmit = async e => {
+        window.scrollTo(0, 0);
         e.preventDefault();
 
         setLoading(true);

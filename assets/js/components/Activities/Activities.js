@@ -19,6 +19,7 @@ export default function Activities() {
     const [localisationInput, setLocalisationInput] = useState('');
     const [choseLocalisation, setChoseLocalisation] = useState(false);
     const [activities, setActivities] = useState([]);   
+    const [flashMessage, setFlashMessage] = useState(null);
     const [currentUser, setCurrentUser] = useState();
     const formRef = useRef();
 
@@ -158,6 +159,13 @@ export default function Activities() {
 
     // -- Search all activities --
     useEffect(() => {
+        // Check if we return from a delete action
+        const urlParams = new URLSearchParams(window.location.search);
+        const deleted = urlParams.get('deleted');
+        if (deleted) {
+            setFlashMessage({ type: 'success', message: 'Votre contribution à l\'activité a bien été supprimée.'});
+        }
+
         const activitiesPromise = axios.get('/api/activities')
         .then(response => {
             setActivities(response.data);
@@ -193,6 +201,11 @@ export default function Activities() {
                             <Link to={paths.CREATE_ACTIVITY} className={`${styles.createLink} link`}>Créer une activité</Link>
                         </div>
                     </div>
+                    {flashMessage && ( 
+                        <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
+                            {flashMessage.message}
+                        </div>
+                    )}
                     <form className={styles.searchFormContainer} onSubmit={handleSubmit} ref={formRef} >
                         <div className={styles.formFieldsContainer}>
                             <div className={styles.searchInputContainer}>

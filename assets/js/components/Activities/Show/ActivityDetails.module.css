@@ -9,14 +9,13 @@
     display: block;
     width: fit-content;
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
     border-radius: var(--radius-500);
     border: 1px solid var(--color-700);
     background-color: var(--color-700);
     color: var(--color-500);
     transition: .2s;
     padding: .372rem 1rem;
+    cursor: pointer;
 }
 .contribButton:hover {
     background-color: var(--color-primary);
@@ -59,4 +58,10 @@
 }
 .button:disabled {
     opacity: .5;
+}
+
+.contribButtonsContainer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
 }

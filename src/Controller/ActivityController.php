@@ -65,6 +65,85 @@ class ActivityController extends AbstractController
         return new JsonResponse($jsonActivities, Response::HTTP_OK);
     }
 
+    #[Route('/{uid}', name: 'app_activity_delete', methods: ['DELETE'])]
+    public function delete (
+        Request $request,
+        ActivityRepository $activityRepository,
+        DescriptionRepository $descriptionRepository,
+        EntityManagerInterface $em
+    ): JsonResponse
+    {
+        $uid = $request->get(key: 'uid');
+        try {
+            $activity = $activityRepository->findOneBy(['uid' => $uid]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if (!$activity) {
+            return new JsonResponse(['error' => 'Activity not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Check if user contribute to this activity :
+        $user = $this->getUser();
+
+        if (!in_array($user, $activity->getUsers()->toArray())) {
+            return new JsonResponse(['error' => 'You are not allowed to delete this activity'], Response::HTTP_FORBIDDEN);
+        }
+        
+        $activityPicsDir = $this->getParameter('activity_pics_directory');
+        $filesystem = new Filesystem();
+        if (count($activity->getUsers()) === 1) {
+            $userEntity = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+            $userEntity->removeActivity($activity);
+            $activityPics = $activity->getPics();
+            foreach ($activityPics as $pic) {
+                $path = $pic->getPath();
+
+                $userEntity->removePic($pic);
+                $em->remove($pic);
+
+                $folders = ['small', 'medium', 'large', 'extraLarge'];
+                foreach ($folders as $folder) {
+                    $filePath = $activityPicsDir . '/' . $folder . '/' . $path;
+                    if ($filesystem->exists($filePath)) {
+                        $filesystem->remove($filePath);
+                    }
+                }
+            }
+            
+            $em->remove($activity);
+            $em->flush();
+            return new JsonResponse(['message' => 'Activity deleted successfully', 'lastActivity' => true], Response::HTTP_OK);
+        } else {
+            $userEntity = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+            $userEntity->removeActivity($activity);
+
+            $picsActivity = $userEntity->getPics()->filter(fn(Pic $pic) => $pic->getActivity() === $activity);
+            foreach($picsActivity as $pic) {
+                $path = $pic->getPath();
+                $userEntity->removePic($pic);
+                $em->remove($pic);
+
+                $folders = ['small', 'medium', 'large', 'extraLarge'];
+                foreach ($folders as $folder) {
+                    $filePath = $activityPicsDir . '/' . $folder . '/' . $path;
+                    if ($filesystem->exists($filePath)) {
+                        $filesystem->remove($filePath);
+                    }
+                }
+            }
+
+            $description = $descriptionRepository->findBy(['activity' => $activity, 'user' => $userEntity]);
+            forEach($description as $d) {
+                $em->remove($d);
+            }
+            $em->persist($userEntity);
+            $em->flush();
+            return new JsonResponse(['message' => 'Activity deleted successfully'], Response::HTTP_OK);
+        }
+    }
+
     #[Route('/create', name: 'app_activity_create', methods: ['POST'])]
     public function create(Request $request, 
         EntityManagerInterface $em, 
