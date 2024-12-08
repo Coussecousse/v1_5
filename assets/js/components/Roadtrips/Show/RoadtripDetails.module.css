@@ -155,6 +155,7 @@
     justify-content: center;
 }
 .contribButton {
+    cursor: pointer;
     margin-top: 2rem;
     display: block;
     width: fit-content;

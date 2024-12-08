@@ -182,6 +182,11 @@ export default function CreateRoadtrip({roadtrip = null}) {
             }
         } catch (error) {
             console.error(error);
+            if (error.response.data.errors) {
+                setErrors(error.response.data.errors);
+            } else {
+                setErrors({});
+            }
             setFlashMessage({type: 'error', message: 'Une erreur est survenue lors de la création de votre roadtrip.'});
         } finally {
             setLoading(false);
@@ -225,55 +230,59 @@ export default function CreateRoadtrip({roadtrip = null}) {
                             {/* Standard Information */}
                             <div className={styles.standartInformations}>
                                 {/* Title Input */}
-                                <div className={`${styles.input} input2_elementsContainer`}>
-                                    <label htmlFor="title">Titre* :</label>
-                                    <div className="input2_container">
-                                        <input
-                                            type="text"
-                                            id="title"
-                                            name="title"
-                                            placeholder="Titre"
-                                            value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
-                                        />
+                                <div>
+                                    <div className={`${styles.input} input2_elementsContainer`}>
+                                        <label htmlFor="title">Titre* :</label>
+                                        <div className="input2_container">
+                                            <input
+                                                type="text"
+                                                id="title"
+                                                name="title"
+                                                placeholder="Titre"
+                                                value={title}
+                                                onChange={(e) => setTitle(e.target.value)}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                {errors.title && (
-                                    <small className={`smallFormError ${formStyles.errorGreen}`}>
-                                        <div className={roadtripsStyles.errorIcon}></div>
-                                        {errors.title}
-                                    </small>
-                                )}
-                                {/* Country Input */}
-                                <div className={`${styles.input} input2_elementsContainer`}>
-                                    <label htmlFor="country">Pays* :</label>
-                                    <div className="input2_container">
-                                        <input
-                                            type="text"
-                                            id="country"
-                                            name="country"
-                                            placeholder="Pays"
-                                            onChange={handleCountryChange}
-                                            value={countryQuery}
-                                        />
-                                    </div>
-                                    {countrySuggestions.length > 0 && (
-                                        <ul className={formStyles.suggestionsList}>
-                                            {countrySuggestions.map((country, index) => (
-                                                <li key={index} onClick={() => handleCountrySuggestionClick(country)}>
-                                                    {country.display_place}
-                                                </li>
-                                            ))}
-                                        </ul>
+                                    {errors.title && (
+                                        <small className={`smallFormError ${formStyles.errorGreen}`}>
+                                            <div className={roadtripsStyles.errorIcon}></div>
+                                            {errors.title}
+                                        </small>
                                     )}
                                 </div>
-                                {errors.country && (
-                                    <small className={`smallFormError ${formStyles.errorGreen}`}>
-                                        <div className={roadtripsStyles.errorIcon}></div>
-                                        {errors.country}
-                                    </small>
-                                )}
-                            </div>
+                                {/* Country Input */}
+                                <div>
+                                    <div className={`${styles.input} input2_elementsContainer`}>
+                                        <label htmlFor="country">Pays* :</label>
+                                        <div className="input2_container">
+                                            <input
+                                                type="text"
+                                                id="country"
+                                                name="country"
+                                                placeholder="Pays"
+                                                onChange={handleCountryChange}
+                                                value={countryQuery}
+                                            />
+                                        </div>
+                                        {countrySuggestions.length > 0 && (
+                                            <ul className={formStyles.suggestionsList}>
+                                                {countrySuggestions.map((country, index) => (
+                                                    <li key={index} onClick={() => handleCountrySuggestionClick(country)}>
+                                                        {country.display_place}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                    {errors.country && (
+                                        <small className={`smallFormError ${formStyles.errorGreen}`}>
+                                            <div className={roadtripsStyles.errorIcon}></div>
+                                            {errors.country}
+                                        </small>
+                                    )}
+                                    </div>
+                                </div>
                             {/* Stage Container */}
                             <div className={styles.stageContainer}>
                                 <div className={styles.stageButtonsContainer}>
@@ -314,6 +323,12 @@ export default function CreateRoadtrip({roadtrip = null}) {
                                         ) : (<p>Vous n'avez pas encore ajouté de jours.</p>)
                                     }
                                 </div>
+                                {errors.days && (
+                                    <small className={`smallFormError ${formStyles.errorGreen}`}>
+                                        <div className={roadtripsStyles.errorIcon}></div>
+                                        {errors.days}
+                                    </small>
+                                )}
                             </div>
                             {/* Description Input */}
                             <div className={`${styles.input} input2_elementsContainer`}>

@@ -63,10 +63,20 @@ export default function Roadtrips() {
     };
 
     useEffect(() => {
+        // Check if we return from a delete action
+        const urlParams = new URLSearchParams(window.location.search);
+        const deleted = urlParams.get('deleted');
+        if (deleted) {
+            setFlashMessage({ type: 'success', message: 'Le roadtrip a bien été supprimé.'});
+        }
+
         axios.get('/api/roadtrip')
             .then(response => {
                 setRoadtrips(response.data);
-                setFlashMessage(null);
+                setFlashMessage(prevFlash => {
+                    if (deleted) return prevFlash;
+                    else return null;
+                });
             })
             .catch(error => {
                 console.error('Error fetching roadtrips', error);
@@ -76,12 +86,6 @@ export default function Roadtrips() {
                 setLoading(false);
             });  
 
-        // Check if we return from a delete action
-        const urlParams = new URLSearchParams(window.location.search);
-        const deleted = urlParams.get('deleted');
-        if (deleted) {
-            setFlashMessage({ type: 'success', message: 'Le roadtrip a bien été supprimé.'});
-        }
     }, []);
 
 
@@ -95,6 +99,11 @@ export default function Roadtrips() {
                         <p>Ou vous préférez peut être...</p>
                         <Link to={paths.CREATE_ROADTRIP} className={`${styles.createLink} link`}>Créer un roadtrip</Link>
                     </div>
+                    {flashMessage && ( 
+                        <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
+                            {flashMessage.message}
+                        </div>
+                    )}
                     <form className={styles.searchRoadtrip} ref={formRef}>
                         <div className={styles.formPrincipal}>
                             <div className={styles.countryInputContainer}>
@@ -179,11 +188,6 @@ export default function Roadtrips() {
                         </div>
                     ) : (
                         <>
-                            {flashMessage && ( 
-                                <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
-                                    {flashMessage.message}
-                                </div>
-                            )}
                             <div className={styles.roadtrips}>
                                 {currentRoadtrips.length > 0 ? (
                                     currentRoadtrips.map((roadtrip, index) => (

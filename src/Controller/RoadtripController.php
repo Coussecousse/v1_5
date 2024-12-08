@@ -275,10 +275,13 @@ class RoadtripController extends AbstractController
         $data = array_merge($request->request->all(), $request->files->all());
         $form->submit($data);
         $errors = [];
-
+        if ($data['days'] === null || $data['days'] === '[]' || $data['roads'] === null || $data['roads'] === '[]') {
+            $errors['days'] = "Vous n'avez pas planifié votre roadtrip.";   
+        }
+        
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                if ($data['days'] === null || $data['roads'] === null) {
+                if ($data['days'] === null || $data['days'] === '[]' || $data['roads'] === null || $data['roads'] === '[]') {
                     return new JsonResponse(['error' => 'Invalid data.', 'errors' => ['days' => "Vous n'avez pas planifié votre roadtrip."]], Response::HTTP_BAD_REQUEST);
                 }
 

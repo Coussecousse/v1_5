@@ -7,6 +7,7 @@ import neutralPic from '../../../../images/ProfilePic/Neutral/neutral.png';
 import axios from "axios";
 import { Link } from "react-router-dom";
 import paths from "../../../config/paths";
+import { useNavigate } from "react-router-dom";
 
 export default function RoadtripDetails() {
     const [roadtrip, setRoadtrip] = useState(null);
@@ -15,6 +16,7 @@ export default function RoadtripDetails() {
     const [flashMessage, setFlashMessage] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentUser, setCurrentUser] = useState(null);
+    const navigate = useNavigate();
 
     // -- Carousel functions --
     const nextSlide = () => {
@@ -109,23 +111,24 @@ export default function RoadtripDetails() {
     // -- Delete roadtrip --
     const handleDeleteRoadtrip = () => {
         setLoading(true);
-
-        // script to delete the roadtrip
+    
         if (window.confirm('Voulez-vous vraiment supprimer ce roadtrip ?')) {
             axios.delete(`/api/roadtrip/${roadtrip.uid}`)
                 .then(response => {
                     setFlashMessage({ type: 'success', message: 'Roadtrip supprimé' });
                     setTimeout(() => {
-                        window.location.href = `${paths.ROADTRIPS}?deleted=1`;
+                        navigate(`${paths.ROADTRIPS}?deleted=1`);
                     }, 2000);
                 })
                 .catch(error => {
                     console.error('Error deleting roadtrip:', error);
                     setFlashMessage({ type: 'error', message: 'Erreur lors de la suppression du roadtrip' });
                 })
-                .finally(() => {setLoading(false)});
-        } else setLoading(false);
-    }
+                .finally(() => { setLoading(false); });
+        } else {
+            setLoading(false);
+        }
+    };
 
     return (
         <section className={`first-section ${styles.section}`}>
@@ -138,7 +141,7 @@ export default function RoadtripDetails() {
                     </div>
                 ) : (
                     <>  
-                        {flashMessage && flashMessage.type == error ? (
+                        {flashMessage && flashMessage.type === 'error' ? (
                             <div className={`flash flash-${flashMessage.type} ${formStyles.flashGreen}`}>
                                 {flashMessage.message}
                             </div>
