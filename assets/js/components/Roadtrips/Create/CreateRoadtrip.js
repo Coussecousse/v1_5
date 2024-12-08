@@ -141,6 +141,9 @@ export default function CreateRoadtrip({roadtrip = null}) {
         });
     
         try {
+            // Go to the top of the page
+            window.scrollTo(0, 0);  
+            
             let url;
             if (roadtrip) {
                 url = `/api/roadtrip/update/${roadtrip.uid}`;

@@ -106,6 +106,27 @@ export default function RoadtripDetails() {
             .finally(() => {setLoading(false)});
     }
 
+    // -- Delete roadtrip --
+    const handleDeleteRoadtrip = () => {
+        setLoading(true);
+
+        // script to delete the roadtrip
+        if (window.confirm('Voulez-vous vraiment supprimer ce roadtrip ?')) {
+            axios.delete(`/api/roadtrip/${roadtrip.uid}`)
+                .then(response => {
+                    setFlashMessage({ type: 'success', message: 'Roadtrip supprimé' });
+                    setTimeout(() => {
+                        window.location.href = `${paths.ROADTRIPS}?deleted=1`;
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error('Error deleting roadtrip:', error);
+                    setFlashMessage({ type: 'error', message: 'Erreur lors de la suppression du roadtrip' });
+                })
+                .finally(() => {setLoading(false)});
+        } else setLoading(false);
+    }
+
     return (
         <section className={`first-section ${styles.section}`}>
             <h1 className={`typical-title ${styles.title}`}>Détails du roadtrip</h1>
@@ -156,20 +177,20 @@ export default function RoadtripDetails() {
                                     {userPic ? (
                                         <picture className={styles.profilePic}>
                                             <source
-                                                srcSet={`/uploads/profile_pics/small/${userPic}`}
+                                                srcSet={`/uploads/profile_pics/extraLarge/${userPic}`}
                                                 media="(min-width: 1200px)"
                                             />
                                             <source
-                                                srcSet={`/uploads/profile_pics/medium/${userPic}`}
+                                                srcSet={`/uploads/profile_pics/large/${userPic}`}
                                                 media="(min-width: 990px)"
                                             />
                                             <source
-                                                srcSet={`/uploads/profile_pics/large/${userPic}`}
+                                                srcSet={`/uploads/profile_pics/medium/${userPic}`}
                                                 media="(min-width: 768px)"
                                             />
                                             <img
-                                                src={`/uploads/profile_pics/extraLarge/${userPic}`}
-                                                alt="Image de profil"
+                                                src={`/uploads/profile_pics/small/${userPic}`}
+                                                alt="Image de roadtrip"
                                             />
                                         </picture>
                                     ) : (
@@ -187,19 +208,19 @@ export default function RoadtripDetails() {
                                             {roadtrip.pics.map((pic, index) => (
                                                 <picture className={styles.img} key={index}>
                                                     <source
-                                                        srcSet={`/uploads/roadtrip_pics/small/${pic}`}
+                                                        srcSet={`/uploads/roadtrip_pics/extraLarge/${pic}`}
                                                         media="(min-width: 1200px)"
                                                     />
                                                     <source
-                                                        srcSet={`/uploads/roadtrip_pics/medium/${pic}`}
+                                                        srcSet={`/uploads/roadtrip_pics/large/${pic}`}
                                                         media="(min-width: 990px)"
                                                     />
                                                     <source
-                                                        srcSet={`/uploads/roadtrip_pics/large/${pic}`}
+                                                        srcSet={`/uploads/roadtrip_pics/medium/${pic}`}
                                                         media="(min-width: 768px)"
                                                     />
                                                     <img
-                                                        src={`/uploads/roadtrip_pics/extraLarge/${pic}`}
+                                                        src={`/uploads/roadtrip_pics/small/${pic}`}
                                                         alt="Image du roadtrip"
                                                     />
                                                 </picture>
@@ -212,7 +233,7 @@ export default function RoadtripDetails() {
                                     (
                                         <div className={styles.buttonsContainer}>
                                             <Link to={paths.UPDATE_ROADTRIP.replace(':uid', roadtrip.uid)} className={styles.contribButton}>Modifier votre roadtrip</Link>
-                                            <Link className={styles.contribButton}>Supprimer ce roadtrip</Link>
+                                            <button onClick={handleDeleteRoadtrip} className={styles.contribButton} >Supprimer ce roadtrip</button>
                                         </div>
                                     ): (
                                         <div className={styles.buttonsContainer}>

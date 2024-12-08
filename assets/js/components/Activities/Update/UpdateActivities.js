@@ -165,19 +165,19 @@ export default function UpdateActivities() {
                                             {Object.keys(pic).length === 1 ? (
                                                 <picture className={styles.img}>
                                                     <source 
-                                                        srcSet={`/uploads/activity_pics/small/${pic.name}`} 
+                                                        srcSet={`/uploads/activity_pics/extraLarge/${pic.name}`} 
                                                         media="(min-width: 1200px)" 
                                                     />
                                                     <source 
-                                                        srcSet={`/uploads/activity_pics/medium/${pic.name}`} 
+                                                        srcSet={`/uploads/activity_pics/large/${pic.name}`} 
                                                         media="(min-width: 990px)" 
                                                     />
                                                     <source 
-                                                        srcSet={`/uploads/activity_pics/large/${pic.name}`} 
+                                                        srcSet={`/uploads/activity_pics/medium/${pic.name}`} 
                                                         media="(min-width: 768px)" 
                                                     />
                                                     <img 
-                                                        src={`/uploads/activity_pics/extraLarge/${pic.name}`} 
+                                                        src={`/uploads/activity_pics/small/${pic.name}`} 
                                                         alt={`Photo de l'activité`} 
                                                     />
                                                 </picture>

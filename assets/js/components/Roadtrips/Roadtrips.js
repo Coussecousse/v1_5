@@ -75,6 +75,13 @@ export default function Roadtrips() {
             .finally(() => { 
                 setLoading(false);
             });  
+
+        // Check if we return from a delete action
+        const urlParams = new URLSearchParams(window.location.search);
+        const deleted = urlParams.get('deleted');
+        if (deleted) {
+            setFlashMessage({ type: 'success', message: 'Le roadtrip a bien été supprimé.'});
+        }
     }, []);
 
 

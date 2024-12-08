@@ -54,19 +54,19 @@ export default function ActivityDetailsCarousel({activity, opinion}) {
                                 {opinion.pics.map((pic, index) => (
                                     <picture className={styles.minPic} key={index}>
                                         <source 
-                                            srcSet={`/uploads/activity_pics/small/${pic}`} 
+                                            srcSet={`/uploads/activity_pics/extraLarge/${pic}`} 
                                             media="(min-width: 1200px)"
                                         />
                                         <source
-                                            srcSet={`/uploads/activity_pics/medium/${pic}`}
+                                            srcSet={`/uploads/activity_pics/large/${pic}`}
                                             media="(min-width: 990px)"
                                         />
                                         <source
-                                            srcSet={`/uploads/activity_pics/large/${pic}`}
+                                            srcSet={`/uploads/activity_pics/medium/${pic}`}
                                             media="(min-width: 768px)"
                                         /> 
                                         <img
-                                            src={`/uploads/activity_pics/extraLarge/${pic}`}
+                                            src={`/uploads/activity_pics/small/${pic}`}
                                             alt={`Image ${index + 1}`}
                                             className={`${currentIndex === index ? styles.active : '' } ${styles.minPic}`}
                                             onClick={() => setCurrentIndex(index)}

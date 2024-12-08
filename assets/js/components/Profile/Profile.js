@@ -45,19 +45,19 @@ export default function Profile() {
                         (
                             <picture className={styles.profilePick}>
                                 <source 
-                                    srcSet={`/uploads/profile_pics/small/${userPic}`} 
+                                    srcSet={`/uploads/profile_pics/extreaLarge/${userPic}`} 
                                     media="(min-width: 1200px)" 
                                 />
                                 <source 
-                                    srcSet={`/uploads/profile_pics/medium/${userPic}`} 
+                                    srcSet={`/uploads/profile_pics/large/${userPic}`} 
                                     media="(min-width: 990px)" 
                                 />
                                 <source 
-                                    srcSet={`/uploads/profile_pics/large/${userPic}`} 
+                                    srcSet={`/uploads/profile_pics/medium/${userPic}`} 
                                     media="(min-width: 768px)" 
                                 />
                                 <img 
-                                    src={`/uploads/profile_pics/extraLarge/${userPic}`} 
+                                    src={`/uploads/profile_pics/small/${userPic}`} 
                                     alt="Image de profil" 
                                 />
                             </picture>

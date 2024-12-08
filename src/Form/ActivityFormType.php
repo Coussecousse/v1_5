@@ -51,7 +51,7 @@ class ActivityFormType extends AbstractType
                     new All([
                         'constraints' => [
                             new File([
-                                'maxSize' => '5M', 
+                                'maxSize' => '10M', 
                                 'mimeTypes' => [
                                     'image/jpeg',
                                     'image/jpg',

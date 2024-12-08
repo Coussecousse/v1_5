@@ -54,6 +54,57 @@ class RoadtripController extends AbstractController
         return new JsonResponse($jsonRoadtrips, Response::HTTP_OK);
     }
 
+    #[Route('/{uid}', name: 'app_roadtrip_delete', methods: ['DELETE'])]
+    public function delete(
+        Request $request, 
+        RoadtripRepository $roadtripRepository,
+        EntityManagerInterface $em): JsonResponse
+    {
+        $uid = $request->get('uid');
+        try {
+            $roadtrip = $roadtripRepository->findOneBy(['uid' => $uid]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        if (!$roadtrip) {
+            return new JsonResponse(['error' => 'Roadtrip not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Check if correct user :
+        $user = $this->getUser();
+        if ($roadtrip->getUser() !== $user) {
+            return new JsonResponse(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        try {
+            $roadtripPicsDir = $this->getParameter('roadtrip_pics_directory');
+            $pics = $roadtrip->getPics()->toArray();
+            $filesystem = new Filesystem();
+            foreach ($pics as $pic) {
+                $path = $pic->getPath();
+                $user = $this->getUser();
+                $userEntity = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+                $userEntity->removePic($pic);
+                $em->remove($pic);
+
+                $folders = ['small', 'medium', 'large', 'extraLarge'];
+                foreach ($folders as $folder) {
+                    $filePath = $roadtripPicsDir . '/' . $folder . '/' . $path;
+                    if ($filesystem->exists($filePath)) {
+                        $filesystem->remove($filePath);
+                    }
+                }
+            }
+
+            $em->remove($roadtrip);
+            $em->flush();
+
+            return new JsonResponse(['status' => 'Roadtrip deleted'], Response::HTTP_OK);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     #[Route('/search/{uid}', name: 'app_roadtrip_search_uid', methods: ['GET'])]
     public function searchUid(
         Request $request, 

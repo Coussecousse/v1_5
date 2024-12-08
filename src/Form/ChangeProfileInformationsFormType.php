@@ -19,7 +19,7 @@ class ChangeProfileInformationsFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '2M', 
+                        'maxSize' => '5M', 
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/jpg',
