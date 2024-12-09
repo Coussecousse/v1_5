@@ -122,8 +122,10 @@ class AdministrationController extends AbstractController
             case 'activities':
                 $entity = $activityRepository->findOneBy(['uid' => $uid]);
                 $elementDir = $this->getParameter('activity_pics_directory'); 
+                $pics = $entity->getPics()->toArray();
                 break;
             case 'users':
+                $userEntity = $userRepository->findOneBy(['email' => $user->getUserIdentifier()]);
                 $entity = $userRepository->findOneBy(['uid' => $uid]);
                 $elementDir = $this->getParameter('profile_pics_directory'); 
                 $pics[] = $picRepository->getProfilePic($userEntity);
