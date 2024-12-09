@@ -14,6 +14,8 @@ use App\Repository\UserRepository;
 use App\Service\ImageOptimizer;
 use ChangeProfileInformationsFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Component\ExpressionLanguage\Node\NameNode;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -128,7 +130,7 @@ class ProfileController extends AbstractController
     }
 
     // Route for the current logged-in user's profile
-    #[Route('/', name: 'app_profile_current_user', methods: ['GET'])]
+    #[Route('/', name: '_current_user', methods: ['GET'])]
     public function currentUserProfile(
         UserRepository $userRepository,
         PicRepository $picRepository,
@@ -152,7 +154,7 @@ class ProfileController extends AbstractController
     }
 
     // Route for the public profile by UID
-    #[Route('/search/{uid}', name: 'app_profile_public_profile', methods: ['GET'])]
+    #[Route('/search/{uid}', name: '_public_profile', methods: ['GET'])]
     public function publicProfile(
         string $uid, 
         UserRepository $userRepository,
@@ -244,6 +246,33 @@ class ProfileController extends AbstractController
     {
         $csrfToken = $csrfTokenManager->getToken('change_profile_informations_form')->getValue();
         return new JsonResponse(['csrfToken' => $csrfToken]);
+    }
+
+    #[Route('/report/{uid}', name: 'app_user_report', methods: ['POST'])]
+    public function reportUser(
+        Request $request,
+        UserRepository $userRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $uid = $request->get('uid');
+
+        try {
+            $user = $userRepository->findOneBy(['uid' => $uid]);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $currentReports = $user->getReport();
+        $user->setReport($currentReports + 1);  
+
+        $em->persist($user);
+        $em->flush();
+
+        return new JsonResponse(['message' => 'User reported successfully'], Response::HTTP_OK);
     }
 
 }

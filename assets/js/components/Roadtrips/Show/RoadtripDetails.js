@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import roadtripsStyles from '..//Roadtrips.module.css';
 import styles from './RoadtripDetails.module.css';  
 import formStyles from '../../../containers/Form/Form.module.css'
 import RoadtripDrawMap from "../../../containers/Map/RoadtripDraw/RoadtripDrawMap";
