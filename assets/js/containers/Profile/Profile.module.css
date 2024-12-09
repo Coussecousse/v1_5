@@ -5,6 +5,7 @@
     gap: .5rem;
     padding: 0 1rem 3rem 1rem;
     flex: 1;
+    max-width: 980px;
 }
 
 .container::before {

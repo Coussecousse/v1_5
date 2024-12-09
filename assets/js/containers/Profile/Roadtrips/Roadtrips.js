@@ -3,7 +3,7 @@ import styles from '../Profile.module.css';
 import navigationStyles from '../ProfileNavigation/ProfileNavigation.module.css';
 import CardRoadtrip from "../../Roadtrip/Card/CardRoadtrip";
 
-export default function Roadtrips({ user, setCurrentUser }) {
+export default function Roadtrips({ user, setCurrentUser, userLogin }) {
     const [isOpen, setIsOpen] = useState({
         created: true,
         favorites: false
@@ -43,12 +43,12 @@ export default function Roadtrips({ user, setCurrentUser }) {
                 {isOpen.created && (
                     user.roadtrips.length > 0 ? (
                         user.roadtrips.map((roadtrip, index) => (
-                            <li>
+                            <li key={index}>
                                 <CardRoadtrip
                                     key={index}
                                     roadtrip={roadtrip}
                                     index={index}
-                                    currentUser={user}
+                                    currentUser={userLogin ? userLogin : user}
                                     setCurrentUser={setCurrentUser}
                                 />
                             </li>
@@ -61,13 +61,15 @@ export default function Roadtrips({ user, setCurrentUser }) {
                 {isOpen.favorites && (
                     user.favorites.roadtrips.length > 0 ? (
                         user.favorites.roadtrips.map((roadtrip, index) => (
-                            <CardRoadtrip
-                                key={index}
-                                roadtrip={roadtrip}
-                                index={index}
-                                currentUser={user}
-                                setCurrentUser={setCurrentUser}
-                            />
+                            <li key={index}>
+                                <CardRoadtrip
+                                    key={index}
+                                    roadtrip={roadtrip}
+                                    index={index}
+                                    currentUser={userLogin ? userLogin : user}
+                                    setCurrentUser={setCurrentUser}
+                                />
+                            </li>
                         ))
                     ) : (
                         <p>Pas de roadtrips favoris.</p>

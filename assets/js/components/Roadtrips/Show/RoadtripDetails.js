@@ -17,6 +17,7 @@ export default function RoadtripDetails() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
+    
 
     // -- Carousel functions --
     const nextSlide = () => {
@@ -183,29 +184,33 @@ export default function RoadtripDetails() {
                                 </div>
                                 <div className={styles.informations}>
                                     {userPic ? (
-                                        <picture className={styles.profilePic}>
-                                            <source
-                                                srcSet={`/uploads/profile_pics/extraLarge/${userPic}`}
-                                                media="(min-width: 1200px)"
-                                            />
-                                            <source
-                                                srcSet={`/uploads/profile_pics/large/${userPic}`}
-                                                media="(min-width: 990px)"
-                                            />
-                                            <source
-                                                srcSet={`/uploads/profile_pics/medium/${userPic}`}
-                                                media="(min-width: 768px)"
-                                            />
-                                            <img
-                                                src={`/uploads/profile_pics/small/${userPic}`}
-                                                alt="Image de roadtrip"
-                                            />
-                                        </picture>
+                                        <Link to={`/profile/search/${roadtrip.user.uid}`} className={styles.profilePic}>
+                                            <picture className={styles.profilePic}>
+                                                <source
+                                                    srcSet={`/uploads/profile_pics/extraLarge/${userPic}`}
+                                                    media="(min-width: 1200px)"
+                                                />
+                                                <source
+                                                    srcSet={`/uploads/profile_pics/large/${userPic}`}
+                                                    media="(min-width: 990px)"
+                                                />
+                                                <source
+                                                    srcSet={`/uploads/profile_pics/medium/${userPic}`}
+                                                    media="(min-width: 768px)"
+                                                />
+                                                <img
+                                                    src={`/uploads/profile_pics/small/${userPic}`}
+                                                    alt="Image de roadtrip"
+                                                />
+                                            </picture>
+                                        </Link>
                                     ) : (
-                                        <div
-                                            className={styles.profilPic}
-                                            style={{ backgroundImage: `url(${neutralPic})` }}
-                                        ></div>
+                                        <Link to={`search/${roadtrip.user.uid}`} className={styles.profilePic}>
+                                            <div
+                                                className={styles.profilPic}
+                                                style={{ backgroundImage: `url(${neutralPic})` }}
+                                            ></div>
+                                        </Link>
                                     )}
                                     {roadtrip.description && (<p className={styles.description}>{roadtrip.description}</p>)}
                                 </div>

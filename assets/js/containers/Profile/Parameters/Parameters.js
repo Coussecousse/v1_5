@@ -3,8 +3,9 @@ import paths from "../../../config/paths";
 import styles from './Parameters.module.css'
 import profileStyles from '../../../components/Profile/Profile.module.css'
 import { Link } from "react-router-dom";
+import neutralPic from '../../../../images/ProfilePic/Neutral/neutral.png';
 
-export default function Parameters({userPic, user}) {
+export default function Parameters({userPic, user, userLogin}) {
     return (
         <div className={`${styles.informationsContainer}`}>
             {userPic ? 
@@ -37,20 +38,26 @@ export default function Parameters({userPic, user}) {
             <div className={`${styles.textContainer}`}>
                 <p><span>Nom d'utilisateur :</span> {user.username}</p>
             </div>
-            <span className={`${profileStyles.spanDiviser}`}></span>
-            <div className={`${styles.textContainer}`}>
-                <p><span>Email :</span> {user.email}</p>
-            </div>
-            <span className={`${profileStyles.spanDiviser}`}></span>
-            <div className={`${styles.passwordTextContainer}`}>
-                <p><span>Mot de passe : </span></p>
-                <Link to={paths.RESET_PASSWORD} className={`${styles.passwordLink} link`}>    
-                    <div className={styles.icon}></div>
-                    Changer son mot de passe</Link>
-            </div>
-            <span className={`${profileStyles.spanDiviser}`}></span>
-            <Link to={paths.PROFILE_CHANGE_INFORMATIONS} className={`small-button ${profileStyles.button
-            }`}>Modifier les informations</Link>
+            {!userLogin && (
+                <>
+                    <span className={`${profileStyles.spanDiviser}`}></span>
+                    <div className={`${styles.textContainer}`}>
+                        <p><span>Email :</span> {user.email}</p>
+                    </div>
+                    <span className={`${profileStyles.spanDiviser}`}></span>
+                    <div className={`${styles.passwordTextContainer}`}>
+                        <p><span>Mot de passe : </span></p>
+                        <Link to={paths.RESET_PASSWORD} className={`${styles.passwordLink} link`}>
+                            <div className={styles.icon}></div>
+                            Changer son mot de passe
+                        </Link>
+                    </div>
+                    <span className={`${profileStyles.spanDiviser}`}></span>
+                    <Link to={paths.PROFILE_CHANGE_INFORMATIONS} className={`small-button ${profileStyles.button}`}>
+                        Modifier les informations
+                    </Link>
+                </>
+            )}
         </div>
     )
 }

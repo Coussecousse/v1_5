@@ -3,7 +3,7 @@ import styles from '../Profile.module.css'
 import navigationStyles from '../ProfileNavigation/ProfileNavigation.module.css';
 import CardActivity from "../../Activity/Card/CardActivity";
 
-export default function Activities({ user, setCurrentUser }) {
+export default function Activities({ user, setCurrentUser, userLogin }) {
     const [isOpen, setIsOpen] = useState({
         created: true,
         favorites: false
@@ -48,7 +48,7 @@ export default function Activities({ user, setCurrentUser }) {
                                     key={index}
                                     activity={activity}
                                     index={index}
-                                    currentUser={user}
+                                    currentUser={userLogin ? userLogin : user}
                                     setCurrentUser={setCurrentUser}
                                 />
                             </li>
@@ -66,7 +66,7 @@ export default function Activities({ user, setCurrentUser }) {
                                     key={index}
                                     activity={activity}
                                     index={index}
-                                    currentUser={user}
+                                    currentUser={userLogin ? userLogin : user}
                                     setCurrentUser={setCurrentUser}
                                 />
                             </li>

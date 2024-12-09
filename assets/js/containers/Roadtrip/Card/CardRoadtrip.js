@@ -59,7 +59,7 @@ export default function CardRoadtrip({roadtrip, index, currentUser, setCurrentUs
                         </div>
                     </div>
                     {currentUser.uid !== roadtrip.user.uid && (
-                        currentUser.favorites.roadtrips.find(favorite => favorite.uid === roadtrip.uid) ? (
+                        !currentUser.favorites.roadtrips || currentUser.favorites.roadtrips.find(favorite => favorite.uid === roadtrip.uid) ? (
                             <button aria-label="retirer le favoris" onClick={handleFavorite} className={styles.fullHeart}></button>
                         ) : (
                             <button aria-label="Ajouter au favoris" onClick={handleFavorite} className={styles.emptyHeart}></button>

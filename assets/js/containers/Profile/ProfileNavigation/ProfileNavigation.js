@@ -1,22 +1,22 @@
 import React from 'react';
 import styles from './ProfileNavigation.module.css';
 
-export default function ProfileNavigation({ handleContainersProfile, isOpen, user }) {
+export default function ProfileNavigation({ handleContainersProfile, isOpen, user, userLogin=null }) {
     return (
         <ul className={styles.navigation}>
             <li>
                 <button onClick={() => handleContainersProfile(0)} className={`${styles.profileLink} ${isOpen.parameters && styles.active}`}>
-                    Paramètres
+                    {!userLogin ? 'Paramètres' : 'Accueil' }
                 </button>
             </li>
             <li>
                 <button onClick={() => handleContainersProfile(1)} className={`${styles.profileLink} ${isOpen.roadtrips && styles.active}`}>
-                    Mes roadtrips
+                    {!userLogin ? 'Mes roadtrips' : 'Ses roadtrips'}
                 </button>
             </li>
             <li>
                 <button onClick={() => handleContainersProfile(2)} className={`${styles.profileLink} ${isOpen.activities && styles.active}`}>
-                    Mes activités
+                    {!userLogin ? 'Mes activités' : 'Ses activités'}
                 </button>
             </li>
             {user && user.role.includes('ROLE_ADMIN') && (

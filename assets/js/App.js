@@ -82,6 +82,14 @@ function App() {
 
               {/* Protected route for authenticated users */}
               <Route
+                path={paths.PROFILE_SEARCH}
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path={paths.PROFILE}
                 element={
                   <ProtectedRoute>

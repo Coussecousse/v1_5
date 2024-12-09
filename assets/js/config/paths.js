@@ -6,6 +6,7 @@ const paths = {
     SIGNIN : '/sign-in',
     VERIFY_EMAIL : '/verify-email',
     PROFILE: '/profile',
+    PROFILE_SEARCH: '/profile/search/:uid',
     RESET_PASSWORD: '/reset-password',  
     RESET_PASSWORD_RESET: '/reset-password/reset/:token',
     LOGOUT: '/logout',

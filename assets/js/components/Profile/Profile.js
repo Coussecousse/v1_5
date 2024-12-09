@@ -10,6 +10,7 @@ import Administration from '../../containers/Profile/Administration/Administrati
 
 export default function Profile() {
     const [user, setUser] = useState(null);
+    const [userLogin, setUserLogin] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userPic, setUserPic] = useState(null);
     const [isOpen, setIsOpen] = useState({
@@ -21,19 +22,33 @@ export default function Profile() {
 
     // Fetch user data on component mount
     useEffect(() => {
-        axios.get('/api/profile')
+        // Get the uid in the url if there's one
+        const uid = window.location.pathname.split("/").pop();
+
+        const url = uid && uid !== 'profile' ? `/api/profile/search/${uid}` : '/api/profile';        
+        const userPromise = axios.get(url)
             .then(response => {
                 setUser(response.data.user);
                 const userPic = response.data.user.profile_pic;
                 if (userPic) {
                     setUserPic(userPic);
                 }
-                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching user profile:', error);
-                setLoading(false);
             });
+
+        const currentUserPromise = uid ? 
+            axios.get('/api/profile')
+            .then(response => {
+                setUserLogin(response.data.user)
+            })
+            .catch(error => {
+                console.error('Error fetching user profile:', error);
+            }) : null;
+
+        Promise.all([userPromise, currentUserPromise].filter(Boolean))
+        .finally(() => setLoading(false));
     }, []);
 
     // Handle section switching
@@ -50,9 +65,6 @@ export default function Profile() {
         <section className={`first-section ${styles.section}`}>
             <h1 className={`typical-title ${styles.title}`}>Profil</h1>
             <div className={styles.container}>
-                {/* Pass handleContainersProfile to ProfileNavigation */}
-                <ProfileNavigation handleContainersProfile={handleContainersProfile} isOpen={isOpen} user={user}/>
-                
                 {loading ? (
                     <div className={`${styles.loaderContainer} loader-container`}>
                         <span className={`loader ${formStyles.loader} ${formStyles.loaderGreen}`}></span>
@@ -60,9 +72,12 @@ export default function Profile() {
                     </div>
                 ) : (
                     <>
-                        {isOpen.parameters && <Parameters userPic={userPic} user={user} />}
-                        {isOpen.roadtrips && <Roadtrips user={user} setCurrentUser={setUser} />}
-                        {isOpen.activities && <Activities user={user} setCurrentUser={setUser} />}
+                        {/* Pass handleContainersProfile to ProfileNavigation */}
+                        <ProfileNavigation handleContainersProfile={handleContainersProfile} isOpen={isOpen} user={user} userLogin={userLogin} />
+                
+                        {isOpen.parameters && <Parameters userPic={userPic} user={user} userLogin={userLogin}/>}
+                        {isOpen.roadtrips && <Roadtrips user={user} setCurrentUser={userLogin ? setUserLogin : setUser} userLogin={userLogin}/>}
+                        {isOpen.activities && <Activities user={user} setCurrentUser={userLogin ? setUserLogin : setUser} userLogin={userLogin}/>}
                         {isOpen.administration && <Administration />}
                     </>
                 )}

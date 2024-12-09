@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from './ActivityDetailsCarousel.module.css';
 import { Link } from "react-router-dom";
+import neutralPic from '../../../../images/ProfilePic/Neutral/neutral.png';
 
 export default function ActivityDetailsCarousel({activity, opinion}) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -82,7 +83,13 @@ export default function ActivityDetailsCarousel({activity, opinion}) {
                 )}
                 <div className={styles.textContainer}>
                     <div className={styles.descriptionContainer}>
-                        <Link className={styles.profilePic} style={{ backgroundImage: `url(/uploads/profile_pics/small/${opinion.user.profile_pic})` }}
+                        <Link to={`/profile/search/${opinion.user.uid}`}
+                            className={styles.profilePic} 
+                            style={{ 
+                                backgroundImage: opinion.user.profile_pic 
+                                    ? `url(/uploads/profile_pics/small/${opinion.user.profile_pic})` 
+                                    : `url(${neutralPic})` 
+                            }}
                         ></Link>
                         <p className={styles.text}>{opinion.description}</p>
                     </div>
