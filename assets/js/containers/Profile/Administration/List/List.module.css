@@ -1,0 +1,31 @@
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.li {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    font-size: var(--ff-secondary);
+    align-items: center;
+}
+.link {
+    flex: 1;
+}
+
+.buttonsContainer {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.button {
+    background-color: var(--color-700);
+    border: none;
+    color: var(--color-500);
+    cursor: pointer;
+    padding: .375rem .5rem;
+    transition: .2s;
+    width: fit-content;
+}

@@ -6,6 +6,7 @@ import ProfileNavigation from '../../containers/Profile/ProfileNavigation/Profil
 import Parameters from '../../containers/Profile/Parameters/Parameters';
 import Roadtrips from '../../containers/Profile/Roadtrips/Roadtrips';
 import Activities from '../../containers/Profile/Activities/Activities';
+import Administration from '../../containers/Profile/Administration/Administration';
 
 export default function Profile() {
     const [user, setUser] = useState(null);
@@ -14,7 +15,8 @@ export default function Profile() {
     const [isOpen, setIsOpen] = useState({
         parameters: true,
         roadtrips: false,
-        activities: false
+        activities: false,
+        administration: false
     });
 
     // Fetch user data on component mount
@@ -39,7 +41,8 @@ export default function Profile() {
         setIsOpen({
             parameters: container === 0,
             roadtrips: container === 1,
-            activities: container === 2
+            activities: container === 2,
+            administration: container === 3
         });
     };
 
@@ -48,7 +51,7 @@ export default function Profile() {
             <h1 className={`typical-title ${styles.title}`}>Profil</h1>
             <div className={styles.container}>
                 {/* Pass handleContainersProfile to ProfileNavigation */}
-                <ProfileNavigation handleContainersProfile={handleContainersProfile} isOpen={isOpen}/>
+                <ProfileNavigation handleContainersProfile={handleContainersProfile} isOpen={isOpen} user={user}/>
                 
                 {loading ? (
                     <div className={`${styles.loaderContainer} loader-container`}>
@@ -60,6 +63,7 @@ export default function Profile() {
                         {isOpen.parameters && <Parameters userPic={userPic} user={user} />}
                         {isOpen.roadtrips && <Roadtrips user={user} setCurrentUser={setUser} />}
                         {isOpen.activities && <Activities user={user} setCurrentUser={setUser} />}
+                        {isOpen.administration && <Administration />}
                     </>
                 )}
             </div>

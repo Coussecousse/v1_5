@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ProfileNavigation.module.css';
 
-export default function ProfileNavigation({ handleContainersProfile, isOpen }) {
+export default function ProfileNavigation({ handleContainersProfile, isOpen, user }) {
     return (
         <ul className={styles.navigation}>
             <li>
@@ -19,6 +19,13 @@ export default function ProfileNavigation({ handleContainersProfile, isOpen }) {
                     Mes activités
                 </button>
             </li>
+            {user && user.role.includes('ROLE_ADMIN') && (
+                <li>
+                <button onClick={() => handleContainersProfile(3)} className={`${styles.profileLink} ${isOpen.activities && styles.active}`}>
+                    Administration
+                </button>
+            </li>
+            )}
         </ul>
     );
 }

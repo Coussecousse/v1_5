@@ -49,6 +49,7 @@ class ProfileController extends AbstractController
                 'email' => $userEntity->getEmail(),
                 'profile_pic' => $userPic ? $userPic->getPath() : null,
                 'uid' => $userEntity->getUid(),
+                'role' => $userEntity->getRoles(),
                 'favorites' => [
                     'roadtrips' => array_map(
                         fn($roadtrip) => [
@@ -87,7 +88,7 @@ class ProfileController extends AbstractController
                     fn($roadtrip) => [
                         'uid' => $roadtrip->getUid(),
                         'title' => $roadtrip->getTitle(),
-                        'description' => $descriptionRepository->findOneBy(['activity' => $activity, 'user' => $userEntity]),
+                        'description' => $roadtrip->getDescription(),
                         'budget' => $roadtrip->getBudget(),
                         'days' => $roadtrip->getDays(),
                         'roads' => $roadtrip->getRoads(),
