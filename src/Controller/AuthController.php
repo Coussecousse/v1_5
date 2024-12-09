@@ -13,36 +13,50 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthController extends AbstractController
 {
     #[Route('/api/check-auth', name: 'api_check_auth')]
-    public function checkAuth(Request $request, 
+    public function checkAuth(
+        Request $request,
         Security $security,
-        EntityManagerInterface $em): JsonResponse
-    {
-        if ($security->getUser()) {
-            return new JsonResponse(['isAuthenticated' => true], 200);
+        EntityManagerInterface $em
+    ): JsonResponse {
+        // Check if the user is already authenticated in the session
+        $user = $security->getUser();
+        if ($user) {
+            return new JsonResponse([
+                'isAuthenticated' => true,
+                'user' => [
+                    'email' => $user->getUserIdentifier(),
+                    'roles' => $user->getRoles(),
+                ],
+            ], 200);
         }
-
-        // Get the token from the cookie
-        $token = $request->cookies->get('auth_token');
-        if ($token) {
-            $userToken = $em->getRepository(className: Token::class)->findOneBy(['token' => $token]);
-            if ($userToken) {
-                if ($userToken->getExpiresAt() < new \DateTime()) {
-                    $em->remove($userToken);
+    
+        // Get the token from the auth cookie
+        $tokenValue = $request->cookies->get('auth_token');
+        if ($tokenValue) {
+            $token = $em->getRepository(Token::class)->findOneBy(['token' => $tokenValue]);
+            if ($token) {
+                // Check if the token is expired
+                if ($token->getExpiresAt() < new \DateTimeImmutable()) {
+                    $em->remove($token);
                     $em->flush();
-
                     return new JsonResponse(['isAuthenticated' => false], 200);
                 }
-
-                $user = $userToken->getUser();
+    
+                // Authenticate the user (if needed for session-based systems)
+                $user = $token->getUser();
+                // Use Security::login if your project relies on sessions
                 $security->login($user);
-
-                return new JsonResponse(['isAuthenticated' => true], 200);
                 
-            } else {
-                return new JsonResponse(['isAuthenticated' => false], 200);
+                return new JsonResponse([
+                    'isAuthenticated' => true,
+                    'user' => [
+                        'username' => $user->getUsername(),
+                        'roles' => $user->getRoles(),
+                    ],
+                ], 200);
             }
         }
     
         return new JsonResponse(['isAuthenticated' => false], 200);
     }
-}
+}    

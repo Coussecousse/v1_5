@@ -7,16 +7,31 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class SignInController extends AbstractController
 {
+    private $eventDispatcher;
+    private $requestStack;
+    private $tokenStorage;
+    
+    public function __construct(EventDispatcherInterface $eventDispatcher, RequestStack $requestStack, TokenStorageInterface $tokenStorage)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->requestStack = $requestStack;
+        $this->tokenStorage = $tokenStorage;
+    }
+
     #[Route('/api/sign-in', name: 'app_sign_in', methods: ['POST'])]
     public function signIn(
         Request $request,
@@ -73,25 +88,43 @@ class SignInController extends AbstractController
         $response = new JsonResponse([
             'message' => 'User signed in successfully!',
         ], JsonResponse::HTTP_OK);
-
-        $response->headers->setCookie(new Cookie('auth_token', $token->getToken(), $token->getExpiresAt()));
-
+        
+        $response->headers->setCookie(
+            new Cookie('auth_token', $token->getToken(), $token->getExpiresAt(), '/', null, true, true)
+        );
+        
         return $response;
     }
 
-    #[Route('/api/logout', name: 'app_logout')]
-    public function logout(EntityManagerInterface $em): JsonResponse
+    #[Route('/api/logout', name: 'app_logout', methods: ['GET'])]
+    public function logout(
+        EntityManagerInterface $em, 
+        Request $request, 
+        Security $security): JsonResponse
     {
+        // Custom logout logic
         $user = $this->getUser();
-        $token = $em->getRepository(Token::class)->findOneBy(['user' => $user]);
-        if ($token) {
-            $em->remove($token);
-            $em->flush();
+        if ($user) {
+            $token = $em->getRepository(Token::class)->findOneBy(['user' => $user]);
+            if ($token) {
+                // Remove the token from the database
+                $em->remove($token);
+                $em->flush();
+            }
         }
+        
+        $response = new JsonResponse(['success' => true], JsonResponse::HTTP_OK);
+        $response->headers->clearCookie('auth_token', '/', null);
+        $response->headers->clearCookie(session_name(), '/', null);
 
-        // Symfony handles logout automatically
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        // Clear the session and session cookie
+        $request->getSession()->invalidate();
+        $security->logout(false);
+    
+        return $response;
     }
+    
+    
 
     #[Route('/api/sign-in/csrf-token', name: 'api_csrf_token_sign_in', methods: ['GET'])]
     public function getCsrfToken(CsrfTokenManagerInterface $csrfTokenManager): JsonResponse

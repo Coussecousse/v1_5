@@ -8,7 +8,7 @@ const paths = {
     PROFILE: '/profile',
     RESET_PASSWORD: '/reset-password',  
     RESET_PASSWORD_RESET: '/reset-password/reset/:token',
-    LOGOUT: '/api/logout',
+    LOGOUT: '/logout',
     PROFILE_ROADTRIPS: '/profile/roadtrips',
     PROFILE_ACTIVITIES: '/profile/activities',
     PROFILE_CHANGE_INFORMATIONS: '/profile/change-informations',

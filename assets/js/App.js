@@ -25,12 +25,14 @@ import CreateRoadtrip from './components/Roadtrips/Create/CreateRoadtrip';
 import RoadtripDetails from './components/Roadtrips/Show/RoadtripDetails';
 import UpdateRoadtrip from './components/Roadtrips/Update/UpdateRoadtrip';
 import ProfileRoadtrips from './components/ProfileRoadtrips/ProfileRoadtrips';
+import Logout from './components/Logout/Logout';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  axios.defaults.withCredentials = true;
 
   // Fetch the user's authentication status
   useEffect(() => {
@@ -173,6 +175,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <UpdateRoadtrip />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path={`${paths.LOGOUT}`}
+                element={
+                  <ProtectedRoute>
+                    <Logout setLoading={setLoading} />
                   </ProtectedRoute>
                 }
               />
