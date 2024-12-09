@@ -7,7 +7,7 @@
     display: flex;
     gap: 1rem;
     justify-content: space-between;
-    font-size: var(--ff-secondary);
+    font-family: var(--ff-secondary);
     align-items: center;
 }
 .link {
