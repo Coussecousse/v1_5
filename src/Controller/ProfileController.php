@@ -109,7 +109,7 @@ class ProfileController extends AbstractController
                                 $picRepository->findBy(['user' => $userEntity, 'activity' => $activity])
                         ),
                         'users' => array_map(
-                            fn($user) => $user->getUid(),
+                            fn($user) => ['uid' => $user->getUid()],
                             $activity->getUsers()->toArray()
                         ),
                     ],

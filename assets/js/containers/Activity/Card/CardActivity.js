@@ -140,7 +140,7 @@ export default function CardActivity({ activity, index, selectionnedLocation = n
                             currentUser.favorites.activities.find(favorite => favorite.uid === activity.uid) ? (
                                 <button aria-label="retirer le favoris" onClick={handleFavorite} className={styles.fullHeart}></button>
                             ) : (
-                                <button aria-label="Ajouter au favoris" onClick={handleFavorite} className={styles.emptyHeart}></button>
+                                <button aria-label="Ajouter aux favoris" onClick={handleFavorite} className={styles.emptyHeart}></button>
                             )
                         )}
                     </div>
