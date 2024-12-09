@@ -38,7 +38,7 @@ export default function Profile() {
                 console.error('Error fetching user profile:', error);
             });
 
-        const currentUserPromise = uid ? 
+        const currentUserPromise = uid !== 'profile' ? 
             axios.get('/api/profile')
             .then(response => {
                 setUserLogin(response.data.user)

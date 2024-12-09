@@ -3,8 +3,10 @@ import axios from "axios";
 import List from "./List/List";
 import styles from '../Profile.module.css';
 import navigationStyles from "../ProfileNavigation/ProfileNavigation.module.css"; 
+import formStyles from '../../Form/Form.module.css';
 
 export default function Administration() {
+    const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState({
         roadtrips: true,
         activities: false,
@@ -24,6 +26,7 @@ export default function Administration() {
     };
 
     useEffect(() => {
+        setLoading(true);
         axios
             .get("/api/administration")
             .then((response) => {
@@ -34,7 +37,8 @@ export default function Administration() {
             })
             .catch((error) => {
                 console.error("Error fetching administration data:", error);
-            });
+            })
+            .finally(() => { setLoading(false); });
     }, []);
 
     return (
@@ -72,9 +76,18 @@ export default function Administration() {
                 </li>
             </ul>
             <div className={styles.listContainer}>
-                {isOpen.roadtrips && <List type="roadtrips" data={roadtrips} />}
-                {isOpen.activities && <List type="activities" data={activities} />}
-                {isOpen.users && <List type="users" data={users} />}
+                {loading ? (
+                    <div className={`${styles.loaderContainer} loader-container`}>
+                        <span className={`loader ${formStyles.loader} ${formStyles.loaderGreen}`}></span>
+                        <span className={`loader-text ${formStyles.loaderTextGreen}`}>Chargement...</span>
+                    </div>
+                ) : (
+                    <>
+                        {isOpen.roadtrips && <List type="roadtrips" data={roadtrips} setData={setRoadtrips}/>}
+                        {isOpen.activities && <List type="activities" data={activities} setData={setActivities}/>}
+                        {isOpen.users && <List type="users" data={users} setData={setUsers}/>}
+                    </>
+                )}
 
             </div>
         </div>

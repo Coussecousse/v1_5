@@ -88,7 +88,7 @@ class AdministrationController extends AbstractController
             return new JsonResponse(['error' => ucfirst($type) . ' not found.'], Response::HTTP_NOT_FOUND);
         }
 
-        $entity->setReported(0);
+        $entity->setReport(0);
         $em->persist($entity);
         $em->flush();
 

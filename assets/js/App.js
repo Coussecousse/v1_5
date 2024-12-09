@@ -32,7 +32,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  axios.defaults.withCredentials = true;
 
   // Fetch the user's authentication status
   useEffect(() => {
