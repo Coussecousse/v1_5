@@ -1,14 +1,24 @@
 import React from 'react';
 import styles from './ProfileNavigation.module.css';
-import paths from '../../../config/paths';
-import { NavLink } from 'react-router-dom';
 
-export default function ProfileNavigation() {
+export default function ProfileNavigation({ handleContainersProfile, isOpen }) {
     return (
-        <ul className={`${styles.navigation}`}>
-            <li><NavLink to={paths.PROFILE} className={`profileLink`}>Paramètres</NavLink></li>
-            <li><NavLink to={paths.PROFILE_ROADTRIPS} className={`profileLink`}>Mes roadtrips</NavLink></li>
-            <li><NavLink to={paths.PROFILE_ACTIVITIES} className={`profileLink`}>Mes activités</NavLink></li>
+        <ul className={styles.navigation}>
+            <li>
+                <button onClick={() => handleContainersProfile(0)} className={`${styles.profileLink} ${isOpen.parameters && styles.active}`}>
+                    Paramètres
+                </button>
+            </li>
+            <li>
+                <button onClick={() => handleContainersProfile(1)} className={`${styles.profileLink} ${isOpen.roadtrips && styles.active}`}>
+                    Mes roadtrips
+                </button>
+            </li>
+            <li>
+                <button onClick={() => handleContainersProfile(2)} className={`${styles.profileLink} ${isOpen.activities && styles.active}`}>
+                    Mes activités
+                </button>
+            </li>
         </ul>
-    )
+    );
 }

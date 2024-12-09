@@ -24,6 +24,7 @@ import Roadtrips from './components/Roadtrips/Roadtrips';
 import CreateRoadtrip from './components/Roadtrips/Create/CreateRoadtrip';
 import RoadtripDetails from './components/Roadtrips/Show/RoadtripDetails';
 import UpdateRoadtrip from './components/Roadtrips/Update/UpdateRoadtrip';
+import ProfileRoadtrips from './components/ProfileRoadtrips/ProfileRoadtrips';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -91,6 +92,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ChangeInformations />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={paths.PROFILE_ROADTRIPS}
+                element={
+                  <ProtectedRoute>
+                    <ProfileRoadtrips />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={paths.PROFILE_ACTIVITIES}
+                element={
+                  <ProtectedRoute>
+                    <ProfileRoadtrips />
                   </ProtectedRoute>
                 }
               />

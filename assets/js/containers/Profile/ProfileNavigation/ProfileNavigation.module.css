@@ -35,7 +35,7 @@
 
 @media screen and (min-width: 768px) {
     .navigation {
-        width: 40%;
+        width: 20%;
         flex-direction: column;
     }
     .navigation a {
@@ -44,4 +44,19 @@
     .navigation::after {
         height: 0px;
     }
+}
+
+/* Profile link active */
+.profileLink {
+    background-color: transparent;
+    border: none;
+    color: var(--color-500);
+    width: 100%;
+    padding: .5rem;
+    cursor: pointer;
+    transition: .2s;
+}
+.profileLink.active,
+.profileLink:hover {
+    background-color: var(--color-primary-light);
 }

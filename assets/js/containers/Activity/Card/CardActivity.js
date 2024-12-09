@@ -8,7 +8,7 @@ import axios from "axios";
 import DrawMap from "../../Map/DrawMap/DrawMap";
 import Map from "../../Map/Map";
 
-export default function CardActivity({ activity, index, selectionnedLocation, currentUser, setCurrentUser }) {
+export default function CardActivity({ activity, index, selectionnedLocation = null, currentUser, setCurrentUser }) {
     const maxPics = 5;
     const [limitedPics, setLimitedPics] = useState([]);
     const [showMap, setShowMap] = useState(false);

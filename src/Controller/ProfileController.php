@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Pic;
 use App\Entity\User;
+use App\Repository\ActivityRepository;
+use App\Repository\DescriptionRepository;
 use App\Repository\PicRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +32,11 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/', name: '_index')]
-    public function index(UserRepository $userRepository, PicRepository $picRepository): JsonResponse
+    public function index(
+        UserRepository $userRepository, 
+        PicRepository $picRepository,
+        DescriptionRepository $descriptionRepository, 
+        ActivityRepository $activityRepository): JsonResponse
     {
         $user = $this->getUser();
 
@@ -45,14 +51,70 @@ class ProfileController extends AbstractController
                 'uid' => $userEntity->getUid(),
                 'favorites' => [
                     'roadtrips' => array_map(
-                        fn($roadtrip) => ['uid' => $roadtrip->getUid()],
+                        fn($roadtrip) => [
+                            'uid' => $roadtrip->getUid(),
+                            'title' => $roadtrip->getTitle(),
+                            'description' => $roadtrip->getDescription(),
+                            'budget' => $roadtrip->getBudget(),
+                            'days' => $roadtrip->getDays(),
+                            'roads' => $roadtrip->getRoads(),
+                            'user' => ['uid' => $roadtrip->getUser()->getUid()],
+                        ],
                         $userEntity->getFavoriteRoadtrips()->toArray()
                     ),
                     'activities' => array_map(
-            fn($activity) => ['uid' => $activity->getUid()],
+                        fn($activity) => [
+                            'uid' => $activity->getUid(),
+                            'display_name' => $activity->getDisplayName(),
+                            'description' => $activityRepository->getFirstDescription($activity),
+                            'type' => $activity->getType()->getName(),
+                            'country' => $activity->getCountry()->getName(),
+                            'lat' => $activity->getLat(),
+                            'lng' => $activity->getLng(),
+                            'pics' => array_map(
+                                fn($pic) => [$pic->getPath()],
+                                $picRepository->findBy(['activity' => $activity])
+                            ),
+                            'users' => array_map(
+                                fn($user) => $user->getUid(),
+                                $activity->getUsers()->toArray()
+                            ),
+                        ],
                         $userEntity->getFavoriteActivities()->toArray()
                     )
-                ]
+                ],
+                'roadtrips' => array_map(
+                    fn($roadtrip) => [
+                        'uid' => $roadtrip->getUid(),
+                        'title' => $roadtrip->getTitle(),
+                        'description' => $descriptionRepository->findOneBy(['activity' => $activity, 'user' => $userEntity]),
+                        'budget' => $roadtrip->getBudget(),
+                        'days' => $roadtrip->getDays(),
+                        'roads' => $roadtrip->getRoads(),
+                        'user' => ['uid' => $roadtrip->getUser()->getUid()],
+                    ],
+                    $userEntity->getRoadtrips()->toArray()
+                ),
+                'activities' => array_map(
+                    fn($activity) => [
+                        'uid' => $activity->getUid(),
+                        'display_name' => $activity->getDisplayName(),
+                        'description' => $descriptionRepository->findOneBy(['activity' => $activity, 'user' => $userEntity])->getDescription(),
+                        'type' => $activity->getType()->getName(),
+                        'country' => $activity->getCountry()->getName(),
+                        'lat' => $activity->getLat(),
+                        'lng' => $activity->getLng(),
+                        'pics' => array_map(
+                                fn($pic) => [$pic->getPath()],
+                                $picRepository->findBy(['user' => $userEntity, 'activity' => $activity])
+                        ),
+                        'users' => array_map(
+                            fn($user) => $user->getUid(),
+                            $activity->getUsers()->toArray()
+                        ),
+                    ],
+                    $userEntity->getActivities()->toArray()
+                )
             ],
         ]);
     }

@@ -1,0 +1,53 @@
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: 0 1rem 3rem 1rem;
+    flex: 1;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: -1rem;
+    background-color: var(--color-500);
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+}
+.listContainer {
+    height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    margin-top: 2rem;
+    padding-right: 1rem;
+}
+.listContainer > div {
+    position: relative;
+}
+.listContainer > div:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    height: 1px;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-500);
+}
+
+@media screen and (min-width:768px) {
+    .container {
+        padding: 3.625rem 1.5rem;
+    }
+    .container::before {
+        width: 1px;
+    }
+}

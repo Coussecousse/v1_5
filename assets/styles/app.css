@@ -359,12 +359,6 @@ nav a:hover::before,
     width: 54px;
     background-color: var(--color-secondary);
 } 
-
-/* Profile link active */
-.profileLink.active {
-    background-color: var(--color-primary-light);
-}
-
 /* Buttons */
 .button {
     background-color: var(--color-secondary);

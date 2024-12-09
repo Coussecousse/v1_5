@@ -1,0 +1,80 @@
+.informationsContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: 0 1rem 3rem 1rem;
+    flex: 1;
+}
+
+.informationsContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: -1rem;
+    background-color: var(--color-500);
+}
+
+.textContainer span,
+.passwordTextContainer span {
+    font-weight: 700;
+}
+
+.textContainer, 
+.passwordTextContainer {
+    display: flex;
+    gap: 1rem;
+    text-wrap: nowrap;
+}
+
+.passwordTextContainer {
+    flex-direction: column;
+    gap: 0 !important;
+    margin-bottom: 1rem;
+}
+
+.passwordLink {
+    font-size: .875rem;
+    width: fit-content;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.passwordLink:hover > .icon {
+    transform: translateX(2px);
+}
+
+.icon {
+    display: inline-block;
+    background-image: url('/assets/images/icon/right-arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 12px;
+    width: 12px;
+    margin-right: .5rem;
+    position: relative;
+    top: 2px;
+    transition: .2s;
+} 
+
+.profilePick {
+    width: 125px;
+    height: 125px;
+    align-self: center;
+    border-radius: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+@media screen and (min-width:768px) {
+    .informationsContainer {
+        padding: 3.625rem 1.5rem;
+    }
+    .informationsContainer::before {
+        width: 1px;
+    }
+}
