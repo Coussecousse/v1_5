@@ -5,7 +5,7 @@
     overflow-y: hidden;
 }
 .backgroundImage {
-    background: url('/assets/images/Community/main.jpg');
+    background: url('/assets/images/Community/small/main.jpg') no-repeat center center / cover;
     background-position: center;
     background-size: cover;
     filter: brightness(.5);
@@ -69,5 +69,20 @@
     .textContainer {
         width: 40%;
         order: 2;
+    }
+    .backgroundImage {
+        background: url('/assets/images/Community/medium/main.jpg') no-repeat center center / cover;
+    }
+}
+
+@media screen and (min-width: 990px) {
+    .backgroundImage {
+        background: url('/assets/images/Community/large/main.jpg') no-repeat center center / cover;
+    }   
+}
+
+@media screen and (min-width: 1200px) {
+    .backgroundImage {
+        background: url('/assets/images/Community/extraLarge/main.jpg') no-repeat center center / cover;
     }
 }

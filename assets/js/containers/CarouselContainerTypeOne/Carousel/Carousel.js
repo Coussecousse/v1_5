@@ -34,11 +34,12 @@ export default function Carousel({data, styles, activePic, handleClickPic}) {
                 { data.pics.map((pic, index) => {
                     return (
                         <div key={index} className={`${styles.picContainer}`} data-pic={index} data-type={data.type} >
-                            <img 
-                                src={pic.src} 
-                                alt={pic.alt} 
-                                className={styles.pic}
-                                onClick={handleClickPic} />
+                            <picture className={styles.pic}>
+                                <source srcSet={pic.src.xlarge} media="(min-width: 1200px)" />
+                                <source srcSet={pic.src.large} media="(min-width: 768px)" />
+                                <source srcSet={pic.src.medium} media="(min-width: 320px)" />
+                                <img src={pic.src.small} alt={pic.alt} className={styles.pic} onClick={handleClickPic} />
+                            </picture>
                             <p className={styles.picTitle}>{pic.title}</p>
                         </div>
                     )

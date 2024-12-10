@@ -8,7 +8,7 @@
     min-height: 100vh;
     position: absolute;
     
-    background: url('/assets/images/Home/main-page.jpg') no-repeat center center / cover;
+    background: url('/assets/images/Home/small/main-page.jpg') no-repeat center center / cover;
     -webkit-filter: brightness(0.8);
     -moz-filter: brightness(0.8);
     -o-filter: brightness(0.8);
@@ -80,5 +80,20 @@
         bottom: calc((-var(--size-compass) / 3));
         height: var(--size-compass);
         width: var(--size-compass);
+    }
+    .backgroundImage {
+        background: url('/assets/images/Home/medium/main-page.jpg') no-repeat center center / cover;
+    }
+}
+
+@media screen and (min-width: 990px) {
+    .backgroundImage {
+        background: url('/assets/images/Home/large/main-page.jpg') no-repeat center center / cover;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .backgroundImage {
+        background: url('/assets/images/Home/extraLarge/main-page.jpg') no-repeat center center / cover;
     }
 }

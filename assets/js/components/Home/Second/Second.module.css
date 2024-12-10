@@ -36,7 +36,8 @@
     bottom: 0;
     font-size: var(--clamp-560);
     color: var(--color-500);
-    display: flex;
+    display: inline-flex !important;
+    margin-top: 1rem;
 }
 .surprise::after {
     background-color: var(--color-500);
