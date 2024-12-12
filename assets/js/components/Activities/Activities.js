@@ -195,7 +195,7 @@ export default function Activities() {
             <div className={styles.container}>
                 <div className={`${styles.activitiesContainer}`}>
                     <div className={styles.textTitleContainer}>
-                        <h2 className={styles.secondTitle}>Chercher une activité dans la communauté</h2>
+                        <h2 className={styles.secondTitle}>Chercher une activité</h2>
                         <div>
                             <p>Ou vous préférez peut être...</p>
                             <Link to={paths.CREATE_ACTIVITY} className={`${styles.createLink} link`}>Créer une activité</Link>
