@@ -277,18 +277,28 @@ class RoadtripController extends AbstractController
         CountryRepository $countryRepository,
         EntityManagerInterface $em): JsonResponse
     {
+
         $form = $this->createForm(RoadtripFormType::class);
         $data = array_merge($request->request->all(), $request->files->all());
         $form->submit($data);
         $errors = [];
-        if ($data['days'] === null || $data['days'] === '[]' || $data['roads'] === null || $data['roads'] === '[]') {
-            $errors['days'] = "Vous n'avez pas planifié votre roadtrip.";   
+
+        // Check if roads or days is empty
+        $isInvalidRoadtrip = function ($data) {
+            return empty($data['days']) || $data['days'] === '[]' || empty($data['roads']) || $data['roads'] === '[]';
+        };
+
+        if ($isInvalidRoadtrip($data)) {
+            $errors['days'] = "Vous n'avez pas planifié votre roadtrip.";
         }
         
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                if ($data['days'] === null || $data['days'] === '[]' || $data['roads'] === null || $data['roads'] === '[]') {
-                    return new JsonResponse(['error' => 'Invalid data.', 'errors' => ['days' => "Vous n'avez pas planifié votre roadtrip."]], Response::HTTP_BAD_REQUEST);
+                if ($isInvalidRoadtrip($data)) {
+                    return new JsonResponse(
+                        ['error' => 'Invalid data.', 'errors' => ['days' => "Vous n'avez pas planifié votre roadtrip."]],
+                        Response::HTTP_BAD_REQUEST
+                    );
                 }
 
                 // Check if the country already exist or create a new one
