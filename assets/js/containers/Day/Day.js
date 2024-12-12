@@ -77,6 +77,7 @@ export default function Day({ day, index, setDays, setRoads, days, roads }) {
         }
     }, [day, newQueryLocation]);
 
+    // -- Draw Road --
     useEffect(() => {
         if (Object.keys(currentSearchDraw).length < 1) return;
         let firstPlace;
