@@ -20,20 +20,24 @@ class RoadtripFormType extends AbstractType
                 'required'=>true , 
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un titre.']),
-                    new Length(['min' => 3, 'max' => 50, 'minMessage' => 'Le titre doit contenir au moins {{ limit }} caractères.']),
+                    new Length(['min' => 3, 'max' => 50, 
+                    'minMessage' => 'Le titre doit contenir au moins {{ limit }} caractères.',
+                    'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères.']),
                 ]
             ])
             ->add('country', TextType::class, options: [
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un pays.']),
-                    new Length(['min' => 3, 'max' => 50, 'minMessage' => 'Le pays doit contenir au moins {{ limit }} caractères.']),
+                    new Length(['min' => 3, 'max' => 50, 
+                    'minMessage' => 'Le pays doit contenir au moins {{ limit }} caractères.',
+                    'maxMessage' => 'Le pays doit contenir au maximum {{ limit }} caractères.']),
                 ]
             ])
             ->add('description', TextType::class, options: [
                 'required' => false,
                 'constraints' => [
-                    new Length(['min' => 0, 'max' => 2500, 'minMessage' => 'La description doit contenir au moins {{ limit }} caractères.']),
+                    new Length(['min' => 0, 'max' => 10000, 'maxMessage' => 'La description doit contenir moins de {{ limit }} caractères.']),
                 ]
             ])
             ->add('pics', type: FileType::class, options: [
@@ -58,7 +62,10 @@ class RoadtripFormType extends AbstractType
                 ],
             ])
             ->add('budget', type: NumberType::class, options: [
-                'required' => false,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer un budget.']),
+                ]
             ]);
     }
 
