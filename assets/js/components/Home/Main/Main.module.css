@@ -77,7 +77,7 @@
         font-size: var(--fs-900);
     }
     .scroll {
-        bottom: calc((-var(--size-compass) / 3));
+        /* bottom: calc((-var(--size-compass) / 3)); */
         height: var(--size-compass);
         width: var(--size-compass);
     }
