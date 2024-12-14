@@ -1,11 +1,14 @@
 .section {
-    background-color: var(--color-primary);
-    color: var(--color-500);
+    background-color: var(--color-500);
+    color: var(--color-primary);
     font-family: var(--ff-secondary);
+    font-weight: 600;
 }
 .container {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+    gap: .5rem;
     min-width: 120px;
     width: 50%;
     max-width: 500px;
@@ -21,4 +24,11 @@
 .img {
     height: 52px;
     width: 52px;
+    filter: invert(48%) sepia(45%) saturate(301%) hue-rotate(44deg) brightness(99%) contrast(93%);
+}
+
+@media screen and (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
 }

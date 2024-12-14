@@ -7,7 +7,7 @@ export default function Destinations() {
     return (
         <>
             <Main />
-            <Second />
+            {/* <Second /> */}
             <Join />
         </>
     )

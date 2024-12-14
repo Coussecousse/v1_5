@@ -9,7 +9,7 @@ export default function Community() {
         <>
             <Main />
             <Second />
-            <Third />
+            {/* <Third /> */}
             <Join />
         </>
     )
