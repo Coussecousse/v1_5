@@ -19,12 +19,11 @@ export default function SignIn({ setIsAuthenticated }) {
         axios.get('/api/sign-in/csrf-token')
             .then(response => {
                 setCsrfToken(response.data.csrfToken);
-                setLoading(false); // Stop loader when CSRF token is received
             })
             .catch(error => {
                 console.error('Error fetching CSRF token:', error);
-                setLoading(false); // Stop loader on error
-            });
+            })
+            .finally(() => { setLoading(false); });
     }, []);
 
     const handleSubmit = (e) => {
