@@ -50,7 +50,7 @@ class RoadtripFormType extends AbstractType
                     new All([
                         'constraints' => [
                             new File([
-                                'maxSize' => '10M', 
+                                'maxSize' => '9M', 
                                 'mimeTypes' => [
                                     'image/jpeg',
                                     'image/jpg',
