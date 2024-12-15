@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\UserRepository;
 use App\Service\ImageOptimizer;
-use ChangeProfileInformationsFormType;
+use App\Form\ChangeProfileInformationsFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\ExpressionLanguage\Node\NameNode;
