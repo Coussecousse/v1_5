@@ -405,6 +405,9 @@ class RoadtripController extends AbstractController
                             return $pic->getPath();
                         }, $roadtrip->getPics()->toArray()),
                         'uid' => $roadtrip->getUid(),
+                        'user' => [
+                            'uid' => $roadtrip->getUser()->getUid()
+                        ]
                     ],
                     $results
                 ),
