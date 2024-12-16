@@ -311,7 +311,11 @@ class ActivityController extends AbstractController
                         return $pic->getPath();
                     }, $activity->getPics()->toArray()),
                     'distance' => $distance, 
-                    'uid' => $activity->getUid() 
+                    'uid' => $activity->getUid() ,
+                    'users' => array_map(
+                    fn($user) => ['uid' => $user->getUid()],
+                    $activity->getUsers()->toArray()
+                )
                 ];
             }
 
