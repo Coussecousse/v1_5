@@ -39,7 +39,6 @@ export default function Footer({ isAuthenticated }) {
                         </li>
                         </>
                     )}
-                    <Link>Cookies</Link>
                     <li><Link to={paths.CONTACT}>Contact</Link></li>
                     <li>
                         <Link to={paths.RULES}>Règles du site</Link>
@@ -47,6 +46,7 @@ export default function Footer({ isAuthenticated }) {
                 </ul>
             </nav>
             <small className={styles.accessibility}>Accessibilité : Site non conforme</small>
+            <small className={styles.accessibility}>RoadtripClub s'engage à respecter votre vie privée et n'utilise donc que les cookies nécessaires au bon fonctionnement du site.</small>
         </div>
     )
 

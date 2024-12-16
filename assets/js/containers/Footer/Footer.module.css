@@ -23,6 +23,7 @@
 
 .accessibility {
     font-family: var(--ff-secondary);
+    text-align: center;
 }
 
 @media screen and (min-width: 768px) {
