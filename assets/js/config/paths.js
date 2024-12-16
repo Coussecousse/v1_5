@@ -22,6 +22,7 @@ const paths = {
     DETAILS_ROADTRIP : '/roadtrips/:uid',
     UPDATE_ROADTRIP : '/roadtrips/update/:uid',
     CONTACT : '/contact',
+    RULES : '/rules',
 }
 
 export default paths;

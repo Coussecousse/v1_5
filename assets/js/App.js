@@ -26,6 +26,7 @@ import RoadtripDetails from './components/Roadtrips/Show/RoadtripDetails';
 import UpdateRoadtrip from './components/Roadtrips/Update/UpdateRoadtrip';
 import ProfileRoadtrips from './components/ProfileRoadtrips/ProfileRoadtrips';
 import Logout from './components/Logout/Logout';
+import Rules from './components/Rules/Rules';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -198,6 +199,7 @@ function App() {
               {/* Redirect unknown routes to Home */}
               <Route path="*" element={<Navigate to={paths.HOME} />} />
             </Routes>
+            <Route path={paths.RULES} element={<Rules />} />
           </Layout>
         )}
       </div>

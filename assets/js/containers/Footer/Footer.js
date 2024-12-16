@@ -41,6 +41,7 @@ export default function Footer({ isAuthenticated }) {
                     )}
                     <Link>Cookies</Link>
                     <Link to={paths.CONTACT}>Contact</Link>
+                    <Link>Règles du site</Link>
                 </ul>
             </nav>
         </div>
