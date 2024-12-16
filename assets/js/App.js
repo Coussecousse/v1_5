@@ -196,10 +196,10 @@ function App() {
                 }
               />
 
+              <Route path={paths.RULES} element={<Rules />} />
               {/* Redirect unknown routes to Home */}
               <Route path="*" element={<Navigate to={paths.HOME} />} />
             </Routes>
-            <Route path={paths.RULES} element={<Rules />} />
           </Layout>
         )}
       </div>

@@ -40,8 +40,10 @@ export default function Footer({ isAuthenticated }) {
                         </>
                     )}
                     <Link>Cookies</Link>
-                    <Link to={paths.CONTACT}>Contact</Link>
-                    <Link>Règles du site</Link>
+                    <li><Link to={paths.CONTACT}>Contact</Link></li>
+                    <li>
+                        <Link to={paths.RULES}>Règles du site</Link>
+                    </li>
                 </ul>
             </nav>
         </div>
