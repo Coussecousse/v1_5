@@ -6,6 +6,8 @@
     padding: 0 1rem 3rem 1rem;
     flex: 1;
     max-width: 980px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .container::before {
@@ -22,7 +24,7 @@
     justify-content: center;
 }
 .listContainer {
-    height: 500px;
+    max-height: 900px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -51,4 +53,8 @@
     .container::before {
         width: 1px;
     }
+    .listContainer{
+        height: 500px;
+    }    
+
 }
