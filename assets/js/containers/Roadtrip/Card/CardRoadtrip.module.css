@@ -1,18 +1,19 @@
 .container {
     display: flex;
     gap: 1rem;
-    height: 400px;
+    min-height: 400px;
+    flex-direction: column;
 }
 
 .map {
-    width: 55%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
 .informations {
-    width: 45%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: .5rem;
@@ -33,6 +34,7 @@
     gap: 1rem;
     font-size: smaller;
     font-weight: 300;
+    flex-wrap: wrap;
 }
 
 .smallInformations > p {
@@ -96,4 +98,18 @@
 }
 .emptyHeart {
     background: url('/assets/images/icon/heart.svg') no-repeat center / contain;
+}
+
+@media screen and (min-width: 768px) {
+    .container {
+        flex-direction: row;
+        height: 400px;
+    }
+    .map {
+        width: 55%;
+    }
+    .informations {
+        width: 45%;
+    }
+    
 }
