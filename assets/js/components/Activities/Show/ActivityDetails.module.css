@@ -16,6 +16,8 @@
     transition: .2s;
     padding: .372rem 1rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 .contribButton:hover {
     background-color: var(--color-primary);
