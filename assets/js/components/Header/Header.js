@@ -30,7 +30,7 @@ export default function Header({ isAuthenticated }) {
                 </a>
                 <HamburgerButton hamburgerClickHandler={hamburgerClickHandler} styles={styles} />
             </div>
-            <Navigation hamburgerState={isHamburgerOpen} isAuthenticated={isAuthenticated} />
+            <Navigation hamburgerState={isHamburgerOpen} isAuthenticated={isAuthenticated} setIsHamburgerOpen={setIsHamburgerOpen} />
         </header>
     );
 }
