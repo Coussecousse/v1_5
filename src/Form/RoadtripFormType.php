@@ -18,7 +18,7 @@ class RoadtripFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder 
-            ->add('title', type: TextType::class, options: [
+            ->add('title', TextType::class,  [
                 'required'=>true , 
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un titre.']),
@@ -27,7 +27,7 @@ class RoadtripFormType extends AbstractType
                     'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères.']),
                 ]
             ])
-            ->add('country', TextType::class, options: [
+            ->add('country', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un pays.']),
@@ -36,13 +36,13 @@ class RoadtripFormType extends AbstractType
                     'maxMessage' => 'Le pays doit contenir au maximum {{ limit }} caractères.']),
                 ]
             ])
-            ->add('description', TextType::class, options: [
+            ->add('description', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new Length(['min' => 0, 'max' => 10000, 'maxMessage' => 'La description doit contenir moins de {{ limit }} caractères.']),
                 ]
             ])
-            ->add('pics', type: FileType::class, options: [
+            ->add('pics', FileType::class, [
                 'multiple' => true,
                 'mapped'=> false,
                 'required' => false,
