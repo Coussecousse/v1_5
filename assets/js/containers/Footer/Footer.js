@@ -39,7 +39,7 @@ export default function Footer({ isAuthenticated }) {
                         </li>
                         </>
                     )}
-                    <li><Link to={paths.CONTACT}>Contact</Link></li>
+                    {/* <li><Link to={paths.CONTACT}>Contact</Link></li> */}
                     <li>
                         <Link to={paths.RULES}>Règles du site</Link>
                     </li>
