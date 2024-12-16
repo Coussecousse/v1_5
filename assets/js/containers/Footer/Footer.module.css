@@ -21,6 +21,10 @@
     font-weight: 700;
 }
 
+.accessibility {
+    font-family: var(--ff-secondary);
+}
+
 @media screen and (min-width: 768px) {
     .navigation {
         flex-direction: row;

@@ -46,6 +46,7 @@ export default function Footer({ isAuthenticated }) {
                     </li>
                 </ul>
             </nav>
+            <small className={styles.accessibility}>Accessibilité : Site non conforme</small>
         </div>
     )
 
